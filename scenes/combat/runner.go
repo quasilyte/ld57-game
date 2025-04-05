@@ -3,6 +3,7 @@ package combat
 import (
 	"strconv"
 
+	graphics "github.com/quasilyte/ebitengine-graphics"
 	"github.com/quasilyte/gslices"
 	"github.com/quasilyte/ld57-game/dat"
 	"github.com/quasilyte/ld57-game/game"
@@ -36,7 +37,29 @@ func (r *runner) NextTurn() {
 	maxTime := 5.0
 
 	r.sceneState.units = gslices.FilterInplace(r.sceneState.units, func(u *unitNode) bool {
-		u.movesLeft = u.data.Stats.Speed
+		if u.data.Count > 0 {
+			u.movesLeft = u.data.Stats.Speed
+			u.AddMorale(game.G.Rand.FloatRange(0.01, 0.03))
+			// 9 => 0.045 (extra ~5% morale per turn).
+			u.AddMorale(0.005 * float64(u.data.Stats.Morale))
+			if u.broken {
+				u.AddMorale(game.G.Rand.FloatRange(0.015, 0.025))
+				// 9 => 0.081 (extra ~8% morale per turn when broken).
+				u.AddMorale(0.009 * float64(u.data.Stats.Morale))
+				if u.morale >= 0.40 && game.G.Rand.Chance(u.morale) {
+					u.broken = false
+					u.AddMorale(0.05)
+					u.updateCountLabel()
+					n := NewFloatingTextNode(FloatingTextNodeConfig{
+						Pos:   u.spritePos,
+						Text:  "Regroup!",
+						Layer: 3,
+						Color: r.pickColor(u.team, true),
+					})
+					r.sceneState.scene.AddObject(n)
+				}
+			}
+		}
 		u.afterTurn()
 		return u.data.Count > 0
 	})
@@ -75,7 +98,20 @@ func (r *runner) NextUnit() *unitNode {
 	return unit
 }
 
-func (r *runner) withCasualtiesCheck(attacker, defender *unitNode, f func()) {
+func (r *runner) pickColor(team int, good bool) graphics.ColorScale {
+	targetTeam := 0
+	if good {
+		targetTeam = 1
+	}
+
+	clr := styles.ColorRed
+	if team != targetTeam {
+		clr = styles.ColorTeal
+	}
+	return clr
+}
+
+func (r *runner) withCasualtiesCheck(melee bool, attacker, defender *unitNode, f func()) {
 	initialAttackers := attacker.data.Count
 	initialDefenders := defender.data.Count
 
@@ -84,35 +120,53 @@ func (r *runner) withCasualtiesCheck(attacker, defender *unitNode, f func()) {
 	deadAttackers := initialAttackers - attacker.data.Count
 	deadDefenders := initialDefenders - defender.data.Count
 	if deadAttackers != 0 {
-		clr := styles.ColorRed
-		if attacker.team != 0 {
-			clr = styles.ColorTeal
-		}
 		n := NewFloatingTextNode(FloatingTextNodeConfig{
 			Pos:   attacker.spritePos,
 			Text:  "-" + strconv.Itoa(deadAttackers),
 			Layer: 3,
-			Color: clr,
+			Color: r.pickColor(attacker.team, false),
 		})
 		r.sceneState.scene.AddObject(n)
+		attacker.SubMorale(game.G.Rand.FloatRange(0.05, 0.1) * float64(deadAttackers))
 	}
 	if deadDefenders != 0 {
-		clr := styles.ColorRed
-		if defender.team != 0 {
-			clr = styles.ColorTeal
+		s := "-" + strconv.Itoa(deadDefenders)
+		if melee {
+			facing := attackFacing(attacker, defender)
+			switch facing {
+			case meleeAttackFlank:
+				s += " Flanked"
+			case meleeAttackBack:
+				s += " Backstab"
+			}
 		}
 		n := NewFloatingTextNode(FloatingTextNodeConfig{
 			Pos:   defender.spritePos,
-			Text:  "-" + strconv.Itoa(deadDefenders),
+			Text:  s,
 			Layer: 3,
-			Color: clr,
+			Color: r.pickColor(defender.team, false),
 		})
 		r.sceneState.scene.AddObject(n)
+		defender.SubMorale(game.G.Rand.FloatRange(0.05, 0.1) * float64(deadDefenders))
+	}
+	if deadAttackers+deadDefenders > 0 {
+		r.sceneState.pause = 0.5
+	}
+
+	if deadAttackers > 0 && attacker.morale < 0.5 {
+		attacker.broken = true
+		attacker.SubMorale(0.1)
+		attacker.updateCountLabel()
+	}
+	if !attacker.broken && deadDefenders > 0 && defender.morale < 0.5 {
+		defender.broken = true
+		defender.SubMorale(0.1)
+		defender.updateCountLabel()
 	}
 }
 
 func (r *runner) runRangedRound(attacker, defender *unitNode) {
-	r.withCasualtiesCheck(attacker, defender, func() {
+	r.withCasualtiesCheck(false, attacker, defender, func() {
 		for i := 0; i < attacker.data.Count; i++ {
 			attackerDmg := r.runRangedAttack(attacker, defender)
 			if r.damageUnit(defender, attackerDmg) {
@@ -123,7 +177,7 @@ func (r *runner) runRangedRound(attacker, defender *unitNode) {
 }
 
 func (r *runner) runMeleeRound(attacker, defender *unitNode) {
-	r.withCasualtiesCheck(attacker, defender, func() {
+	r.withCasualtiesCheck(true, attacker, defender, func() {
 		facing := attackFacing(attacker, defender)
 
 		totalAttackerDmg := 0
@@ -142,6 +196,13 @@ func (r *runner) runMeleeRound(attacker, defender *unitNode) {
 			if r.damageUnit(attacker, defenderDmg) {
 				break
 			}
+		}
+
+		switch facing {
+		case meleeAttackFlank:
+			defender.SubMorale(defender.morale * 0.2)
+		case meleeAttackBack:
+			defender.SubMorale(defender.morale * 0.5)
 		}
 	})
 }
@@ -181,6 +242,9 @@ func (r *runner) runMeleeAttack(attacker, defender *unitNode, facing meleeAttack
 	if attacker.morale < 0.5 {
 		toHit *= 0.75
 	}
+	if attacker.broken {
+		toHit *= 0.5
+	}
 	switch facing {
 	case meleeAttackFlank:
 		toHit *= 1.1
@@ -192,13 +256,10 @@ func (r *runner) runMeleeAttack(attacker, defender *unitNode, facing meleeAttack
 	}
 
 	atk := 0.1 * (float64(attacker.data.Stats.Attack) * attacker.morale)
-	def := 0.08 * (float64(defender.data.Stats.Defense))
-	switch facing {
-	case meleeAttackFlank:
-		def *= 0.75
-	case meleeAttackBack:
-		def *= 0.25
+	if defender.broken {
+		atk *= 1.2
 	}
+	def := 0.08 * (float64(defender.data.Stats.Defense))
 	critChance := atk - def
 	isCrit := critChance > 0 && game.G.Rand.Chance(critChance)
 	dmg := 1

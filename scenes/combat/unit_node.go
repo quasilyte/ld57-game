@@ -27,6 +27,7 @@ type unitNode struct {
 	movesLeft       int
 	facing          int
 	morale          float64
+	broken          bool
 
 	favTarget *unitNode
 }
@@ -79,6 +80,17 @@ func newUnitNode(config unitNodeConfig) *unitNode {
 
 	spr.Pos.Base = &n.spritePos
 	return n
+}
+
+func (u *unitNode) SubMorale(delta float64) {
+	u.AddMorale(-delta)
+}
+
+func (u *unitNode) AddMorale(delta float64) {
+	if u.data.Stats.HasTrait(dat.TraitUnbreakable) {
+		return
+	}
+	u.morale = gmath.Clamp(u.morale+delta, 0, 1)
 }
 
 func (u *unitNode) IsDisposed() bool {
@@ -164,6 +176,11 @@ func (u *unitNode) Init(scene *gscene.Scene) {
 }
 
 func (u *unitNode) updateCountLabel() {
+	if u.broken {
+		u.countLabel.SetColorScale(styles.ColorOrange)
+	} else {
+		u.countLabel.SetColorScale(styles.BrightTextColor)
+	}
 	u.countLabel.SetText(strconv.Itoa(u.data.Count))
 }
 

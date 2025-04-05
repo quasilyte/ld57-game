@@ -3,7 +3,8 @@ package dat
 import "github.com/quasilyte/ld57-game/assets"
 
 var AllUnits = []*UnitStats{
-	// MercenarySwords,
+	MercenarySwords,
+	MercenaryArchers,
 
 	SkeletalWarriors,
 	SkeletalArchers,
@@ -11,22 +12,47 @@ var AllUnits = []*UnitStats{
 	Zombies,
 }
 
-// var MercenarySwords = &UnitStats{
-// 	// Banner: assets.ImageSkeletalWarriorsBanner,
+var MercenarySwords = &UnitStats{
+	Name:   "Merc. Swords",
+	Banner: assets.ImageHumanWarriorsBanner,
 
-// 	Class: ClassInfantry,
-// 	Cost:  10,
+	Class: ClassInfantry,
+	Cost:  10,
 
-// 	MeleeAccuracy: 0.6,
-// 	Attack:        4,
-// 	Defense:       4,
-// 	MaxCount:      15,
-// 	Life:          2,
-// 	Morale:        7,
-// 	Speed:         2,
+	MeleeAccuracy: 0.6,
+	Attack:        4,
+	Defense:       4,
+	MaxCount:      15,
+	Life:          2,
+	Morale:        7,
+	Speed:         2,
 
-// 	Traits: []Trait{},
-// }
+	Traits: []Trait{
+		TraitFlankingImmune,
+	},
+}
+
+var MercenaryArchers = &UnitStats{
+	Name:   "Merc. Archers",
+	Banner: assets.ImageHumanArchersBanner,
+
+	Class: ClassArcher,
+	Cost:  17,
+
+	MaxRange:       3,
+	RangedAccuracy: 0.45,
+
+	MeleeAccuracy: 0.25,
+	RangedAttack:  4,
+	Attack:        2,
+	Defense:       1,
+	MaxCount:      10,
+	Life:          2,
+	Morale:        4,
+	Speed:         2,
+
+	Traits: []Trait{},
+}
 
 var SkeletalWarriors = &UnitStats{
 	Name:   "Skel. Warriors",

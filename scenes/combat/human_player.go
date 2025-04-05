@@ -78,7 +78,7 @@ func (p *humanPlayer) SetUnit(u *unitNode) {
 		cell: u.pos,
 		kind: actionGuard,
 	})
-	for _, offset := range p.data.reachableNeighbors(u) {
+	for _, offset := range reachableNeighbors(p.data.sceneState, u) {
 		dstPos := u.pos.Add(offset)
 		u2 := p.data.sceneState.unitByCell[dstPos]
 		if u2 == nil {
@@ -99,27 +99,13 @@ func (p *humanPlayer) SetUnit(u *unitNode) {
 	}
 
 	if u.data.Stats.MaxRange > 0 {
-		colFrom := gmath.ClampMin(u.pos.X-u.data.Stats.MaxRange, 0)
-		rowFrom := gmath.ClampMin(u.pos.Y-u.data.Stats.MaxRange, 0)
-		colTo := gmath.ClampMax(u.pos.X+u.data.Stats.MaxRange, p.data.sceneState.m.Width-1)
-		rowTo := gmath.ClampMax(u.pos.Y+u.data.Stats.MaxRange, p.data.sceneState.m.Height-1)
-		for row := rowFrom; row < rowTo; row++ {
-			for col := colFrom; col < colTo; col++ {
-				cell := dat.CellPos{X: col, Y: row}
-				u2 := p.data.sceneState.unitByCell[cell]
-				if u2 == nil {
-					continue
-				}
-				if u2.team == u.team {
-					continue
-				}
-				p.options = append(p.options, actionOption{
-					pos:  cell.ToVecPos(true),
-					cell: cell,
-					kind: actionShoot,
-				})
-			}
-		}
+		reachableRangedTargets(u.sceneState, u, func(target *unitNode) {
+			p.options = append(p.options, actionOption{
+				pos:  target.pos.ToVecPos(true),
+				cell: target.pos,
+				kind: actionShoot,
+			})
+		})
 	}
 
 	for i := range p.options {

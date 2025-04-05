@@ -16,6 +16,8 @@ type sceneState struct {
 
 	scene *gscene.Scene
 
+	pause float64
+
 	uiRoot *ebitenui.UI
 
 	m *dat.Map

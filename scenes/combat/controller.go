@@ -26,6 +26,8 @@ type Controller struct {
 	turnLabel *widget.Text
 	turn      int
 
+	turnPending bool
+
 	state  *sceneState
 	runner *runner
 
@@ -183,9 +185,20 @@ func (c *Controller) initUI() {
 }
 
 func (c *Controller) Update(delta float64) {
+	if c.turnPending {
+		c.state.pause = gmath.ClampMin(c.state.pause-delta, 0)
+		if c.state.pause == 0 {
+			c.nextTurn()
+			c.turnPending = false
+		}
+	}
+
 	c.handleInput(delta)
 	c.state.Update(delta)
-	c.activePlayer.impl.Update(delta)
+
+	if c.activePlayer != nil {
+		c.activePlayer.impl.Update(delta)
+	}
 }
 
 func (c *Controller) handleInput(delta float64) {
@@ -197,7 +210,12 @@ func (c *Controller) handleInput(delta float64) {
 		Y: int(cursorPos.Y) / 32,
 	}
 	hovered := c.state.unitByCell[cellPos]
-	if hovered == nil || hovered == c.focusedUnit {
+	if hovered == nil && c.focusedUnit != nil {
+		c.focusedUnit = nil
+		c.unitInfoRows.RemoveChildren()
+		return
+	}
+	if hovered == c.focusedUnit {
 		return
 	}
 	c.focusedUnit = hovered
@@ -240,11 +258,19 @@ func (c *Controller) handleInput(delta float64) {
 			Font:      assets.FontTiny,
 			AlignLeft: true,
 		}))
-		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
-			Text:       fmt.Sprintf("%d%%", int(hovered.morale*100)),
-			Font:       assets.FontTiny,
-			AlignRight: true,
-		}))
+		if hovered.broken {
+			pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
+				Text:       "Broken!",
+				Font:       assets.FontTiny,
+				AlignRight: true,
+			}))
+		} else {
+			pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
+				Text:       fmt.Sprintf("%d%%", int(hovered.morale*100)),
+				Font:       assets.FontTiny,
+				AlignRight: true,
+			}))
+		}
 
 		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
 			Text:      "Level",
@@ -317,6 +343,16 @@ func (c *Controller) handleInput(delta float64) {
 			Font:       assets.FontTiny,
 			AlignRight: true,
 		}))
+		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
+			Text:      "DIS",
+			AlignLeft: true,
+			Font:      assets.FontTiny,
+		}))
+		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
+			Text:       strconv.Itoa(hovered.data.Stats.Morale),
+			Font:       assets.FontTiny,
+			AlignRight: true,
+		}))
 
 		c.unitInfoRows.AddChild(pairs)
 	}
@@ -335,6 +371,8 @@ func (c *Controller) handleInput(delta float64) {
 				traitStrings = append(traitStrings, "Arrow Weakness")
 			case dat.TraitMobile:
 				traitStrings = append(traitStrings, "Diag. Moves")
+			case dat.TraitFlankingImmune:
+				traitStrings = append(traitStrings, "Flanking Resist")
 			}
 		}
 		if len(traitStrings) > 0 {
@@ -365,8 +403,9 @@ func (c *Controller) nextTurn() {
 
 func (c *Controller) onMeleeAttack(event meleeAttackEvent) {
 	event.Attacker.movesLeft = 0
-	event.Defender.movesLeft = 0
+	event.Defender.movesLeft = gmath.ClampMin(event.Defender.movesLeft-1, 0)
 	event.Attacker.lookTowards(event.Defender.pos)
+	event.Defender.afterTurn()
 	c.runner.runMeleeRound(event.Attacker, event.Defender)
 }
 
@@ -384,9 +423,17 @@ func (c *Controller) onPlayerDone(gsignal.Void) {
 
 	nextUnit := c.runner.NextUnit()
 	if nextUnit == nil {
-		c.nextTurn()
+		c.turnPending = true
+		c.activePlayer = nil
 		return
 	}
+
+	if nextUnit.broken {
+		moveUnitRandomly(c.state, nextUnit)
+		c.onPlayerDone(gsignal.Void{})
+		return
+	}
+
 	c.activePlayer = c.players[nextUnit.team]
 	c.activePlayer.impl.SetUnit(nextUnit)
 	c.activeUnit = nextUnit

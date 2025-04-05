@@ -1,6 +1,8 @@
 package combat
 
-import "github.com/quasilyte/ld57-game/dat"
+import (
+	"github.com/quasilyte/ld57-game/dat"
+)
 
 func abs(x int) int {
 	if x < 0 {
@@ -17,6 +19,8 @@ func attackFacing(attacker, defender *unitNode) meleeAttackFacing {
 	facing := meleeAttackFront
 	isDiagonal := abs(attacker.pos.X-defender.pos.X) == 1 && abs(attacker.pos.Y-defender.pos.Y) == 1
 	if isDiagonal {
+		facing = meleeAttackFlank
+	} else {
 		switch abs(attacker.facing - defender.facing) {
 		case 1, 3:
 			facing = meleeAttackFlank
@@ -25,8 +29,9 @@ func attackFacing(attacker, defender *unitNode) meleeAttackFacing {
 		case 2:
 			// Already set to front.
 		}
-	} else {
-		facing = meleeAttackFlank
+	}
+	if facing == meleeAttackFlank && defender.data.Stats.HasTrait(dat.TraitFlankingImmune) {
+		facing = meleeAttackFront
 	}
 	return facing
 }

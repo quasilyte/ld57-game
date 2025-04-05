@@ -56,15 +56,32 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 					Tiles:  testMap,
 					Units: []dat.DeployedUnit{
 						{
-							Pos:  dat.CellPos{X: 1, Y: 1},
-							Team: 0,
+							Pos:  dat.CellPos{X: 0, Y: 0},
+							Team: 1,
 							Unit: &dat.Unit{
 								Count: 10,
-								Stats: dat.SkeletalWarriors,
+								Stats: dat.MercenaryArchers,
 							},
 						},
+						// {
+						// 	Pos:  dat.CellPos{X: 1, Y: 1},
+						// 	Team: 1,
+						// 	Unit: &dat.Unit{
+						// 		Count: 15,
+						// 		Stats: dat.MercenarySwords,
+						// 	},
+						// },
+						// {
+						// 	Pos:  dat.CellPos{X: 2, Y: 1},
+						// 	Team: 1,
+						// 	Unit: &dat.Unit{
+						// 		Count: 15,
+						// 		Stats: dat.MercenarySwords,
+						// 	},
+						// },
+
 						{
-							Pos:  dat.CellPos{X: 0, Y: 0},
+							Pos:  dat.CellPos{X: 4, Y: 5},
 							Team: 0,
 							Unit: &dat.Unit{
 								Count: 10,
@@ -72,7 +89,7 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 							},
 						},
 						{
-							Pos:  dat.CellPos{X: 3, Y: 3},
+							Pos:  dat.CellPos{X: 4, Y: 6},
 							Team: 0,
 							Unit: &dat.Unit{
 								Count: 10,
@@ -80,29 +97,29 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 							},
 						},
 						{
-							Pos:  dat.CellPos{X: 2, Y: 2},
-							Team: 1,
+							Pos:  dat.CellPos{X: 4, Y: 4},
+							Team: 0,
 							Unit: &dat.Unit{
 								Count: 15,
 								Stats: dat.SkeletalWarriors,
 							},
 						},
 						{
-							Pos:  dat.CellPos{X: 5, Y: 5},
-							Team: 1,
+							Pos:  dat.CellPos{X: 3, Y: 5},
+							Team: 0,
 							Unit: &dat.Unit{
 								Count: 15,
 								Stats: dat.Zombies,
 							},
 						},
-						{
-							Pos:  dat.CellPos{X: 4, Y: 4},
-							Team: 1,
-							Unit: &dat.Unit{
-								Count: 15,
-								Stats: dat.SkeletalWarriors,
-							},
-						},
+						// {
+						// 	Pos:  dat.CellPos{X: 4, Y: 4},
+						// 	Team: 1,
+						// 	Unit: &dat.Unit{
+						// 		Count: 15,
+						// 		Stats: dat.SkeletalWarriors,
+						// 	},
+						// },
 					},
 				},
 			}))
