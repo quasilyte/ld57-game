@@ -46,11 +46,13 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 		Text:     "PLAY",
 		MinWidth: 200,
 		OnClick: func() {
+			game.G.SelectedArmy = dat.FactionHuman
 			game.G.Units = []*dat.Unit{
 				dat.MercenarySwords.CreateUnit(),
-				dat.MercenaryCavalry.CreateUnit(),
+				// dat.MercenaryCavalry.CreateUnit(),
 			}
 			m := mapgen.NextStage()
+			game.G.CurrentMap = m
 			game.G.SceneManager.ChangeScene(combat.NewController(combat.Config{
 				Map: m,
 			}))

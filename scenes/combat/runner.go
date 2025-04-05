@@ -196,7 +196,10 @@ func (r *runner) runMeleeRound(attacker, defender *unitNode) {
 
 		for i := 0; i < attacker.data.Count; i++ {
 			attackerDmg := r.runMeleeAttack(false, attacker, defender, facing)
-			defenderDmg := r.runMeleeAttack(true, defender, attacker, meleeAttackFront)
+			defenderDmg := 0
+			if !defender.broken {
+				defenderDmg = r.runMeleeAttack(true, defender, attacker, meleeAttackFront)
+			}
 
 			totalAttackerDmg += attackerDmg
 			totalDefenderDmg += defenderDmg
@@ -259,9 +262,6 @@ func (r *runner) runMeleeAttack(isRetaliation bool, attacker, defender *unitNode
 	toHit := attacker.data.Stats.MeleeAccuracy
 	if attacker.morale < 0.5 {
 		toHit *= 0.75
-	}
-	if attacker.broken {
-		toHit *= 0.5
 	}
 	if defender.data.Stats.Class == dat.ClassCavalry && attacker.data.Stats.HasTrait(dat.TraitAntiCavalry) {
 		toHit *= 1.1

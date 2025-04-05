@@ -16,11 +16,12 @@ func NextStage() *dat.Map {
 			Height:          8,
 			Mission:         dat.MissionKillAll,
 			Enemy:           EnemyBrigands,
-			EnemyBudget:     2 * dat.Brigands.SquadPrice(),
+			EnemyBudget:     1 * dat.Brigands.SquadPrice(),
 			EnemyPlacement:  EnemyPlacementEdges,
 			PlayerPlacement: PlayerPlacementCenter,
 			ForestRatio:     0.1,
 			SwampRatio:      0,
+			Reward:          50,
 		}
 
 	default:

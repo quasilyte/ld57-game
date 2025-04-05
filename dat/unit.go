@@ -6,6 +6,14 @@ import (
 	"github.com/quasilyte/gslices"
 )
 
+type UnitFaction int
+
+const (
+	FactionNeutral UnitFaction = iota
+	FactionHuman
+	FactionUndead
+)
+
 type Unit struct {
 	Count int
 

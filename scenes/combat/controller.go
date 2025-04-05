@@ -27,6 +27,8 @@ type Controller struct {
 	turnLabel *widget.Text
 	turn      int
 
+	winner int
+
 	turnPending bool
 
 	state  *sceneState
@@ -55,8 +57,9 @@ type Config struct {
 
 func NewController(config Config) *Controller {
 	return &Controller{
-		back: config.Back,
-		m:    config.Map,
+		back:   config.Back,
+		m:      config.Map,
+		winner: -1,
 	}
 }
 
@@ -440,11 +443,72 @@ func (c *Controller) handleInput(delta float64) {
 }
 
 func (c *Controller) nextTurn() {
+	if c.winner != -1 {
+		return
+	}
+
 	c.turn++
 	c.updateTurnLabel()
 
 	c.runner.NextTurn()
+
 	c.onPlayerDone(gsignal.Void{})
+}
+
+func (c *Controller) onBattleOver() {
+	panel := game.G.UI.NewPanel(eui.PanelConfig{
+		MinWidth: 128,
+	})
+
+	rows := eui.NewTopLevelRows()
+	panel.AddChild(rows)
+
+	victory := c.winner == 0
+	title := "Mission Complete!"
+	if !victory {
+		title = "Mission Failed!"
+	}
+	game.G.Victory = victory
+
+	rows.AddChild(game.G.UI.NewText(eui.TextConfig{
+		Text: title,
+	}))
+
+	rows.AddChild(game.G.UI.NewButton(eui.ButtonConfig{
+		Text: "OK",
+		OnClick: func() {
+			game.ChangeScene(game.G.NewContinueProxy())
+		},
+	}))
+
+	anchor := widget.NewContainer(widget.ContainerOpts.Layout(widget.NewAnchorLayout()))
+	anchor.AddChild(panel)
+
+	window := widget.NewWindow(
+		widget.WindowOpts.Modal(),
+		widget.WindowOpts.Contents(anchor),
+		widget.WindowOpts.Location(gmath.Rect{Max: game.G.WindowSize}.ToStd()),
+	)
+
+	c.state.uiRoot.AddWindow(window)
+}
+
+func (c *Controller) checkVictory() bool {
+	var units [2]int
+	for _, u := range c.state.units {
+		if u.data.Count > 0 {
+			units[u.team]++
+		}
+	}
+	if units[0] == 0 {
+		c.winner = 1
+		return true
+	}
+	if units[1] == 0 {
+		c.winner = 0
+		return true
+	}
+	return false
 }
 
 func (c *Controller) onMeleeAttack(event meleeAttackEvent) {
@@ -494,6 +558,10 @@ func (c *Controller) onPlayerDone(gsignal.Void) {
 		c.state.currentUnitSelector.SetOutlineColorScale(styles.ColorTeal)
 	} else {
 		c.state.currentUnitSelector.SetOutlineColorScale(styles.ColorRed)
+	}
+
+	if c.checkVictory() {
+		c.onBattleOver()
 	}
 }
 

@@ -38,6 +38,8 @@ type Config struct {
 	Width  int
 	Height int
 
+	Reward int
+
 	Mission dat.MissionKind
 
 	Enemy           EnemyKind
@@ -217,6 +219,12 @@ func Generate(config Config) *dat.Map {
 			Pos:  tmpCells[i],
 			Unit: u,
 		})
+	}
+
+	if config.Reward != 0 {
+		m.Reward = config.Reward
+	} else {
+		panic("TODO")
 	}
 
 	return m

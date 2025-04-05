@@ -48,6 +48,8 @@ type Map struct {
 	Height int
 	Units  []DeployedUnit
 	Tiles  [][]Tile
+
+	Reward int
 }
 
 type DeployedUnit struct {

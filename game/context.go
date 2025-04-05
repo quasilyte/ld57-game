@@ -32,9 +32,16 @@ type GlobalContext struct {
 
 	UI *eui.Builder
 
-	Units []*dat.Unit
-	Gold  int
-	Stage int
+	NewContinueProxy func() gscene.Controller
+	NewMainMenu      func() gscene.Controller
+
+	Victory      bool
+	CurrentMap   *dat.Map
+	Units        []*dat.Unit
+	Gold         int
+	GoldTotal    int
+	Stage        int
+	SelectedArmy dat.UnitFaction
 
 	SoundVolume int
 }

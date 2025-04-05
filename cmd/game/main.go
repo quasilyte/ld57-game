@@ -62,6 +62,10 @@ func main() {
 		u.ScaledImage = img
 	}
 
+	game.G.NewContinueProxy = func() gscene.Controller {
+		return scenes.NewContinueProxyController()
+	}
+
 	game.G.SceneManager.ChangeScene(scenes.NewMainMenuController())
 
 	if err := ebiten.RunGame(runner); err != nil {
