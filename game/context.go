@@ -8,6 +8,7 @@ import (
 	"github.com/quasilyte/gmath"
 	"github.com/quasilyte/gscene"
 	"github.com/quasilyte/ld57-game/assets"
+	"github.com/quasilyte/ld57-game/dat"
 	"github.com/quasilyte/ld57-game/eui"
 	"github.com/quasilyte/ld57-game/viewport"
 )
@@ -30,6 +31,10 @@ type GlobalContext struct {
 	Rand gmath.Rand
 
 	UI *eui.Builder
+
+	Units []*dat.Unit
+	Gold  int
+	Stage int
 
 	SoundVolume int
 }

@@ -16,6 +16,13 @@ const (
 	TileVoid
 )
 
+type MissionKind int
+
+const (
+	MissionSurvive MissionKind = iota
+	MissionKillAll
+)
+
 func (p CellPos) Add(other CellPos) CellPos {
 	return CellPos{X: p.X + other.X, Y: p.Y + other.Y}
 }

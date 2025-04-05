@@ -46,6 +46,18 @@ type UnitStats struct {
 	Traits []Trait
 }
 
+func (stats *UnitStats) SquadPrice() int {
+	return stats.Cost * stats.MaxCount
+}
+
+func (stats *UnitStats) CreateUnit() *Unit {
+	return &Unit{
+		Count: stats.MaxCount,
+		Level: 1,
+		Stats: stats,
+	}
+}
+
 func (stats *UnitStats) HasTrait(t Trait) bool {
 	return gslices.Contains(stats.Traits, t)
 }
