@@ -44,6 +44,7 @@ func (r *runner) NextTurn() {
 				u.movesLeft = gmath.ClampMin(u.movesLeft-1, 1)
 			}
 			u.steps = 0
+			u.guard = false
 			u.AddMorale(game.G.Rand.FloatRange(0.01, 0.03))
 			// 9 => 0.045 (extra ~5% morale per turn).
 			u.AddMorale(0.005 * float64(u.data.Stats.Morale))
@@ -226,6 +227,9 @@ func (r *runner) runRangedAttack(attacker, defender *unitNode) int {
 	if attacker.morale < 0.5 {
 		toHit *= 0.85
 	}
+	if r.sceneState.m.Tiles[defender.pos.Y][defender.pos.X] == dat.TileForest {
+		toHit *= 0.55
+	}
 	if !game.G.Rand.Chance(toHit) {
 		return 0
 	}
@@ -234,7 +238,11 @@ func (r *runner) runRangedAttack(attacker, defender *unitNode) int {
 	if defender.data.Stats.HasTrait(dat.TraitArrowVulnerability) {
 		atk *= 1.5
 	}
-	def := 0.08 * (float64(defender.data.Stats.Defense))
+	defenseLevel := defender.data.Stats.Defense
+	if defender.guard {
+		defenseLevel++
+	}
+	def := 0.08 * (float64(defenseLevel))
 	if defender.data.Stats.HasTrait(dat.TraitArrowResist) {
 		def *= 1.5
 	}
@@ -281,7 +289,11 @@ func (r *runner) runMeleeAttack(isRetaliation bool, attacker, defender *unitNode
 			}
 		}
 	}
-	def := 0.08 * (float64(defender.data.Stats.Defense))
+	defenseLevel := defender.data.Stats.Defense
+	if defender.guard {
+		defenseLevel++
+	}
+	def := 0.08 * (float64(defenseLevel))
 	if attacker.data.Stats.Class == dat.ClassCavalry && defender.data.Stats.HasTrait(dat.TraitAntiCavalry) {
 		def *= 1.5
 	}

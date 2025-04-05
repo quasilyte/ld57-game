@@ -116,12 +116,20 @@ func (c *Controller) Init(ctx gscene.InitContext) {
 	i := 1
 	for y := 0; y < c.m.Height; y++ {
 		for x := 0; x < c.m.Width; x++ {
-			spr := game.G.NewSprite(assets.ImageTileGrass)
+			t := c.state.m.Tiles[y][x]
+			img := assets.ImageTileGrass
+			colorM := float32(0.96)
+			if t == dat.TileForest {
+				colorM = 0.94
+				img = assets.ImageTileForest
+			}
+			spr := game.G.NewSprite(img)
+			spr.SetHorizontalFlip(game.G.Rand.Chance(0.4))
 			spr.SetCentered(false)
 			spr.Pos.Offset.X = float64(x * 32)
 			spr.Pos.Offset.Y = float64(y * 32)
 			if i%2 == 0 {
-				spr.SetColorScale(graphics.ColorScale{R: 0.96, G: 0.96, B: 0.96, A: 1})
+				spr.SetColorScale(graphics.ColorScale{R: colorM, G: colorM, B: colorM, A: 1})
 			}
 			i++
 			game.G.Camera.AddGraphics(spr, 1)

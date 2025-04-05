@@ -52,7 +52,9 @@ var Brigands = &UnitStats{
 	Morale:        4,
 	Speed:         2,
 
-	Traits: []Trait{},
+	Traits: []Trait{
+		TraitMobile,
+	},
 }
 
 var MercenarySwords = &UnitStats{

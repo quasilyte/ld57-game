@@ -29,6 +29,7 @@ type unitNode struct {
 	steps           int
 	morale          float64
 	broken          bool
+	guard           bool
 
 	favTarget *unitNode
 }
@@ -122,12 +123,19 @@ func (u *unitNode) lookTowards(pos dat.CellPos) {
 
 func (u *unitNode) Guard() {
 	u.movesLeft = 0
+	u.guard = true
 }
 
 func (u *unitNode) MoveTo(pos dat.CellPos) {
 	u.steps++
 	u.lookTowards(pos)
+
 	u.movesLeft--
+	if u.data.Stats.Class == dat.ClassCavalry {
+		if u.sceneState.m.Tiles[pos.Y][pos.X] == dat.TileForest {
+			u.movesLeft = gmath.ClampMin(u.movesLeft-1, 0)
+		}
+	}
 
 	delete(u.sceneState.unitByCell, u.pos)
 

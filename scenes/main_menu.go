@@ -49,6 +49,13 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 			for i := range testMap {
 				testMap[i] = make([]dat.Tile, 20)
 			}
+			testMap[0][0] = dat.TileForest
+			testMap[0][1] = dat.TileForest
+			testMap[0][3] = dat.TileForest
+			testMap[6][2] = dat.TileForest
+			testMap[6][3] = dat.TileForest
+			testMap[6][4] = dat.TileForest
+			testMap[6][5] = dat.TileForest
 			game.G.SceneManager.ChangeScene(combat.NewController(combat.Config{
 				Map: &dat.Map{
 					Width:  20,
@@ -60,7 +67,7 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 							Team: 0,
 							Unit: &dat.Unit{
 								Count: 20,
-								Stats: dat.SkeletalWarriors,
+								Stats: dat.MercenaryCavalry,
 							},
 						},
 						// {
@@ -109,7 +116,7 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 							Team: 1,
 							Unit: &dat.Unit{
 								Count: 20,
-								Stats: dat.Brigands,
+								Stats: dat.MercenaryArchers,
 							},
 						},
 						// {

@@ -14,7 +14,8 @@ func registerImageResources(loader *resource.Loader) {
 		ImageUIPanel:         {Path: "image/ui/panel.png"},
 		ImageUITooltip:       {Path: "image/ui/tooltip.png"},
 
-		ImageTileGrass: {Path: "image/tiles/grass.png"},
+		ImageTileGrass:  {Path: "image/tiles/grass.png"},
+		ImageTileForest: {Path: "image/tiles/forest.png"},
 
 		ImageActionMove:   {Path: "image/ui/action_move.png"},
 		ImageActionGuard:  {Path: "image/ui/action_guard.png"},
@@ -64,6 +65,7 @@ const (
 	ImageFacingUp
 
 	ImageTileGrass
+	ImageTileForest
 
 	ImageBrigandsBanner
 	ImageHumanHalberdsBanner
