@@ -57,14 +57,17 @@ var SkeletalArchers = &UnitStats{
 	Class: ClassArcher,
 	Cost:  12,
 
+	MaxRange:       3,
 	RangedAccuracy: 0.4,
-	MeleeAccuracy:  0.3,
-	Attack:         2,
-	Defense:        2,
-	MaxCount:       15,
-	Life:           1,
-	Morale:         0,
-	Speed:          2,
+
+	MeleeAccuracy: 0.3,
+	RangedAttack:  3,
+	Attack:        2,
+	Defense:       2,
+	MaxCount:      15,
+	Life:          1,
+	Morale:        0,
+	Speed:         2,
 
 	Traits: []Trait{
 		TraitUnbreakable,
@@ -94,6 +97,7 @@ var UnholyKnights = &UnitStats{
 }
 
 var Zombies = &UnitStats{
+	Name:   "Zombies",
 	Banner: assets.ImageZombiesBanner,
 
 	Class: ClassInfantry,
@@ -110,5 +114,6 @@ var Zombies = &UnitStats{
 	Traits: []Trait{
 		TraitUnbreakable,
 		TraitCauseFear,
+		TraitArrowVulnerability,
 	},
 }

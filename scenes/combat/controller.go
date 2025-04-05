@@ -86,6 +86,7 @@ func (c *Controller) Init(ctx gscene.InitContext) {
 	for _, p := range c.players {
 		p.EventDone.Connect(nil, c.onPlayerDone)
 		p.EventMeleeAttack.Connect(nil, c.onMeleeAttack)
+		p.EventRangedAttack.Connect(nil, c.onRangedAttack)
 	}
 
 	layers := []graphics.SceneLayerDrawer{
@@ -203,8 +204,9 @@ func (c *Controller) handleInput(delta float64) {
 	c.unitInfoRows.RemoveChildren()
 
 	c.unitInfoRows.AddChild(game.G.UI.NewText(eui.TextConfig{
-		Text: hovered.data.Stats.Name,
-		Font: assets.FontTiny,
+		Text:     hovered.data.Stats.Name,
+		Font:     assets.FontTiny,
+		MinWidth: sidePanelWidth - 32,
 	}))
 
 	c.unitInfoRows.AddChild(widget.NewGraphic(
@@ -276,8 +278,12 @@ func (c *Controller) handleInput(delta float64) {
 			AlignLeft: true,
 			Font:      assets.FontTiny,
 		}))
+		atkString := strconv.Itoa(hovered.data.Stats.Attack)
+		if hovered.data.Stats.RangedAttack > 0 {
+			atkString += " [color=ffffee]" + strconv.Itoa(hovered.data.Stats.RangedAttack) + "[/color]"
+		}
 		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
-			Text:       strconv.Itoa(hovered.data.Stats.Attack),
+			Text:       atkString,
 			Font:       assets.FontTiny,
 			AlignRight: true,
 		}))
@@ -325,6 +331,8 @@ func (c *Controller) handleInput(delta float64) {
 				traitStrings = append(traitStrings, "Causes Fear")
 			case dat.TraitArrowResist:
 				traitStrings = append(traitStrings, "Arrow Resist")
+			case dat.TraitArrowVulnerability:
+				traitStrings = append(traitStrings, "Arrow Weakness")
 			case dat.TraitMobile:
 				traitStrings = append(traitStrings, "Diag. Moves")
 			}
@@ -360,6 +368,13 @@ func (c *Controller) onMeleeAttack(event meleeAttackEvent) {
 	event.Defender.movesLeft = 0
 	event.Attacker.lookTowards(event.Defender.pos)
 	c.runner.runMeleeRound(event.Attacker, event.Defender)
+}
+
+func (c *Controller) onRangedAttack(event meleeAttackEvent) {
+	event.Attacker.movesLeft = 0
+	event.Defender.movesLeft = 0
+	event.Attacker.lookTowards(event.Defender.pos)
+	c.runner.runRangedRound(event.Attacker, event.Defender)
 }
 
 func (c *Controller) onPlayerDone(gsignal.Void) {

@@ -42,6 +42,7 @@ const (
 	actionMove actionKind = iota
 	actionAttack
 	actionGuard
+	actionShoot
 )
 
 func (p *humanPlayer) SetUnit(u *unitNode) {
@@ -97,6 +98,30 @@ func (p *humanPlayer) SetUnit(u *unitNode) {
 		}
 	}
 
+	if u.data.Stats.MaxRange > 0 {
+		colFrom := gmath.ClampMin(u.pos.X-u.data.Stats.MaxRange, 0)
+		rowFrom := gmath.ClampMin(u.pos.Y-u.data.Stats.MaxRange, 0)
+		colTo := gmath.ClampMax(u.pos.X+u.data.Stats.MaxRange, p.data.sceneState.m.Width-1)
+		rowTo := gmath.ClampMax(u.pos.Y+u.data.Stats.MaxRange, p.data.sceneState.m.Height-1)
+		for row := rowFrom; row < rowTo; row++ {
+			for col := colFrom; col < colTo; col++ {
+				cell := dat.CellPos{X: col, Y: row}
+				u2 := p.data.sceneState.unitByCell[cell]
+				if u2 == nil {
+					continue
+				}
+				if u2.team == u.team {
+					continue
+				}
+				p.options = append(p.options, actionOption{
+					pos:  cell.ToVecPos(true),
+					cell: cell,
+					kind: actionShoot,
+				})
+			}
+		}
+	}
+
 	for i := range p.options {
 		o := &p.options[i]
 		var imgID resource.ImageID
@@ -107,6 +132,8 @@ func (p *humanPlayer) SetUnit(u *unitNode) {
 			imgID = assets.ImageActionAttack
 		case actionGuard:
 			imgID = assets.ImageActionGuard
+		case actionShoot:
+			imgID = assets.ImageActionShoot
 		}
 		if imgID != assets.ImageNone {
 			spr := game.G.NewSprite(imgID)
@@ -179,6 +206,15 @@ func (p *humanPlayer) Update(delta float64) {
 		p.actionTooltipText.Label = "LMB: Guard"
 		if clicked {
 			p.unit.Guard()
+			p.finishTurn()
+		}
+	case actionShoot:
+		p.actionTooltipText.Label = "LMB: Shoot"
+		if clicked {
+			p.data.EventRangedAttack.Emit(meleeAttackEvent{
+				Attacker: p.unit,
+				Defender: p.data.sceneState.unitByCell[p.focusedOption.cell],
+			})
 			p.finishTurn()
 		}
 	case actionAttack:

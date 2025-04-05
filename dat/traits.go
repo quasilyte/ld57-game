@@ -8,5 +8,6 @@ const (
 	TraitUnbreakable
 	TraitCauseFear
 	TraitArrowResist
+	TraitArrowVulnerability
 	TraitMobile
 )

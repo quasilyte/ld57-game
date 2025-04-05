@@ -32,9 +32,11 @@ type UnitStats struct {
 
 	Cost int
 
+	MaxRange       int
 	RangedAccuracy float64
 	MeleeAccuracy  float64
 	Attack         int
+	RangedAttack   int
 	Defense        int
 	MaxCount       int
 	Life           int

@@ -4,6 +4,7 @@ import (
 	"strconv"
 
 	"github.com/quasilyte/gslices"
+	"github.com/quasilyte/ld57-game/dat"
 	"github.com/quasilyte/ld57-game/game"
 	"github.com/quasilyte/ld57-game/styles"
 )
@@ -74,31 +75,11 @@ func (r *runner) NextUnit() *unitNode {
 	return unit
 }
 
-func (r *runner) runMeleeRound(attacker, defender *unitNode) {
-	// every good attack deals 1 damage
-
-	facing := attackFacing(attacker, defender)
-
-	totalAttackerDmg := 0
-	totalDefenderDmg := 0
-
+func (r *runner) withCasualtiesCheck(attacker, defender *unitNode, f func()) {
 	initialAttackers := attacker.data.Count
 	initialDefenders := defender.data.Count
 
-	for i := 0; i < attacker.data.Count; i++ {
-		attackerDmg := r.runMeleeAttack(attacker, defender, facing)
-		defenderDmg := r.runMeleeAttack(defender, attacker, meleeAttackFront)
-
-		totalAttackerDmg += attackerDmg
-		totalDefenderDmg += defenderDmg
-
-		if r.damageUnit(defender, attackerDmg) {
-			break
-		}
-		if r.damageUnit(attacker, defenderDmg) {
-			break
-		}
-	}
+	f()
 
 	deadAttackers := initialAttackers - attacker.data.Count
 	deadDefenders := initialDefenders - defender.data.Count
@@ -130,8 +111,69 @@ func (r *runner) runMeleeRound(attacker, defender *unitNode) {
 	}
 }
 
+func (r *runner) runRangedRound(attacker, defender *unitNode) {
+	r.withCasualtiesCheck(attacker, defender, func() {
+		for i := 0; i < attacker.data.Count; i++ {
+			attackerDmg := r.runRangedAttack(attacker, defender)
+			if r.damageUnit(defender, attackerDmg) {
+				break
+			}
+		}
+	})
+}
+
+func (r *runner) runMeleeRound(attacker, defender *unitNode) {
+	r.withCasualtiesCheck(attacker, defender, func() {
+		facing := attackFacing(attacker, defender)
+
+		totalAttackerDmg := 0
+		totalDefenderDmg := 0
+
+		for i := 0; i < attacker.data.Count; i++ {
+			attackerDmg := r.runMeleeAttack(attacker, defender, facing)
+			defenderDmg := r.runMeleeAttack(defender, attacker, meleeAttackFront)
+
+			totalAttackerDmg += attackerDmg
+			totalDefenderDmg += defenderDmg
+
+			if r.damageUnit(defender, attackerDmg) {
+				break
+			}
+			if r.damageUnit(attacker, defenderDmg) {
+				break
+			}
+		}
+	})
+}
+
 func (r *runner) damageUnit(u *unitNode, dmg int) bool {
 	return u.onDamage(dmg)
+}
+
+func (r *runner) runRangedAttack(attacker, defender *unitNode) int {
+	toHit := attacker.data.Stats.RangedAccuracy
+	if attacker.morale < 0.5 {
+		toHit *= 0.85
+	}
+	if !game.G.Rand.Chance(toHit) {
+		return 0
+	}
+
+	atk := 0.1 * float64(attacker.data.Stats.RangedAttack)
+	if defender.data.Stats.HasTrait(dat.TraitArrowVulnerability) {
+		atk *= 1.5
+	}
+	def := 0.08 * (float64(defender.data.Stats.Defense))
+	if defender.data.Stats.HasTrait(dat.TraitArrowResist) {
+		def *= 1.5
+	}
+	critChance := atk - def
+	isCrit := critChance > 0 && game.G.Rand.Chance(critChance)
+	dmg := 1
+	if isCrit {
+		dmg *= 2
+	}
+	return dmg
 }
 
 func (r *runner) runMeleeAttack(attacker, defender *unitNode, facing meleeAttackFacing) int {

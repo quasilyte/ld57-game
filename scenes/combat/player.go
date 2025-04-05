@@ -13,8 +13,9 @@ type player struct {
 
 	impl playerImpl
 
-	EventDone        gsignal.Event[gsignal.Void]
-	EventMeleeAttack gsignal.Event[meleeAttackEvent]
+	EventDone         gsignal.Event[gsignal.Void]
+	EventMeleeAttack  gsignal.Event[meleeAttackEvent]
+	EventRangedAttack gsignal.Event[meleeAttackEvent]
 }
 
 type meleeAttackEvent struct {
