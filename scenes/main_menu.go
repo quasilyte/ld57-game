@@ -64,6 +64,14 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 							},
 						},
 						{
+							Pos:  dat.CellPos{X: 0, Y: 0},
+							Team: 0,
+							Unit: &dat.Unit{
+								Count: 10,
+								Stats: dat.SkeletalArchers,
+							},
+						},
+						{
 							Pos:  dat.CellPos{X: 3, Y: 3},
 							Team: 0,
 							Unit: &dat.Unit{
@@ -84,7 +92,7 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 							Team: 1,
 							Unit: &dat.Unit{
 								Count: 15,
-								Stats: dat.SkeletalWarriors,
+								Stats: dat.Zombies,
 							},
 						},
 						{

@@ -56,7 +56,7 @@ func newUnitNode(config unitNodeConfig) *unitNode {
 
 	n.facingIndicator = graphics.NewSprite()
 	n.facingIndicator.Pos.Base = &n.spritePos
-	n.facingIndicator.Pos.Offset = gmath.Vec{X: 11, Y: 10}
+	n.facingIndicator.Pos.Offset = gmath.Vec{X: 10, Y: 10}
 
 	n.countLabel = graphics.NewLabel(assets.FontTiny)
 	n.countLabel.Pos.Base = &n.spritePos

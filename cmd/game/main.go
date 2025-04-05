@@ -12,6 +12,7 @@ import (
 	"github.com/quasilyte/gscene"
 	"github.com/quasilyte/ld57-game/assets"
 	"github.com/quasilyte/ld57-game/controls"
+	"github.com/quasilyte/ld57-game/dat"
 	"github.com/quasilyte/ld57-game/eui"
 	"github.com/quasilyte/ld57-game/game"
 	"github.com/quasilyte/ld57-game/scenes"
@@ -52,6 +53,14 @@ func main() {
 
 	ebiten.SetFullscreen(true)
 	ebiten.SetWindowTitle("ld57game")
+
+	for _, u := range dat.AllUnits {
+		img := ebiten.NewImage(44, 44)
+		var opts ebiten.DrawImageOptions
+		opts.GeoM.Scale(2, 2)
+		img.DrawImage(game.G.Loader.LoadImage(u.Banner).Data, &opts)
+		u.ScaledImage = img
+	}
 
 	game.G.SceneManager.ChangeScene(scenes.NewMainMenuController())
 

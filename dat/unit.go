@@ -1,12 +1,15 @@
 package dat
 
 import (
+	"github.com/hajimehoshi/ebiten/v2"
 	resource "github.com/quasilyte/ebitengine-resource"
 	"github.com/quasilyte/gslices"
 )
 
 type Unit struct {
 	Count int
+
+	Level int
 
 	Stats *UnitStats
 }
@@ -21,19 +24,22 @@ const (
 )
 
 type UnitStats struct {
-	Banner resource.ImageID
+	Name        string
+	Banner      resource.ImageID
+	ScaledImage *ebiten.Image
 
 	Class UnitClass
 
 	Cost int
 
-	MeleeAccuracy float64
-	Attack        int
-	Defense       int
-	MaxCount      int
-	Life          int
-	Morale        int
-	Speed         int
+	RangedAccuracy float64
+	MeleeAccuracy  float64
+	Attack         int
+	Defense        int
+	MaxCount       int
+	Life           int
+	Morale         int
+	Speed          int
 
 	Traits []Trait
 }

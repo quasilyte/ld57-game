@@ -2,6 +2,7 @@ package combat
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/ebitenui/ebitenui/widget"
 	graphics "github.com/quasilyte/ebitengine-graphics"
@@ -32,9 +33,13 @@ type Controller struct {
 
 	m *dat.Map
 
+	unitInfoRows *widget.Container
+
 	players      []*player
 	activePlayer *player
 	activeUnit   *unitNode
+
+	focusedUnit *unitNode
 
 	scene *gscene.Scene
 }
@@ -168,6 +173,9 @@ func (c *Controller) initUI() {
 
 	panelRows.AddChild(c.turnLabel)
 
+	c.unitInfoRows = eui.NewPanelRows()
+	panelRows.AddChild(c.unitInfoRows)
+
 	c.updateTurnLabel()
 
 	c.state.uiRoot = game.G.UI.BuildAt(c.scene, root, 4)
@@ -181,6 +189,162 @@ func (c *Controller) Update(delta float64) {
 
 func (c *Controller) handleInput(delta float64) {
 	c.cam.HandleInput(delta)
+
+	cursorPos := game.G.Camera.ToWorldPos(game.G.Input.CursorPos())
+	cellPos := dat.CellPos{
+		X: int(cursorPos.X) / 32,
+		Y: int(cursorPos.Y) / 32,
+	}
+	hovered := c.state.unitByCell[cellPos]
+	if hovered == nil || hovered == c.focusedUnit {
+		return
+	}
+	c.focusedUnit = hovered
+	c.unitInfoRows.RemoveChildren()
+
+	c.unitInfoRows.AddChild(game.G.UI.NewText(eui.TextConfig{
+		Text: hovered.data.Stats.Name,
+		Font: assets.FontTiny,
+	}))
+
+	c.unitInfoRows.AddChild(widget.NewGraphic(
+		widget.GraphicOpts.Image(hovered.data.Stats.ScaledImage),
+	))
+
+	{
+		pairs := widget.NewContainer(
+			widget.ContainerOpts.Layout(
+				widget.NewGridLayout(
+					widget.GridLayoutOpts.Columns(2),
+					widget.GridLayoutOpts.Spacing(2, 2),
+					widget.GridLayoutOpts.Stretch([]bool{false, true}, nil),
+				),
+			),
+		)
+
+		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
+			Text:      "Units",
+			Font:      assets.FontTiny,
+			AlignLeft: true,
+		}))
+		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
+			Text:       fmt.Sprintf("%d/%d", hovered.data.Count, hovered.data.Stats.MaxCount),
+			Font:       assets.FontTiny,
+			AlignRight: true,
+		}))
+
+		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
+			Text:      "Morale",
+			Font:      assets.FontTiny,
+			AlignLeft: true,
+		}))
+		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
+			Text:       fmt.Sprintf("%d%%", int(hovered.morale*100)),
+			Font:       assets.FontTiny,
+			AlignRight: true,
+		}))
+
+		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
+			Text:      "Level",
+			Font:      assets.FontTiny,
+			AlignLeft: true,
+		}))
+		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
+			Text:       strconv.Itoa(hovered.data.Level + 1),
+			Font:       assets.FontTiny,
+			AlignRight: true,
+		}))
+
+		c.unitInfoRows.AddChild(pairs)
+	}
+
+	c.unitInfoRows.AddChild(game.G.UI.NewText(eui.TextConfig{}))
+
+	{
+		pairs := widget.NewContainer(
+			widget.ContainerOpts.Layout(
+				widget.NewGridLayout(
+					widget.GridLayoutOpts.Columns(4),
+					widget.GridLayoutOpts.Spacing(10, 2),
+					widget.GridLayoutOpts.Stretch([]bool{false, true, false, true}, nil),
+				),
+			),
+		)
+
+		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
+			Text:      "ATK",
+			AlignLeft: true,
+			Font:      assets.FontTiny,
+		}))
+		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
+			Text:       strconv.Itoa(hovered.data.Stats.Attack),
+			Font:       assets.FontTiny,
+			AlignRight: true,
+		}))
+		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
+			Text:      "DEF",
+			AlignLeft: true,
+			Font:      assets.FontTiny,
+		}))
+		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
+			Text:       strconv.Itoa(hovered.data.Stats.Defense),
+			Font:       assets.FontTiny,
+			AlignRight: true,
+		}))
+		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
+			Text:      "SPD",
+			AlignLeft: true,
+			Font:      assets.FontTiny,
+		}))
+		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
+			Text:       strconv.Itoa(hovered.data.Stats.Speed),
+			Font:       assets.FontTiny,
+			AlignRight: true,
+		}))
+		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
+			Text:      "CON",
+			AlignLeft: true,
+			Font:      assets.FontTiny,
+		}))
+		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
+			Text:       strconv.Itoa(hovered.data.Stats.Life),
+			Font:       assets.FontTiny,
+			AlignRight: true,
+		}))
+
+		c.unitInfoRows.AddChild(pairs)
+	}
+
+	{
+		var traitStrings []string
+		for _, t := range hovered.data.Stats.Traits {
+			switch t {
+			case dat.TraitUnbreakable:
+				traitStrings = append(traitStrings, "Inf. Morale")
+			case dat.TraitCauseFear:
+				traitStrings = append(traitStrings, "Causes Fear")
+			case dat.TraitArrowResist:
+				traitStrings = append(traitStrings, "Arrow Resist")
+			case dat.TraitMobile:
+				traitStrings = append(traitStrings, "Diag. Moves")
+			}
+		}
+		if len(traitStrings) > 0 {
+			c.unitInfoRows.AddChild(game.G.UI.NewText(eui.TextConfig{
+				Text: "---",
+				Font: assets.FontTiny,
+			}))
+			traitRows := eui.NewPanelRows()
+			for _, s := range traitStrings {
+				traitRows.AddChild(game.G.UI.NewText(eui.TextConfig{
+					Text:      s,
+					Font:      assets.FontTiny,
+					AlignLeft: true,
+				}))
+			}
+			c.unitInfoRows.AddChild(traitRows)
+		}
+	}
 }
 
 func (c *Controller) nextTurn() {

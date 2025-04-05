@@ -2,24 +2,34 @@ package dat
 
 import "github.com/quasilyte/ld57-game/assets"
 
-var MercenarySwords = &UnitStats{
-	// Banner: assets.ImageSkeletalWarriorsBanner,
+var AllUnits = []*UnitStats{
+	// MercenarySwords,
 
-	Class: ClassInfantry,
-	Cost:  10,
-
-	MeleeAccuracy: 0.6,
-	Attack:        4,
-	Defense:       4,
-	MaxCount:      15,
-	Life:          2,
-	Morale:        7,
-	Speed:         2,
-
-	Traits: []Trait{},
+	SkeletalWarriors,
+	SkeletalArchers,
+	UnholyKnights,
+	Zombies,
 }
 
+// var MercenarySwords = &UnitStats{
+// 	// Banner: assets.ImageSkeletalWarriorsBanner,
+
+// 	Class: ClassInfantry,
+// 	Cost:  10,
+
+// 	MeleeAccuracy: 0.6,
+// 	Attack:        4,
+// 	Defense:       4,
+// 	MaxCount:      15,
+// 	Life:          2,
+// 	Morale:        7,
+// 	Speed:         2,
+
+// 	Traits: []Trait{},
+// }
+
 var SkeletalWarriors = &UnitStats{
+	Name:   "Skel. Warriors",
 	Banner: assets.ImageSkeletalWarriorsBanner,
 
 	Class: ClassInfantry,
@@ -40,7 +50,30 @@ var SkeletalWarriors = &UnitStats{
 	},
 }
 
+var SkeletalArchers = &UnitStats{
+	Name:   "Skel. Archers",
+	Banner: assets.ImageSkeletalArchersBanner,
+
+	Class: ClassArcher,
+	Cost:  12,
+
+	RangedAccuracy: 0.4,
+	MeleeAccuracy:  0.3,
+	Attack:         2,
+	Defense:        2,
+	MaxCount:       15,
+	Life:           1,
+	Morale:         0,
+	Speed:          2,
+
+	Traits: []Trait{
+		TraitUnbreakable,
+		TraitArrowResist,
+	},
+}
+
 var UnholyKnights = &UnitStats{
+	Name:   "Shadow Knights",
 	Banner: assets.ImageUnholyKnights,
 
 	Class: ClassCavalry,
@@ -55,7 +88,6 @@ var UnholyKnights = &UnitStats{
 	Speed:         3,
 
 	Traits: []Trait{
-		TraitUnbreakable,
 		TraitCauseFear,
 		TraitMobile,
 	},
