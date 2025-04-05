@@ -178,7 +178,7 @@ func (p *humanPlayer) Update(delta float64) {
 	case actionGuard:
 		p.actionTooltipText.Label = "LMB: Guard"
 		if clicked {
-			p.unit.movesLeft = 0
+			p.unit.Guard()
 			p.finishTurn()
 		}
 	case actionAttack:

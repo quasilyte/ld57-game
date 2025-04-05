@@ -27,6 +27,8 @@ type unitNode struct {
 	movesLeft       int
 	facing          int
 	morale          float64
+
+	favTarget *unitNode
 }
 
 type unitNodeConfig struct {
@@ -103,6 +105,10 @@ func (u *unitNode) lookTowards(pos dat.CellPos) {
 		u.facing = 3
 	}
 	u.updateFacingIndicator()
+}
+
+func (u *unitNode) Guard() {
+	u.movesLeft = 0
 }
 
 func (u *unitNode) MoveTo(pos dat.CellPos) {

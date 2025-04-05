@@ -77,27 +77,7 @@ func (r *runner) NextUnit() *unitNode {
 func (r *runner) runMeleeRound(attacker, defender *unitNode) {
 	// every good attack deals 1 damage
 
-	abs := func(x int) int {
-		if x < 0 {
-			return -x
-		}
-		return x
-	}
-
-	facing := meleeAttackFront
-	isDiagonal := abs(attacker.pos.X-defender.pos.X) == 1 && abs(attacker.pos.Y-defender.pos.Y) == 1
-	if isDiagonal {
-		switch abs(attacker.facing - defender.facing) {
-		case 1, 3:
-			facing = meleeAttackFlank
-		case 0:
-			facing = meleeAttackBack
-		case 2:
-			// Already set to front.
-		}
-	} else {
-		facing = meleeAttackFlank
-	}
+	facing := attackFacing(attacker, defender)
 
 	totalAttackerDmg := 0
 	totalDefenderDmg := 0

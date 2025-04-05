@@ -79,6 +79,22 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 								Stats: dat.SkeletalWarriors,
 							},
 						},
+						{
+							Pos:  dat.CellPos{X: 5, Y: 5},
+							Team: 1,
+							Unit: &dat.Unit{
+								Count: 15,
+								Stats: dat.SkeletalWarriors,
+							},
+						},
+						{
+							Pos:  dat.CellPos{X: 4, Y: 4},
+							Team: 1,
+							Unit: &dat.Unit{
+								Count: 15,
+								Stats: dat.SkeletalWarriors,
+							},
+						},
 					},
 				},
 			}))
