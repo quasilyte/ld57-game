@@ -3,6 +3,7 @@ package eui
 import (
 	"image/color"
 	"strings"
+	"time"
 
 	"github.com/ebitenui/ebitenui"
 	"github.com/ebitenui/ebitenui/image"
@@ -19,7 +20,9 @@ import (
 type Widget = widget.PreferredSizeLocateableWidget
 
 type Builder struct {
-	button *buttonDefaults
+	button  *buttonDefaults
+	panel   *panelDefaults
+	tooltip *panelDefaults
 
 	currentObject *SceneObject
 
@@ -81,6 +84,86 @@ func (b *Builder) Init() {
 			},
 		}
 	}
+
+	{
+		normal := loadNineSliced(l, assets.ImageUIPanel, 14, 14)
+		b.panel = &panelDefaults{
+			image: normal,
+			padding: widget.Insets{
+				Left:   12,
+				Right:  12,
+				Top:    12,
+				Bottom: 12,
+			},
+		}
+	}
+
+	{
+		normal := loadNineSliced(l, assets.ImageUITooltip, 4, 4)
+		b.tooltip = &panelDefaults{
+			image: normal,
+			padding: widget.Insets{
+				Left:   5,
+				Right:  5,
+				Top:    5,
+				Bottom: 5,
+			},
+		}
+	}
+}
+
+func (b *Builder) NewTooltip(label *widget.Text) *widget.Container {
+	tt := widget.NewContainer(
+		widget.ContainerOpts.BackgroundImage(b.tooltip.image),
+		widget.ContainerOpts.Layout(widget.NewRowLayout(
+			widget.RowLayoutOpts.Direction(widget.DirectionVertical),
+			widget.RowLayoutOpts.Padding(b.tooltip.padding),
+			widget.RowLayoutOpts.Spacing(2),
+		)))
+	label.MaxWidth = 800
+	tt.AddChild(label)
+	return tt
+}
+
+type PanelConfig struct {
+	MinWidth   int
+	MinHeight  int
+	Padding    *widget.Insets
+	LayoutData any
+}
+
+func (b *Builder) NewPanel(config PanelConfig) *widget.Container {
+	defaults := b.panel
+
+	padding := defaults.padding
+	if config.Padding != nil {
+		padding = *config.Padding
+	}
+
+	var ld any
+	if config.LayoutData != nil {
+		ld = config.LayoutData
+	} else {
+		ld = widget.AnchorLayoutData{
+			HorizontalPosition: widget.AnchorLayoutPositionCenter,
+			VerticalPosition:   widget.AnchorLayoutPositionCenter,
+		}
+	}
+
+	opts := []widget.ContainerOpt{
+		widget.ContainerOpts.BackgroundImage(defaults.image),
+		widget.ContainerOpts.Layout(widget.NewAnchorLayout(
+			widget.AnchorLayoutOpts.Padding(padding),
+		)),
+		widget.ContainerOpts.WidgetOpts(
+			widget.WidgetOpts.LayoutData(ld),
+			widget.WidgetOpts.MinSize(config.MinWidth, config.MinHeight),
+		),
+	}
+
+	panel := widget.NewContainer(opts...)
+
+	return panel
 }
 
 type ButtonConfig struct {
@@ -92,7 +175,7 @@ type ButtonConfig struct {
 	MinHeight    int
 	Font         font.Face
 	LayoutData   any
-	Tooltip      *widget.Text
+	Tooltip      string
 }
 
 func (b *Builder) NewButton(config ButtonConfig) *widget.Button {
@@ -125,13 +208,17 @@ func (b *Builder) NewButton(config ButtonConfig) *widget.Button {
 	if config.MinWidth != 0 || config.MinHeight != 0 {
 		options = append(options, widget.ButtonOpts.WidgetOpts(widget.WidgetOpts.MinSize(config.MinWidth, config.MinHeight)))
 	}
-	// if config.Tooltip != nil {
-	// 	tt := widget.NewToolTip(
-	// 		widget.ToolTipOpts.Content(b.NewTooltip(config.Tooltip)),
-	// 		widget.ToolTipOpts.Delay(time.Second/3),
-	// 	)
-	// 	options = append(options, widget.ButtonOpts.WidgetOpts(widget.WidgetOpts.ToolTip(tt)))
-	// }
+	if config.Tooltip != "" {
+		txt := widget.NewText(
+			widget.TextOpts.Text(config.Tooltip, assets.FontTiny, styles.NormalTextColor.Color()),
+			widget.TextOpts.ProcessBBCode(true),
+		)
+		tt := widget.NewToolTip(
+			widget.ToolTipOpts.Content(b.NewTooltip(txt)),
+			widget.ToolTipOpts.Delay(time.Second/3),
+		)
+		options = append(options, widget.ButtonOpts.WidgetOpts(widget.WidgetOpts.ToolTip(tt)))
+	}
 
 	buttonWidget := widget.NewButton(options...)
 	return buttonWidget

@@ -20,15 +20,22 @@ func NewMainMenuController() *mainMenuController {
 }
 
 func (c *mainMenuController) Init(ctx gscene.InitContext) {
+	topRows := eui.NewTopLevelRows()
+
+	// root := topRows
 	root := eui.NewTopLevelRows()
 
 	ctx.Scene.AddGraphics(sceneutil.NewBackgroundImage(), 0)
 
-	root.AddChild(game.G.UI.NewText(eui.TextConfig{
+	topRows.AddChild(game.G.UI.NewText(eui.TextConfig{
 		Text:  "Super Game",
 		Color: styles.ColorOrange.Color(),
 		Font:  assets.Font2,
 	}))
+
+	p := game.G.UI.NewPanel(eui.PanelConfig{})
+	p.AddChild(root)
+	topRows.AddChild(p)
 
 	root.AddChild(game.G.UI.NewText(eui.TextConfig{Text: ""}))
 
@@ -71,18 +78,18 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 
 	root.AddChild(game.G.UI.NewText(eui.TextConfig{Text: ""}))
 
-	root.AddChild(game.G.UI.NewText(eui.TextConfig{
+	topRows.AddChild(game.G.UI.NewText(eui.TextConfig{
 		Text:  "Ludum Dare 57 compo build 1",
 		Font:  assets.FontTiny,
 		Color: styles.ColorOrange.Color(),
 	}))
-	root.AddChild(game.G.UI.NewText(eui.TextConfig{
+	topRows.AddChild(game.G.UI.NewText(eui.TextConfig{
 		Text:  "Made with Ebitengine",
 		Font:  assets.FontTiny,
 		Color: styles.ColorOrange.Color(),
 	}))
 
-	game.G.UI.Build(ctx.Scene, root)
+	game.G.UI.Build(ctx.Scene, topRows)
 }
 
 func (c *mainMenuController) Update(delta float64) {}

@@ -11,6 +11,8 @@ func registerImageResources(loader *resource.Loader) {
 		ImageUIButtonIdle:    {Path: "image/ui/button_idle.png"},
 		ImageUIButtonHover:   {Path: "image/ui/button_hover.png"},
 		ImageUIButtonPressed: {Path: "image/ui/button_pressed.png"},
+		ImageUIPanel:         {Path: "image/ui/panel.png"},
+		ImageUITooltip:       {Path: "image/ui/tooltip.png"},
 
 		ImageSkeletalWarriorsBanner: {Path: "image/banner/undead_skeletal_warriors.png"},
 	}
@@ -27,6 +29,9 @@ const (
 	ImageUIButtonIdle
 	ImageUIButtonHover
 	ImageUIButtonPressed
+
+	ImageUIPanel
+	ImageUITooltip
 
 	ImageSkeletalWarriorsBanner
 )

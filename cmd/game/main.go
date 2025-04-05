@@ -20,8 +20,8 @@ func main() {
 	}
 	game.G.SceneManager = gscene.NewManager()
 	game.G.WindowSize = gmath.Vec{
-		X: 1920 / 2,
-		Y: 1080 / 2,
+		X: 1920 / 4,
+		Y: 1080 / 4,
 	}
 	sampleRate := 44100
 	audioContext := audio.NewContext(sampleRate)
