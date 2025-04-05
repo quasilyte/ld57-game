@@ -57,10 +57,26 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 					Units: []dat.DeployedUnit{
 						{
 							Pos:  dat.CellPos{X: 0, Y: 0},
-							Team: 1,
+							Team: 0,
 							Unit: &dat.Unit{
 								Count: 10,
 								Stats: dat.MercenaryArchers,
+							},
+						},
+						{
+							Pos:  dat.CellPos{X: 1, Y: 0},
+							Team: 0,
+							Unit: &dat.Unit{
+								Count: 15,
+								Stats: dat.MercenarySwords,
+							},
+						},
+						{
+							Pos:  dat.CellPos{X: 2, Y: 0},
+							Team: 0,
+							Unit: &dat.Unit{
+								Count: 15,
+								Stats: dat.MercenarySwords,
 							},
 						},
 						// {
@@ -82,15 +98,15 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 
 						{
 							Pos:  dat.CellPos{X: 4, Y: 5},
-							Team: 0,
+							Team: 1,
 							Unit: &dat.Unit{
-								Count: 10,
+								Count: 15,
 								Stats: dat.SkeletalArchers,
 							},
 						},
 						{
 							Pos:  dat.CellPos{X: 4, Y: 6},
-							Team: 0,
+							Team: 1,
 							Unit: &dat.Unit{
 								Count: 10,
 								Stats: dat.UnholyKnights,
@@ -98,17 +114,17 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 						},
 						{
 							Pos:  dat.CellPos{X: 4, Y: 4},
-							Team: 0,
+							Team: 1,
 							Unit: &dat.Unit{
-								Count: 15,
+								Count: 20,
 								Stats: dat.SkeletalWarriors,
 							},
 						},
 						{
 							Pos:  dat.CellPos{X: 3, Y: 5},
-							Team: 0,
+							Team: 1,
 							Unit: &dat.Unit{
-								Count: 15,
+								Count: 10,
 								Stats: dat.Zombies,
 							},
 						},

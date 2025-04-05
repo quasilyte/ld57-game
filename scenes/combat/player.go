@@ -34,8 +34,8 @@ func reachableRangedTargets(s *sceneState, u *unitNode, f func(target *unitNode)
 	rowFrom := gmath.ClampMin(u.pos.Y-u.data.Stats.MaxRange, 0)
 	colTo := gmath.ClampMax(u.pos.X+u.data.Stats.MaxRange, s.m.Width-1)
 	rowTo := gmath.ClampMax(u.pos.Y+u.data.Stats.MaxRange, s.m.Height-1)
-	for row := rowFrom; row < rowTo; row++ {
-		for col := colFrom; col < colTo; col++ {
+	for row := rowFrom; row <= rowTo; row++ {
+		for col := colFrom; col <= colTo; col++ {
 			cell := dat.CellPos{X: col, Y: row}
 			u2 := s.unitByCell[cell]
 			if u2 == nil {

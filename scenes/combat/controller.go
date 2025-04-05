@@ -299,6 +299,10 @@ func (c *Controller) handleInput(delta float64) {
 			),
 		)
 
+		// ATK DEF
+		// ACC CON
+		// SPD DIS
+
 		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
 			Text:      "ATK",
 			AlignLeft: true,
@@ -313,6 +317,7 @@ func (c *Controller) handleInput(delta float64) {
 			Font:       assets.FontTiny,
 			AlignRight: true,
 		}))
+
 		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
 			Text:      "DEF",
 			AlignLeft: true,
@@ -323,16 +328,22 @@ func (c *Controller) handleInput(delta float64) {
 			Font:       assets.FontTiny,
 			AlignRight: true,
 		}))
+
+		accString := strconv.Itoa(gmath.Iround(10 * hovered.data.Stats.MeleeAccuracy))
+		if hovered.data.Stats.RangedAccuracy > 0 {
+			accString += " [color=ffffee]" + strconv.Itoa(gmath.Iround(10*hovered.data.Stats.RangedAccuracy)) + "[/color]"
+		}
 		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
-			Text:      "SPD",
+			Text:      "ACC",
 			AlignLeft: true,
 			Font:      assets.FontTiny,
 		}))
 		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
-			Text:       strconv.Itoa(hovered.data.Stats.Speed),
+			Text:       accString,
 			Font:       assets.FontTiny,
 			AlignRight: true,
 		}))
+
 		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
 			Text:      "CON",
 			AlignLeft: true,
@@ -343,6 +354,18 @@ func (c *Controller) handleInput(delta float64) {
 			Font:       assets.FontTiny,
 			AlignRight: true,
 		}))
+
+		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
+			Text:      "SPD",
+			AlignLeft: true,
+			Font:      assets.FontTiny,
+		}))
+		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
+			Text:       strconv.Itoa(hovered.data.Stats.Speed),
+			Font:       assets.FontTiny,
+			AlignRight: true,
+		}))
+
 		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
 			Text:      "DIS",
 			AlignLeft: true,

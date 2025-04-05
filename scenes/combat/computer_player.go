@@ -31,6 +31,9 @@ func (p *computerPlayer) act() {
 	switch p.unit.data.Stats.Class {
 	case dat.ClassInfantry:
 		p.actInfantry()
+	case dat.ClassCavalry:
+		// TODO
+		p.actInfantry()
 	case dat.ClassArcher:
 		p.actArcher()
 	}
