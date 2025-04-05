@@ -45,10 +45,41 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 		Text:     "PLAY",
 		MinWidth: 200,
 		OnClick: func() {
+			testMap := make([][]dat.Tile, 20)
+			for i := range testMap {
+				testMap[i] = make([]dat.Tile, 20)
+			}
 			game.G.SceneManager.ChangeScene(combat.NewController(combat.Config{
 				Map: &dat.Map{
 					Width:  20,
 					Height: 20,
+					Tiles:  testMap,
+					Units: []dat.DeployedUnit{
+						{
+							Pos:  dat.CellPos{X: 1, Y: 1},
+							Team: 0,
+							Unit: &dat.Unit{
+								Count: 10,
+								Stats: dat.SkeletalWarriors,
+							},
+						},
+						{
+							Pos:  dat.CellPos{X: 3, Y: 3},
+							Team: 0,
+							Unit: &dat.Unit{
+								Count: 10,
+								Stats: dat.UnholyKnights,
+							},
+						},
+						{
+							Pos:  dat.CellPos{X: 2, Y: 2},
+							Team: 1,
+							Unit: &dat.Unit{
+								Count: 15,
+								Stats: dat.SkeletalWarriors,
+							},
+						},
+					},
 				},
 			}))
 			// game.G.SceneManager.ChangeScene(NewNewGameController())

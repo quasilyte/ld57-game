@@ -1,13 +1,29 @@
 package dat
 
-import resource "github.com/quasilyte/ebitengine-resource"
+import (
+	resource "github.com/quasilyte/ebitengine-resource"
+	"github.com/quasilyte/gslices"
+)
 
 type Unit struct {
+	Count int
+
 	Stats *UnitStats
 }
 
+type UnitClass int
+
+const (
+	ClassInfantry UnitClass = iota
+	ClassCavalry
+	ClassArcher
+	ClassCaster
+)
+
 type UnitStats struct {
 	Banner resource.ImageID
+
+	Class UnitClass
 
 	Cost int
 
@@ -20,4 +36,8 @@ type UnitStats struct {
 	Speed         int
 
 	Traits []Trait
+}
+
+func (stats *UnitStats) HasTrait(t Trait) bool {
+	return gslices.Contains(stats.Traits, t)
 }

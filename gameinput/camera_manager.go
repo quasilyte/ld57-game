@@ -29,7 +29,7 @@ func NewCameraManager(config CameraManagerConfig) *CameraManager {
 
 func (m *CameraManager) HandleInput(delta float64) {
 	h := m.input
-	cameraPanSpeed := 512.0 * delta
+	cameraPanSpeed := (512.0 * delta) / 2
 	cameraPanBoundary := 2.0
 	cam := m.camera
 

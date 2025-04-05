@@ -20,3 +20,19 @@ func NewTopLevelRows() *widget.Container {
 		),
 	)
 }
+
+func NewPanelRows() *widget.Container {
+	return widget.NewContainer(
+		widget.ContainerOpts.Layout(
+			widget.NewGridLayout(
+				widget.GridLayoutOpts.Columns(1),
+				widget.GridLayoutOpts.Spacing(4, 4),
+			),
+		),
+		widget.ContainerOpts.WidgetOpts(
+			widget.WidgetOpts.LayoutData(widget.AnchorLayoutData{
+				HorizontalPosition: widget.AnchorLayoutPositionCenter,
+			}),
+		),
+	)
+}

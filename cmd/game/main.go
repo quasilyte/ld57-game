@@ -5,6 +5,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/audio"
+	graphics "github.com/quasilyte/ebitengine-graphics"
 	input "github.com/quasilyte/ebitengine-input"
 	resource "github.com/quasilyte/ebitengine-resource"
 	"github.com/quasilyte/gmath"
@@ -43,6 +44,8 @@ func main() {
 		Loader: game.G.Loader,
 		Audio:  &game.G.Audio,
 	})
+
+	graphics.CompileShaders()
 
 	assets.RegisterResources(game.G.Loader)
 	game.G.UI.Init()
