@@ -18,7 +18,7 @@ func dist(c, other dat.CellPos) int {
 func attackFacing(attacker, defender *unitNode) meleeAttackFacing {
 	facing := meleeAttackFront
 	isDiagonal := abs(attacker.pos.X-defender.pos.X) == 1 && abs(attacker.pos.Y-defender.pos.Y) == 1
-	if isDiagonal {
+	if isDiagonal && attacker.data.Stats.Class == dat.ClassCavalry {
 		facing = meleeAttackFlank
 	} else {
 		switch abs(attacker.facing - defender.facing) {

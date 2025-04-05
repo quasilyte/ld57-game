@@ -14,6 +14,7 @@ var AllUnits = []*UnitStats{
 	SkeletalArchers,
 	UnholyKnights,
 	Zombies,
+	Mummies,
 }
 
 var MercenaryHalberds = &UnitStats{
@@ -208,5 +209,27 @@ var Zombies = &UnitStats{
 		TraitCauseFear,
 		TraitStun,
 		TraitArrowVulnerability,
+	},
+}
+
+var Mummies = &UnitStats{
+	Name:   "Mummies",
+	Banner: assets.ImageHumanMummiesBanner,
+
+	Class: ClassInfantry,
+	Cost:  28,
+
+	MeleeAccuracy: 0.85,
+	Attack:        4,
+	Defense:       9,
+	MaxCount:      5,
+	Life:          5,
+	Morale:        0,
+	Speed:         1,
+
+	Traits: []Trait{
+		TraitMobile,
+		TraitUnbreakable,
+		TraitCauseFear,
 	},
 }
