@@ -24,6 +24,7 @@ require (
 	github.com/jezek/xgb v1.1.1 // indirect
 	github.com/jfreymuth/oggvorbis v1.0.5 // indirect
 	github.com/jfreymuth/vorbis v1.0.2 // indirect
+	github.com/quasilyte/ebitengine-input v0.9.1 // indirect
 	github.com/quasilyte/ebitengine-sound v0.0.0-20240710170318-c51faafaa539 // indirect
 	github.com/quasilyte/gsignal v0.0.0-20240802120557-5896b3add8c1 // indirect
 	github.com/quasilyte/gslices v0.0.0-20240821003832-acb7f7276b03 // indirect

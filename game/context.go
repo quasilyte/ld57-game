@@ -2,12 +2,14 @@ package game
 
 import (
 	graphics "github.com/quasilyte/ebitengine-graphics"
+	input "github.com/quasilyte/ebitengine-input"
 	resource "github.com/quasilyte/ebitengine-resource"
 	sound "github.com/quasilyte/ebitengine-sound"
 	"github.com/quasilyte/gmath"
 	"github.com/quasilyte/gscene"
 	"github.com/quasilyte/ld57-game/assets"
 	"github.com/quasilyte/ld57-game/eui"
+	"github.com/quasilyte/ld57-game/viewport"
 )
 
 var G *GlobalContext
@@ -19,6 +21,10 @@ type GlobalContext struct {
 
 	WindowSize gmath.Vec
 
+	Input *input.Handler
+
+	Camera *viewport.Camera
+
 	Loader *resource.Loader
 
 	Rand gmath.Rand
@@ -26,6 +32,12 @@ type GlobalContext struct {
 	UI *eui.Builder
 
 	SoundVolume int
+}
+
+func ChangeScene(c gscene.Controller) {
+	G.Camera = nil
+
+	G.SceneManager.ChangeScene(c)
 }
 
 func (ctx *GlobalContext) NewSprite(id resource.ImageID) *graphics.Sprite {

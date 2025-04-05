@@ -14,6 +14,8 @@ func registerImageResources(loader *resource.Loader) {
 		ImageUIPanel:         {Path: "image/ui/panel.png"},
 		ImageUITooltip:       {Path: "image/ui/tooltip.png"},
 
+		ImageTileGrass: {Path: "image/tiles/grass.png"},
+
 		ImageSkeletalWarriorsBanner: {Path: "image/banner/undead_skeletal_warriors.png"},
 	}
 
@@ -32,6 +34,8 @@ const (
 
 	ImageUIPanel
 	ImageUITooltip
+
+	ImageTileGrass
 
 	ImageSkeletalWarriorsBanner
 )

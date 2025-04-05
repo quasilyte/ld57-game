@@ -280,17 +280,21 @@ func (b *Builder) NewText(config TextConfig) *widget.Text {
 	return widget.NewText(opts...)
 }
 
-func (b *Builder) Build(scene *gscene.Scene, root *widget.Container) *ebitenui.UI {
+func (b *Builder) BuildAt(scene *gscene.Scene, root *widget.Container, layer int) *ebitenui.UI {
 	anchor := widget.NewContainer(
 		widget.ContainerOpts.Layout(widget.NewAnchorLayout()),
 	)
 	anchor.AddChild(root)
 
 	uiObject := b.newSceneObject(anchor)
-	scene.AddGraphics(uiObject, 0)
+	scene.AddGraphics(uiObject, layer)
 	scene.AddObject(uiObject)
 
 	return uiObject.ui
+}
+
+func (b *Builder) Build(scene *gscene.Scene, root *widget.Container) *ebitenui.UI {
+	return b.BuildAt(scene, root, 0)
 }
 
 func loadNineSliced(l *resource.Loader, id resource.ImageID, offsetX, offsetY int) *image.NineSlice {

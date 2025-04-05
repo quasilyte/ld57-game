@@ -6,8 +6,10 @@ import (
 
 	"github.com/quasilyte/gscene"
 	"github.com/quasilyte/ld57-game/assets"
+	"github.com/quasilyte/ld57-game/dat"
 	"github.com/quasilyte/ld57-game/eui"
 	"github.com/quasilyte/ld57-game/game"
+	"github.com/quasilyte/ld57-game/scenes/combat"
 	"github.com/quasilyte/ld57-game/scenes/sceneutil"
 	"github.com/quasilyte/ld57-game/styles"
 )
@@ -43,7 +45,13 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 		Text:     "PLAY",
 		MinWidth: 200,
 		OnClick: func() {
-			game.G.SceneManager.ChangeScene(NewNewGameController())
+			game.G.SceneManager.ChangeScene(combat.NewController(combat.Config{
+				Map: &dat.Map{
+					Width:  20,
+					Height: 20,
+				},
+			}))
+			// game.G.SceneManager.ChangeScene(NewNewGameController())
 		},
 	}))
 

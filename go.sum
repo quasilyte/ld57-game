@@ -36,6 +36,8 @@ github.com/quasilyte/bitsweetfont v0.0.0-20240801221705-5e1264e4303a h1:IR0X4S1d
 github.com/quasilyte/bitsweetfont v0.0.0-20240801221705-5e1264e4303a/go.mod h1:aWEGW3eW79W/s4F8bxiMtLT9fVkUH3K0wOxBbZJkC5w=
 github.com/quasilyte/ebitengine-graphics v0.0.0-20240929192656-1fe6bf0c3cb6 h1:HrN44zIC6xxwwXWXY9SeApD74XCunkTftZ5C+iy2s0c=
 github.com/quasilyte/ebitengine-graphics v0.0.0-20240929192656-1fe6bf0c3cb6/go.mod h1:9BFF2wqVjM0tnopbkdKwJ0iglU+P+r4+7dB1WjX8ang=
+github.com/quasilyte/ebitengine-input v0.9.1 h1:sN7jNDLfGn9ZY1lurD4d3oXIOmQbZwYPVpuo4DlsiG0=
+github.com/quasilyte/ebitengine-input v0.9.1/go.mod h1:xYkU+JqzWzjnVMolCIar0VFRly1TtjmEHfQWAoIan+o=
 github.com/quasilyte/ebitengine-resource v0.5.0 h1:sPncYunmgdBZVMRCZn2x2HUH3znL7m6IEczEjseTGbE=
 github.com/quasilyte/ebitengine-resource v0.5.0/go.mod h1:PEj32KsbbcgeSzAYQY5KspbImb/ucvJXoBgRMUrtBAQ=
 github.com/quasilyte/ebitengine-sound v0.0.0-20240710170318-c51faafaa539 h1:jno4V/d1Cd0ZYD5xkRT1eTRr9fRvFf/Z3+vzkhdw4ew=
