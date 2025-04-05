@@ -265,7 +265,7 @@ func (c *Controller) handleInput(delta float64) {
 			AlignLeft: true,
 		}))
 		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
-			Text:       fmt.Sprintf("%d/%d", hovered.data.Count, hovered.data.Stats.MaxCount),
+			Text:       fmt.Sprintf("%d/%d", hovered.data.Count, hovered.data.InitialCount),
 			Font:       assets.FontTiny,
 			AlignRight: true,
 		}))

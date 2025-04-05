@@ -175,7 +175,12 @@ func Generate(config Config) *dat.Map {
 				continue
 			}
 			budget -= price
-			enemyUnits = append(enemyUnits, candidate.CreateUnit())
+			u := candidate.CreateUnit()
+			if game.G.Rand.Chance(0.6) {
+				u.InitialCount = gmath.Scale(u.InitialCount, game.G.Rand.FloatRange(0.8, 1.2))
+			}
+			u.Count = u.InitialCount
+			enemyUnits = append(enemyUnits, u)
 			ok = true
 			break
 		}

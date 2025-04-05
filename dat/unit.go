@@ -9,6 +9,8 @@ import (
 type Unit struct {
 	Count int
 
+	InitialCount int
+
 	Level int
 
 	Stats *UnitStats
@@ -52,9 +54,10 @@ func (stats *UnitStats) SquadPrice() int {
 
 func (stats *UnitStats) CreateUnit() *Unit {
 	return &Unit{
-		Count: stats.MaxCount,
-		Level: 1,
-		Stats: stats,
+		Count:        stats.MaxCount,
+		InitialCount: stats.MaxCount,
+		Level:        1,
+		Stats:        stats,
 	}
 }
 
