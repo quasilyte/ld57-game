@@ -3,6 +3,7 @@ package dat
 import "github.com/quasilyte/ld57-game/assets"
 
 var AllUnits = []*UnitStats{
+	MercenaryHalberds,
 	MercenarySwords,
 	MercenaryArchers,
 	MercenaryCavalry,
@@ -11,6 +12,27 @@ var AllUnits = []*UnitStats{
 	SkeletalArchers,
 	UnholyKnights,
 	Zombies,
+}
+
+var MercenaryHalberds = &UnitStats{
+	Name:   "Merc. Halberds",
+	Banner: assets.ImageHumanHalberdsBanner,
+
+	Class: ClassInfantry,
+	Cost:  12,
+
+	MeleeAccuracy: 0.4,
+	Attack:        5,
+	Defense:       5,
+	MaxCount:      12,
+	Life:          2,
+	Morale:        6,
+	Speed:         2,
+
+	Traits: []Trait{
+		TraitChargeResist,
+		TraitAntiCavalry,
+	},
 }
 
 var MercenarySwords = &UnitStats{

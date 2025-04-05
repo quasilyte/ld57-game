@@ -59,26 +59,26 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 							Pos:  dat.CellPos{X: 0, Y: 0},
 							Team: 0,
 							Unit: &dat.Unit{
-								Count: 10,
-								Stats: dat.MercenaryArchers,
+								Count: 12,
+								Stats: dat.MercenaryHalberds,
 							},
 						},
-						{
-							Pos:  dat.CellPos{X: 1, Y: 0},
-							Team: 0,
-							Unit: &dat.Unit{
-								Count: 10,
-								Stats: dat.MercenaryCavalry,
-							},
-						},
-						{
-							Pos:  dat.CellPos{X: 2, Y: 0},
-							Team: 0,
-							Unit: &dat.Unit{
-								Count: 15,
-								Stats: dat.MercenarySwords,
-							},
-						},
+						// {
+						// 	Pos:  dat.CellPos{X: 1, Y: 0},
+						// 	Team: 0,
+						// 	Unit: &dat.Unit{
+						// 		Count: 10,
+						// 		Stats: dat.MercenaryCavalry,
+						// 	},
+						// },
+						// {
+						// 	Pos:  dat.CellPos{X: 2, Y: 0},
+						// 	Team: 0,
+						// 	Unit: &dat.Unit{
+						// 		Count: 15,
+						// 		Stats: dat.MercenarySwords,
+						// 	},
+						// },
 						// {
 						// 	Pos:  dat.CellPos{X: 1, Y: 1},
 						// 	Team: 1,
@@ -96,38 +96,38 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 						// 	},
 						// },
 
-						{
-							Pos:  dat.CellPos{X: 4, Y: 5},
-							Team: 1,
-							Unit: &dat.Unit{
-								Count: 15,
-								Stats: dat.SkeletalArchers,
-							},
-						},
+						// {
+						// 	Pos:  dat.CellPos{X: 4, Y: 5},
+						// 	Team: 1,
+						// 	Unit: &dat.Unit{
+						// 		Count: 15,
+						// 		Stats: dat.SkeletalArchers,
+						// 	},
+						// },
 						{
 							Pos:  dat.CellPos{X: 4, Y: 6},
 							Team: 1,
 							Unit: &dat.Unit{
-								Count: 10,
-								Stats: dat.UnholyKnights,
+								Count: 15,
+								Stats: dat.MercenarySwords,
 							},
 						},
-						{
-							Pos:  dat.CellPos{X: 4, Y: 4},
-							Team: 1,
-							Unit: &dat.Unit{
-								Count: 20,
-								Stats: dat.SkeletalWarriors,
-							},
-						},
-						{
-							Pos:  dat.CellPos{X: 3, Y: 5},
-							Team: 1,
-							Unit: &dat.Unit{
-								Count: 10,
-								Stats: dat.Zombies,
-							},
-						},
+						// {
+						// 	Pos:  dat.CellPos{X: 4, Y: 4},
+						// 	Team: 1,
+						// 	Unit: &dat.Unit{
+						// 		Count: 20,
+						// 		Stats: dat.SkeletalWarriors,
+						// 	},
+						// },
+						// {
+						// 	Pos:  dat.CellPos{X: 3, Y: 5},
+						// 	Team: 1,
+						// 	Unit: &dat.Unit{
+						// 		Count: 10,
+						// 		Stats: dat.Zombies,
+						// 	},
+						// },
 						// {
 						// 	Pos:  dat.CellPos{X: 4, Y: 4},
 						// 	Team: 1,

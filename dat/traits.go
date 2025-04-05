@@ -5,6 +5,8 @@ type Trait int
 const (
 	TraitUnknown Trait = iota
 
+	TraitChargeResist
+	TraitAntiCavalry
 	TraitFlankingImmune
 	TraitUnbreakable
 	TraitCauseFear

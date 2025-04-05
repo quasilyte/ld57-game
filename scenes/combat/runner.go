@@ -246,6 +246,9 @@ func (r *runner) runMeleeAttack(isRetaliation bool, attacker, defender *unitNode
 	if attacker.broken {
 		toHit *= 0.5
 	}
+	if defender.data.Stats.Class == dat.ClassCavalry && attacker.data.Stats.HasTrait(dat.TraitAntiCavalry) {
+		toHit *= 1.1
+	}
 	switch facing {
 	case meleeAttackFlank:
 		toHit *= 1.1
@@ -261,16 +264,24 @@ func (r *runner) runMeleeAttack(isRetaliation bool, attacker, defender *unitNode
 		atk *= 1.2
 	}
 	if !isRetaliation && attacker.steps > 0 && attacker.data.Stats.HasTrait(dat.TraitCharge) {
-		if attacker.steps == 1 {
-			atk *= 1.2
-		} else {
-			atk *= 10
+		if !defender.data.Stats.HasTrait(dat.TraitChargeResist) {
+			if attacker.steps == 1 {
+				atk *= 1.2
+			} else {
+				atk *= 1.5
+			}
 		}
 	}
 	def := 0.08 * (float64(defender.data.Stats.Defense))
+	if attacker.data.Stats.Class == dat.ClassCavalry && defender.data.Stats.HasTrait(dat.TraitAntiCavalry) {
+		def *= 1.5
+	}
 	critChance := atk - def
 	isCrit := critChance > 0 && game.G.Rand.Chance(critChance)
 	dmg := 1
+	if defender.data.Stats.Class == dat.ClassCavalry && attacker.data.Stats.HasTrait(dat.TraitAntiCavalry) {
+		dmg = 2
+	}
 	if isCrit {
 		dmg *= 2
 	}
