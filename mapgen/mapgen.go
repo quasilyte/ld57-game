@@ -42,6 +42,8 @@ type Config struct {
 
 	Mission dat.MissionKind
 
+	Stage int
+
 	Enemy           EnemyKind
 	EnemyBudget     int
 	EnemyPlacement  EnemyPlacementKind
@@ -163,6 +165,30 @@ func Generate(config Config) *dat.Map {
 	switch config.Enemy {
 	case EnemyBrigands:
 		unitKindPicker.AddOption(dat.Brigands, 1)
+
+	case EnemyUndead:
+		unitKindPicker.AddOption(dat.Zombies, game.G.Rand.FloatRange(0.5, 2.5))
+		unitKindPicker.AddOption(dat.SkeletalWarriors, game.G.Rand.FloatRange(0.5, 2.5))
+		if config.Stage >= 2 {
+			unitKindPicker.AddOption(dat.SkeletalArchers, game.G.Rand.FloatRange(0.5, 2.5))
+		}
+		if config.Stage >= 3 {
+			unitKindPicker.AddOption(dat.UnholyKnights, game.G.Rand.FloatRange(0.5, 2.0))
+		}
+		if config.Stage >= 4 {
+			unitKindPicker.AddOption(dat.Mummies, game.G.Rand.FloatRange(0.5, 1.75))
+		}
+
+	case EnemyMercenaries:
+		unitKindPicker.AddOption(dat.MercenarySwords, game.G.Rand.FloatRange(0.5, 2.5))
+		unitKindPicker.AddOption(dat.MercenaryHalberds, game.G.Rand.FloatRange(0.5, 2.0))
+		if config.Stage >= 2 {
+			unitKindPicker.AddOption(dat.MercenaryArchers, game.G.Rand.FloatRange(0.5, 2.0))
+		}
+		if config.Stage >= 3 {
+			unitKindPicker.AddOption(dat.MercenaryCavalry, game.G.Rand.FloatRange(0.75, 1.75))
+		}
+
 	default:
 		panic("TODO")
 	}
