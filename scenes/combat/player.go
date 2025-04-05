@@ -37,6 +37,9 @@ func reachableRangedTargets(s *sceneState, u *unitNode, f func(target *unitNode)
 	for row := rowFrom; row <= rowTo; row++ {
 		for col := colFrom; col <= colTo; col++ {
 			cell := dat.CellPos{X: col, Y: row}
+			if dist(cell, u.pos) < 2 {
+				continue
+			}
 			u2 := s.unitByCell[cell]
 			if u2 == nil {
 				continue

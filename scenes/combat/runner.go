@@ -39,6 +39,7 @@ func (r *runner) NextTurn() {
 	r.sceneState.units = gslices.FilterInplace(r.sceneState.units, func(u *unitNode) bool {
 		if u.data.Count > 0 {
 			u.movesLeft = u.data.Stats.Speed
+			u.steps = 0
 			u.AddMorale(game.G.Rand.FloatRange(0.01, 0.03))
 			// 9 => 0.045 (extra ~5% morale per turn).
 			u.AddMorale(0.005 * float64(u.data.Stats.Morale))
@@ -184,8 +185,8 @@ func (r *runner) runMeleeRound(attacker, defender *unitNode) {
 		totalDefenderDmg := 0
 
 		for i := 0; i < attacker.data.Count; i++ {
-			attackerDmg := r.runMeleeAttack(attacker, defender, facing)
-			defenderDmg := r.runMeleeAttack(defender, attacker, meleeAttackFront)
+			attackerDmg := r.runMeleeAttack(false, attacker, defender, facing)
+			defenderDmg := r.runMeleeAttack(true, defender, attacker, meleeAttackFront)
 
 			totalAttackerDmg += attackerDmg
 			totalDefenderDmg += defenderDmg
@@ -237,7 +238,7 @@ func (r *runner) runRangedAttack(attacker, defender *unitNode) int {
 	return dmg
 }
 
-func (r *runner) runMeleeAttack(attacker, defender *unitNode, facing meleeAttackFacing) int {
+func (r *runner) runMeleeAttack(isRetaliation bool, attacker, defender *unitNode, facing meleeAttackFacing) int {
 	toHit := attacker.data.Stats.MeleeAccuracy
 	if attacker.morale < 0.5 {
 		toHit *= 0.75
@@ -258,6 +259,13 @@ func (r *runner) runMeleeAttack(attacker, defender *unitNode, facing meleeAttack
 	atk := 0.1 * (float64(attacker.data.Stats.Attack) * attacker.morale)
 	if defender.broken {
 		atk *= 1.2
+	}
+	if !isRetaliation && attacker.steps > 0 && attacker.data.Stats.HasTrait(dat.TraitCharge) {
+		if attacker.steps == 1 {
+			atk *= 1.2
+		} else {
+			atk *= 10
+		}
 	}
 	def := 0.08 * (float64(defender.data.Stats.Defense))
 	critChance := atk - def

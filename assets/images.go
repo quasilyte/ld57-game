@@ -28,6 +28,7 @@ func registerImageResources(loader *resource.Loader) {
 
 		ImageHumanWarriorsBanner:    {Path: "image/banner/human_warriors.png"},
 		ImageHumanArchersBanner:     {Path: "image/banner/human_archers.png"},
+		ImageHumanKnights:           {Path: "image/banner/human_knights.png"},
 		ImageZombiesBanner:          {Path: "image/banner/undead_zombies.png"},
 		ImageSkeletalWarriorsBanner: {Path: "image/banner/undead_skeletal_warriors.png"},
 		ImageSkeletalArchersBanner:  {Path: "image/banner/undead_skeletal_archers.png"},
@@ -64,6 +65,7 @@ const (
 
 	ImageHumanWarriorsBanner
 	ImageHumanArchersBanner
+	ImageHumanKnights
 	ImageZombiesBanner
 	ImageSkeletalWarriorsBanner
 	ImageSkeletalArchersBanner

@@ -11,4 +11,5 @@ const (
 	TraitArrowResist
 	TraitArrowVulnerability
 	TraitMobile
+	TraitCharge
 )

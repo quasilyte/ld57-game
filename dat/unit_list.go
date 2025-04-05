@@ -5,6 +5,7 @@ import "github.com/quasilyte/ld57-game/assets"
 var AllUnits = []*UnitStats{
 	MercenarySwords,
 	MercenaryArchers,
+	MercenaryCavalry,
 
 	SkeletalWarriors,
 	SkeletalArchers,
@@ -24,7 +25,7 @@ var MercenarySwords = &UnitStats{
 	Defense:       4,
 	MaxCount:      15,
 	Life:          2,
-	Morale:        7,
+	Morale:        8,
 	Speed:         2,
 
 	Traits: []Trait{
@@ -52,6 +53,27 @@ var MercenaryArchers = &UnitStats{
 	Speed:         2,
 
 	Traits: []Trait{},
+}
+
+var MercenaryCavalry = &UnitStats{
+	Name:   "Merc. Cavalry",
+	Banner: assets.ImageHumanKnights,
+
+	Class: ClassCavalry,
+	Cost:  19,
+
+	MeleeAccuracy: 0.6,
+	Attack:        5,
+	Defense:       6,
+	MaxCount:      10,
+	Life:          3,
+	Morale:        7,
+	Speed:         3,
+
+	Traits: []Trait{
+		TraitCharge,
+		TraitMobile,
+	},
 }
 
 var SkeletalWarriors = &UnitStats{

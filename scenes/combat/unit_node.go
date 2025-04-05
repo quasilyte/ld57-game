@@ -26,6 +26,7 @@ type unitNode struct {
 	leftoverHP      int
 	movesLeft       int
 	facing          int
+	steps           int
 	morale          float64
 	broken          bool
 
@@ -124,6 +125,7 @@ func (u *unitNode) Guard() {
 }
 
 func (u *unitNode) MoveTo(pos dat.CellPos) {
+	u.steps++
 	u.lookTowards(pos)
 	u.movesLeft--
 
