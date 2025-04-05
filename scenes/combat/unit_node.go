@@ -131,10 +131,13 @@ func (u *unitNode) MoveTo(pos dat.CellPos) {
 	u.lookTowards(pos)
 
 	u.movesLeft--
-	if u.data.Stats.Class == dat.ClassCavalry {
-		if u.sceneState.m.Tiles[pos.Y][pos.X] == dat.TileForest {
+	switch u.sceneState.m.Tiles[pos.Y][pos.X] {
+	case dat.TileForest:
+		if u.data.Stats.Class == dat.ClassCavalry {
 			u.movesLeft = gmath.ClampMin(u.movesLeft-1, 0)
 		}
+	case dat.TileSwamp:
+		u.movesLeft = 0
 	}
 
 	delete(u.sceneState.unitByCell, u.pos)

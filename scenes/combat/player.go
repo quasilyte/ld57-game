@@ -75,7 +75,8 @@ func reachableNeighbors(s *sceneState, u *unitNode) []dat.CellPos {
 	candidates = gslices.FilterInplace(candidates, func(offset dat.CellPos) bool {
 		dstPos := u.pos.Add(offset)
 		return dstPos.X >= 0 && dstPos.X < s.m.Width &&
-			dstPos.Y >= 0 && dstPos.Y < s.m.Height
+			dstPos.Y >= 0 && dstPos.Y < s.m.Height &&
+			s.m.Tiles[dstPos.Y][dstPos.X] != dat.TileVoid
 	})
 	return candidates
 }

@@ -14,6 +14,7 @@ import (
 	"github.com/quasilyte/ld57-game/eui"
 	"github.com/quasilyte/ld57-game/game"
 	"github.com/quasilyte/ld57-game/gameinput"
+	"github.com/quasilyte/ld57-game/scenes/sceneutil"
 	"github.com/quasilyte/ld57-game/styles"
 	"github.com/quasilyte/ld57-game/viewport"
 )
@@ -111,6 +112,8 @@ func (c *Controller) Init(ctx gscene.InitContext) {
 	})
 	ctx.SetDrawer(viewport.NewDrawerWithLayers(game.G.Camera, layers))
 
+	ctx.Scene.AddGraphics(sceneutil.NewBackgroundImage(), 0)
+
 	game.G.Camera.AddGraphics(c.state.currentUnitSelector, 2)
 
 	i := 1
@@ -119,9 +122,15 @@ func (c *Controller) Init(ctx gscene.InitContext) {
 			t := c.state.m.Tiles[y][x]
 			img := assets.ImageTileGrass
 			colorM := float32(0.96)
-			if t == dat.TileForest {
+			switch t {
+			case dat.TileForest:
 				colorM = 0.94
 				img = assets.ImageTileForest
+			case dat.TileSwamp:
+				colorM = 0.94
+				img = assets.ImageTileSwamp
+			case dat.TileVoid:
+				img = assets.ImageTileVoid
 			}
 			spr := game.G.NewSprite(img)
 			spr.SetHorizontalFlip(game.G.Rand.Chance(0.4))

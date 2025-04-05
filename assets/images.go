@@ -16,6 +16,8 @@ func registerImageResources(loader *resource.Loader) {
 
 		ImageTileGrass:  {Path: "image/tiles/grass.png"},
 		ImageTileForest: {Path: "image/tiles/forest.png"},
+		ImageTileSwamp:  {Path: "image/tiles/swamp.png"},
+		ImageTileVoid:   {Path: "image/tiles/void.png"},
 
 		ImageActionMove:   {Path: "image/ui/action_move.png"},
 		ImageActionGuard:  {Path: "image/ui/action_guard.png"},
@@ -67,6 +69,8 @@ const (
 
 	ImageTileGrass
 	ImageTileForest
+	ImageTileSwamp
+	ImageTileVoid
 
 	ImageBrigandsBanner
 	ImageHumanHalberdsBanner

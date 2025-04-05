@@ -11,6 +11,8 @@ type CameraManager struct {
 	camera *viewport.Camera
 	input  *input.Handler
 
+	disabled bool
+
 	cameraPanStartPos gmath.Vec
 	cameraPanDragPos  gmath.Vec
 }
@@ -21,10 +23,12 @@ type CameraManagerConfig struct {
 }
 
 func NewCameraManager(config CameraManagerConfig) *CameraManager {
-	return &CameraManager{
+	m := &CameraManager{
 		camera: config.Camera,
 		input:  config.Input,
 	}
+
+	return m
 }
 
 func (m *CameraManager) HandleInput(delta float64) {

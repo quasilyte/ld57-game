@@ -9,6 +9,7 @@ import (
 	"github.com/quasilyte/ld57-game/dat"
 	"github.com/quasilyte/ld57-game/eui"
 	"github.com/quasilyte/ld57-game/game"
+	"github.com/quasilyte/ld57-game/mapgen"
 	"github.com/quasilyte/ld57-game/scenes/combat"
 	"github.com/quasilyte/ld57-game/scenes/sceneutil"
 	"github.com/quasilyte/ld57-game/styles"
@@ -45,106 +46,97 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 		Text:     "PLAY",
 		MinWidth: 200,
 		OnClick: func() {
-			testMap := make([][]dat.Tile, 20)
-			for i := range testMap {
-				testMap[i] = make([]dat.Tile, 20)
-			}
-			testMap[0][0] = dat.TileForest
-			testMap[0][1] = dat.TileForest
-			testMap[0][3] = dat.TileForest
-			testMap[6][2] = dat.TileForest
-			testMap[6][3] = dat.TileForest
-			testMap[6][4] = dat.TileForest
-			testMap[6][5] = dat.TileForest
-			game.G.SceneManager.ChangeScene(combat.NewController(combat.Config{
-				Map: &dat.Map{
-					Width:  20,
-					Height: 20,
-					Tiles:  testMap,
-					Units: []dat.DeployedUnit{
-						{
-							Pos:  dat.CellPos{X: 0, Y: 0},
-							Team: 0,
-							Unit: &dat.Unit{
-								Count: 15,
-								Stats: dat.MercenarySwords,
-							},
-						},
-						// {
-						// 	Pos:  dat.CellPos{X: 1, Y: 0},
-						// 	Team: 0,
-						// 	Unit: &dat.Unit{
-						// 		Count: 10,
-						// 		Stats: dat.MercenaryCavalry,
-						// 	},
-						// },
-						// {
-						// 	Pos:  dat.CellPos{X: 2, Y: 0},
-						// 	Team: 0,
-						// 	Unit: &dat.Unit{
-						// 		Count: 15,
-						// 		Stats: dat.MercenarySwords,
-						// 	},
-						// },
-						// {
-						// 	Pos:  dat.CellPos{X: 1, Y: 1},
-						// 	Team: 1,
-						// 	Unit: &dat.Unit{
-						// 		Count: 15,
-						// 		Stats: dat.MercenarySwords,
-						// 	},
-						// },
-						// {
-						// 	Pos:  dat.CellPos{X: 2, Y: 1},
-						// 	Team: 1,
-						// 	Unit: &dat.Unit{
-						// 		Count: 15,
-						// 		Stats: dat.MercenarySwords,
-						// 	},
-						// },
-
-						// {
-						// 	Pos:  dat.CellPos{X: 4, Y: 5},
-						// 	Team: 1,
-						// 	Unit: &dat.Unit{
-						// 		Count: 15,
-						// 		Stats: dat.SkeletalArchers,
-						// 	},
-						// },
-						{
-							Pos:  dat.CellPos{X: 4, Y: 6},
-							Team: 1,
-							Unit: &dat.Unit{
-								Count: 5,
-								Stats: dat.Mummies,
-							},
-						},
-						// {
-						// 	Pos:  dat.CellPos{X: 4, Y: 4},
-						// 	Team: 1,
-						// 	Unit: &dat.Unit{
-						// 		Count: 20,
-						// 		Stats: dat.SkeletalWarriors,
-						// 	},
-						// },
-						// {
-						// 	Pos:  dat.CellPos{X: 3, Y: 5},
-						// 	Team: 1,
-						// 	Unit: &dat.Unit{
-						// 		Count: 10,
-						// 		Stats: dat.Zombies,
-						// 	},
-						// },
-						// {
-						// 	Pos:  dat.CellPos{X: 4, Y: 4},
-						// 	Team: 1,
-						// 	Unit: &dat.Unit{
-						// 		Count: 15,
-						// 		Stats: dat.SkeletalWarriors,
-						// 	},
-						// },
+			m := mapgen.Generate(mapgen.Config{
+				Width:       8,
+				Height:      8,
+				ForestRatio: 0.2,
+				SwampRatio:  0.4,
+			})
+			m.Units = []dat.DeployedUnit{
+				{
+					Pos:  dat.CellPos{X: 3, Y: 3},
+					Team: 0,
+					Unit: &dat.Unit{
+						Count: 15,
+						Stats: dat.MercenarySwords,
 					},
 				},
+				// {
+				// 	Pos:  dat.CellPos{X: 1, Y: 0},
+				// 	Team: 0,
+				// 	Unit: &dat.Unit{
+				// 		Count: 10,
+				// 		Stats: dat.MercenaryCavalry,
+				// 	},
+				// },
+				// {
+				// 	Pos:  dat.CellPos{X: 2, Y: 0},
+				// 	Team: 0,
+				// 	Unit: &dat.Unit{
+				// 		Count: 15,
+				// 		Stats: dat.MercenarySwords,
+				// 	},
+				// },
+				// {
+				// 	Pos:  dat.CellPos{X: 1, Y: 1},
+				// 	Team: 1,
+				// 	Unit: &dat.Unit{
+				// 		Count: 15,
+				// 		Stats: dat.MercenarySwords,
+				// 	},
+				// },
+				// {
+				// 	Pos:  dat.CellPos{X: 2, Y: 1},
+				// 	Team: 1,
+				// 	Unit: &dat.Unit{
+				// 		Count: 15,
+				// 		Stats: dat.MercenarySwords,
+				// 	},
+				// },
+
+				// {
+				// 	Pos:  dat.CellPos{X: 4, Y: 5},
+				// 	Team: 1,
+				// 	Unit: &dat.Unit{
+				// 		Count: 15,
+				// 		Stats: dat.SkeletalArchers,
+				// 	},
+				// },
+				{
+					Pos:  dat.CellPos{X: 4, Y: 6},
+					Team: 1,
+					Unit: &dat.Unit{
+						Count: 5,
+						Stats: dat.Mummies,
+					},
+				},
+				// {
+				// 	Pos:  dat.CellPos{X: 4, Y: 4},
+				// 	Team: 1,
+				// 	Unit: &dat.Unit{
+				// 		Count: 20,
+				// 		Stats: dat.SkeletalWarriors,
+				// 	},
+				// },
+				// {
+				// 	Pos:  dat.CellPos{X: 3, Y: 5},
+				// 	Team: 1,
+				// 	Unit: &dat.Unit{
+				// 		Count: 10,
+				// 		Stats: dat.Zombies,
+				// 	},
+				// },
+				// {
+				// 	Pos:  dat.CellPos{X: 4, Y: 4},
+				// 	Team: 1,
+				// 	Unit: &dat.Unit{
+				// 		Count: 15,
+				// 		Stats: dat.SkeletalWarriors,
+				// 	},
+				// },
+			}
+			game.G.SceneManager.ChangeScene(combat.NewController(combat.Config{
+				Map: m,
 			}))
 			// game.G.SceneManager.ChangeScene(NewNewGameController())
 		},

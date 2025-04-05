@@ -12,6 +12,8 @@ type Tile int
 const (
 	TileGrass Tile = iota
 	TileForest
+	TileSwamp
+	TileVoid
 )
 
 func (p CellPos) Add(other CellPos) CellPos {
