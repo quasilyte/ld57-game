@@ -10,6 +10,7 @@ const (
 	TraitFlankingImmune
 	TraitUnbreakable
 	TraitCauseFear
+	TraitStun
 	TraitArrowResist
 	TraitArrowVulnerability
 	TraitMobile

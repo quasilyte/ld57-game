@@ -26,6 +26,7 @@ func registerImageResources(loader *resource.Loader) {
 		ImageFacingLeft:  {Path: "image/ui/facing_left.png"},
 		ImageFacingUp:    {Path: "image/ui/facing_up.png"},
 
+		ImageBrigandsBanner:         {Path: "image/banner/brigands.png"},
 		ImageHumanHalberdsBanner:    {Path: "image/banner/human_halberds.png"},
 		ImageHumanWarriorsBanner:    {Path: "image/banner/human_warriors.png"},
 		ImageHumanArchersBanner:     {Path: "image/banner/human_archers.png"},
@@ -64,6 +65,7 @@ const (
 
 	ImageTileGrass
 
+	ImageBrigandsBanner
 	ImageHumanHalberdsBanner
 	ImageHumanWarriorsBanner
 	ImageHumanArchersBanner

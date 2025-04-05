@@ -3,6 +3,8 @@ package dat
 import "github.com/quasilyte/ld57-game/assets"
 
 var AllUnits = []*UnitStats{
+	Brigands,
+
 	MercenaryHalberds,
 	MercenarySwords,
 	MercenaryArchers,
@@ -33,6 +35,24 @@ var MercenaryHalberds = &UnitStats{
 		TraitChargeResist,
 		TraitAntiCavalry,
 	},
+}
+
+var Brigands = &UnitStats{
+	Name:   "Brigands",
+	Banner: assets.ImageBrigandsBanner,
+
+	Class: ClassInfantry,
+	Cost:  5,
+
+	MeleeAccuracy: 0.3,
+	Attack:        3,
+	Defense:       1,
+	MaxCount:      20,
+	Life:          2,
+	Morale:        4,
+	Speed:         2,
+
+	Traits: []Trait{},
 }
 
 var MercenarySwords = &UnitStats{
@@ -171,19 +191,20 @@ var Zombies = &UnitStats{
 	Banner: assets.ImageZombiesBanner,
 
 	Class: ClassInfantry,
-	Cost:  5,
+	Cost:  9,
 
 	MeleeAccuracy: 0.4,
 	Attack:        2,
 	Defense:       2,
 	MaxCount:      10,
-	Life:          2,
+	Life:          3,
 	Morale:        0,
 	Speed:         1,
 
 	Traits: []Trait{
 		TraitUnbreakable,
 		TraitCauseFear,
+		TraitStun,
 		TraitArrowVulnerability,
 	},
 }

@@ -59,8 +59,8 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 							Pos:  dat.CellPos{X: 0, Y: 0},
 							Team: 0,
 							Unit: &dat.Unit{
-								Count: 12,
-								Stats: dat.MercenaryHalberds,
+								Count: 20,
+								Stats: dat.SkeletalWarriors,
 							},
 						},
 						// {
@@ -108,8 +108,8 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 							Pos:  dat.CellPos{X: 4, Y: 6},
 							Team: 1,
 							Unit: &dat.Unit{
-								Count: 15,
-								Stats: dat.MercenarySwords,
+								Count: 20,
+								Stats: dat.Brigands,
 							},
 						},
 						// {

@@ -384,6 +384,12 @@ func (c *Controller) handleInput(delta float64) {
 		var traitStrings []string
 		for _, t := range hovered.data.Stats.Traits {
 			switch t {
+			case dat.TraitStun:
+				traitStrings = append(traitStrings, "Stun Attack")
+			case dat.TraitChargeResist:
+				traitStrings = append(traitStrings, "Charge Resist")
+			case dat.TraitAntiCavalry:
+				traitStrings = append(traitStrings, "Anti Cavalry")
 			case dat.TraitUnbreakable:
 				traitStrings = append(traitStrings, "Inf. Morale")
 			case dat.TraitCauseFear:
@@ -426,7 +432,11 @@ func (c *Controller) nextTurn() {
 
 func (c *Controller) onMeleeAttack(event meleeAttackEvent) {
 	event.Attacker.movesLeft = 0
-	event.Defender.movesLeft = gmath.ClampMin(event.Defender.movesLeft-1, 0)
+	if event.Attacker.data.Stats.HasTrait(dat.TraitStun) {
+		event.Defender.movesLeft = 0
+	} else {
+		event.Defender.movesLeft = gmath.ClampMin(event.Defender.movesLeft-1, 0)
+	}
 	event.Attacker.lookTowards(event.Defender.pos)
 	event.Defender.afterTurn()
 	c.runner.runMeleeRound(event.Attacker, event.Defender)

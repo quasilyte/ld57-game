@@ -4,6 +4,7 @@ import (
 	"strconv"
 
 	graphics "github.com/quasilyte/ebitengine-graphics"
+	"github.com/quasilyte/gmath"
 	"github.com/quasilyte/gslices"
 	"github.com/quasilyte/ld57-game/dat"
 	"github.com/quasilyte/ld57-game/game"
@@ -39,6 +40,9 @@ func (r *runner) NextTurn() {
 	r.sceneState.units = gslices.FilterInplace(r.sceneState.units, func(u *unitNode) bool {
 		if u.data.Count > 0 {
 			u.movesLeft = u.data.Stats.Speed
+			if u.broken && game.G.Rand.Chance(0.5) {
+				u.movesLeft = gmath.ClampMin(u.movesLeft-1, 1)
+			}
 			u.steps = 0
 			u.AddMorale(game.G.Rand.FloatRange(0.01, 0.03))
 			// 9 => 0.045 (extra ~5% morale per turn).
@@ -154,12 +158,17 @@ func (r *runner) withCasualtiesCheck(melee bool, attacker, defender *unitNode, f
 		r.sceneState.pause = 0.5
 	}
 
-	if deadAttackers > 0 && attacker.morale < 0.5 {
+	if attacker.data.Stats.HasTrait(dat.TraitCauseFear) {
+		// 1% morale damage per unit, maxed at 15.
+		defender.SubMorale(gmath.ClampMax(0.01*float64(initialAttackers), 0.15))
+	}
+
+	if deadAttackers > 0 && attacker.morale < 0.5 && game.G.Rand.Chance(1.0-attacker.morale) {
 		attacker.broken = true
 		attacker.SubMorale(0.1)
 		attacker.updateCountLabel()
 	}
-	if !attacker.broken && deadDefenders > 0 && defender.morale < 0.5 {
+	if !attacker.broken && deadDefenders > 0 && defender.morale < 0.5 && game.G.Rand.Chance(1.0-attacker.morale) {
 		defender.broken = true
 		defender.SubMorale(0.1)
 		defender.updateCountLabel()
