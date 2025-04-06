@@ -230,9 +230,9 @@ func (r *runner) runMeleeRound(attacker, defender *unitNode) {
 			numAttacks *= 2
 		}
 
-		retaliationsLeft := defender.data.Count * 2
+		retaliationsLeft := defender.data.Count + 1
 		if defender.guard {
-			retaliationsLeft += (defender.data.Count / 2) + 1
+			retaliationsLeft += (defender.data.Count / 2)
 		}
 		if defender.data.Stats.HasTrait(dat.TraitMighty) {
 			retaliationsLeft *= 2

@@ -10,6 +10,7 @@ import (
 	"github.com/quasilyte/ld57-game/dat"
 	"github.com/quasilyte/ld57-game/eui"
 	"github.com/quasilyte/ld57-game/game"
+	"github.com/quasilyte/ld57-game/scenes/combat"
 	"github.com/quasilyte/ld57-game/scenes/sceneutil"
 )
 
@@ -117,18 +118,46 @@ func (c *continueProxyController) Init(ctx gscene.InitContext) {
 
 	root.AddChild(game.G.UI.NewText(eui.TextConfig{Text: ""}))
 
-	root.AddChild(game.G.UI.NewButton(eui.ButtonConfig{
-		Text: "CONTINUE",
-		Font: assets.FontTiny,
-		OnClick: func() {
-			if game.G.Victory {
+	if game.G.Victory {
+		root.AddChild(game.G.UI.NewButton(eui.ButtonConfig{
+			Text: "CONTINUE",
+			Font: assets.FontTiny,
+			OnClick: func() {
 				game.ChangeScene(NewRosterController())
-				return
-			}
-			game.G.Reset()
-			game.ChangeScene(NewMainMenuController())
-		},
-	}))
+			},
+		}))
+	} else {
+		root.AddChild(game.G.UI.NewButton(eui.ButtonConfig{
+			Text: "RETRY",
+			Font: assets.FontTiny,
+			OnClick: func() {
+				m := map[*dat.Unit]*dat.Unit{}
+				for i, u := range game.G.Units {
+					m[u] = game.G.SavedUnits[i]
+				}
+				for i, u := range game.G.CurrentMap.Units {
+					replacement, ok := m[u.Unit]
+					if !ok {
+						continue
+					}
+					game.G.CurrentMap.Units[i].Unit = replacement
+				}
+				game.G.Units = game.G.SavedUnits
+				game.G.SceneManager.ChangeScene(combat.NewController(combat.Config{
+					Map: game.G.CurrentMap,
+				}))
+			},
+		}))
+
+		root.AddChild(game.G.UI.NewButton(eui.ButtonConfig{
+			Text: "GIVE UP",
+			Font: assets.FontTiny,
+			OnClick: func() {
+				game.G.Reset()
+				game.ChangeScene(NewMainMenuController())
+			},
+		}))
+	}
 
 	game.G.UI.Build(ctx.Scene, topRows)
 }

@@ -118,11 +118,10 @@ func NextStage() *dat.Map {
 		}
 
 	case 6:
-		var trolls []*dat.Unit
-		for i := 0; i < 3; i++ {
-			troll := dat.Troll.CreateUnit()
-			troll.Level = game.G.Rand.IntRange(0, 2)
-			trolls = append(trolls, troll)
+		var units []*dat.Unit
+		units = append(units, dat.Troll.CreateUnit())
+		for i := 0; i < 7; i++ {
+			units = append(units, dat.GoblinWarriors.CreateUnit())
 		}
 		cfg = Config{
 			Width:            14,
@@ -135,7 +134,7 @@ func NextStage() *dat.Map {
 			ForestRatio:      0.05,
 			SwampRatio:       0.6,
 			Reward:           220,
-			MandatoryEnemies: trolls,
+			MandatoryEnemies: units,
 		}
 
 	case 7:

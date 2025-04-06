@@ -38,6 +38,7 @@ type GlobalContext struct {
 	Victory      bool
 	CurrentMap   *dat.Map
 	Units        []*dat.Unit
+	SavedUnits   []*dat.Unit
 	Gold         int
 	GoldTotal    int
 	Stage        int

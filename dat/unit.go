@@ -26,6 +26,11 @@ type Unit struct {
 	Stats *UnitStats
 }
 
+func (u *Unit) Clone() *Unit {
+	cp := *u
+	return &cp
+}
+
 type UnitClass int
 
 const (
