@@ -41,7 +41,7 @@ func (r *runner) NextTurn() {
 		if u.data.Count > 0 {
 			u.movesLeft = u.data.Stats.Speed
 			if u.data.Stats.HasTrait(dat.TraitRegen) {
-				u.leftoverHP = u.data.Stats.Life
+				u.leftoverHP = u.maxHP()
 			}
 			if u.data.Experience > 1 {
 				u.data.Experience = 0
@@ -59,7 +59,9 @@ func (r *runner) NextTurn() {
 				u.AddMorale(game.G.Rand.FloatRange(0.015, 0.025))
 				// 9 => 0.081 (extra ~8% morale per turn when broken).
 				u.AddMorale(0.009 * float64(u.data.Stats.Morale))
-				if u.morale >= 0.40 && game.G.Rand.Chance(u.morale) {
+				recovered := u.data.HasItem(dat.ItemBannerOfWill) ||
+					(u.morale >= 0.40 && game.G.Rand.Chance(u.morale))
+				if recovered {
 					u.broken = false
 					u.AddMorale(0.05)
 					u.updateCountLabel()
@@ -189,11 +191,11 @@ func (r *runner) withCasualtiesCheck(melee bool, attacker, defender *unitNode, f
 	const expScaler = 0.85
 	if deadDefenders > 0 {
 		m := float64(defender.data.Level+1) / float64(attacker.data.Level+1)
-		attacker.data.Experience += m * float64(deadDefenders) * (0.01 * (float64(defender.data.Stats.Cost) * expScaler))
+		attacker.AddExperience(m * float64(deadDefenders) * (0.01 * (float64(defender.data.Stats.Cost) * expScaler)))
 	}
 	if deadAttackers > 0 {
 		m := float64(attacker.data.Level+1) / float64(defender.data.Level+1)
-		defender.data.Experience += m * float64(deadAttackers) * (0.01 * (float64(attacker.data.Stats.Cost) * (expScaler / 2)))
+		defender.AddExperience(m * float64(deadAttackers) * (0.01 * (float64(attacker.data.Stats.Cost) * (expScaler / 2))))
 	}
 
 	if deadAttackers > 0 && attacker.morale < 0.5 && game.G.Rand.Chance(1.0-attacker.morale) {
@@ -290,6 +292,13 @@ func (r *runner) runRangedAttack(attacker, defender *unitNode) int {
 	}
 	if r.sceneState.m.Tiles[defender.pos.Y][defender.pos.X] == dat.TileForest {
 		toHit *= 0.55
+	}
+	if attacker.data.HasItem(dat.ItemPointblankBow) {
+		isDiagonal := abs(attacker.pos.X-defender.pos.X) == 1 && abs(attacker.pos.Y-defender.pos.Y) == 1
+		dist := dist(attacker.pos, defender.pos)
+		if isDiagonal && dist == 1 {
+			toHit *= 1.4
+		}
 	}
 	// +3% accuracy per level.
 	toHit *= 1.0 + (0.03 * float64(attacker.data.Level))

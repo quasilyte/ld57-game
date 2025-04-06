@@ -52,9 +52,12 @@ func (c *NewGameController) Init(ctx gscene.InitContext) {
 		Text:     "HORDE",
 		MinWidth: 200,
 		OnClick: func() {
+			x := dat.GoblinWarriors.CreateUnit()
+			x.Items[0] = dat.ItemPointblankBow
 			game.G.SelectedArmy = dat.FactionHuman
 			game.G.Units = []*dat.Unit{
-				dat.GoblinWarriors.CreateUnit(),
+				x,
+				// dat.GoblinWarriors.CreateUnit(),
 				dat.OrcWarriors.CreateUnit(),
 			}
 			m := mapgen.NextStage()

@@ -26,13 +26,41 @@ var AllItems = []*ItemStats{
 	ItemBackstabber,
 	ItemVengeanceHelm,
 	ItemRingOfCourage,
+	ItemRingOfFortitude,
 	ItemTrollbane,
+	ItemBannerOfWill,
+	ItemPointblankBow,
+	ItemBracerOfLearning,
+}
+
+var ItemPointblankBow = &ItemStats{
+	Name: "Point Blank Bow",
+	Hint: "Increased accuracy when attacking a 1-tile dist diagonal target",
+	Icon: assets.ImageItemMagicBow,
 }
 
 var ItemTrollbane = &ItemStats{
 	Name: "Trollbane",
 	Hint: "Doubled damage against Trolls and Ogres, but not during retaliation",
 	Icon: assets.ImageItemMagicAxe,
+}
+
+var ItemBannerOfWill = &ItemStats{
+	Name: "Banner of Will",
+	Hint: "Bearer always regroups after 1 turn of being broken (routed)",
+	Icon: assets.ImageItemMagicBanner,
+}
+
+var ItemBracerOfLearning = &ItemStats{
+	Name: "Bracer of Learning",
+	Hint: "Wearing this makes you earn experience much faster, just don't ask how",
+	Icon: assets.ImageItemMagicRing2,
+}
+
+var ItemRingOfFortitude = &ItemStats{
+	Name: "Ring of Foritude",
+	Hint: "Grants +1 HP per unit (+1 effective CON rating)",
+	Icon: assets.ImageItemMagicRing2,
 }
 
 var ItemRingOfCourage = &ItemStats{

@@ -60,10 +60,10 @@ func newUnitNode(config unitNodeConfig) *unitNode {
 		data:       config.Data,
 		pos:        config.Pos,
 		team:       config.Team,
-		leftoverHP: config.Data.Stats.Life,
 		morale:     1.0,
 		facing:     game.G.Rand.IntRange(0, 3),
 	}
+	n.leftoverHP = n.maxHP()
 
 	n.facingIndicator = graphics.NewSprite()
 	n.facingIndicator.Pos.Base = &n.spritePos
@@ -90,6 +90,13 @@ func newUnitNode(config unitNodeConfig) *unitNode {
 
 	spr.Pos.Base = &n.spritePos
 	return n
+}
+
+func (u *unitNode) AddExperience(amount float64) {
+	if u.data.HasItem(dat.ItemBracerOfLearning) {
+		amount *= 1.5
+	}
+	u.data.Experience += amount
 }
 
 func (u *unitNode) SubMorale(delta float64) {
@@ -178,10 +185,18 @@ func (u *unitNode) afterTurn() {
 	u.movesIndicator.SetText(moveLabels[u.movesLeft])
 }
 
+func (u *unitNode) maxHP() int {
+	hp := u.data.Stats.Life
+	if u.data.HasItem(dat.ItemRingOfFortitude) {
+		hp++
+	}
+	return hp
+}
+
 func (u *unitNode) onDamage(dmg int) bool {
 	if u.leftoverHP < dmg {
 		u.data.Count--
-		u.leftoverHP = u.data.Stats.Life
+		u.leftoverHP = u.maxHP()
 
 	} else {
 		u.leftoverHP -= dmg

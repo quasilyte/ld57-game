@@ -114,6 +114,12 @@ func NextStage() *dat.Map {
 		default:
 			panic("TODO")
 		}
+		gold := 225
+		itemReward := true
+		if game.G.Rand.Chance(0.5) {
+			gold = 350
+			itemReward = false
+		}
 		cfg = Config{
 			Width:           20,
 			Height:          20,
@@ -124,7 +130,8 @@ func NextStage() *dat.Map {
 			PlayerPlacement: PlayerPlacementEdges,
 			ForestRatio:     0.1,
 			SwampRatio:      0.05,
-			Reward:          350,
+			Reward:          gold,
+			ItemReward:      itemReward,
 		}
 
 	case 6:
@@ -178,7 +185,9 @@ func NextStage() *dat.Map {
 		})
 		cfg.ForestRatio = game.G.Rand.FloatRange(0, 0.3)
 		cfg.SwampRatio = game.G.Rand.FloatRange(0, 0.3)
-		cfg.Reward = 50 + game.G.Rand.IntRange(150, 400)
+		goldRoll := game.G.Rand.FloatRange(0.4, 1.0)
+		cfg.ItemReward = goldRoll < 0.65
+		cfg.Reward = 50 + gmath.Scale(400, goldRoll)
 	}
 
 	cfg.Stage = game.G.Stage
