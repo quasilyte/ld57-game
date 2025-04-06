@@ -223,6 +223,9 @@ func Generate(config Config) *dat.Map {
 		if config.Stage >= 4 {
 			unitKindPicker.AddOption(dat.OrcCavalry, 0.75)
 		}
+		if config.Stage >= 6 {
+			unitKindPicker.AddOption(dat.Ogres, 0.75)
+		}
 		if config.Stage >= 8 {
 			unitKindPicker.AddOption(dat.Troll, 0.5)
 		}
@@ -237,7 +240,10 @@ func Generate(config Config) *dat.Map {
 			unitKindPicker.AddOption(dat.UnholyKnights, game.G.Rand.FloatRange(0.5, 2.0))
 		}
 		if config.Stage >= 4 {
-			unitKindPicker.AddOption(dat.Mummies, game.G.Rand.FloatRange(0.5, 1.75))
+			unitKindPicker.AddOption(dat.Mummies, game.G.Rand.FloatRange(0.5, 2))
+		}
+		if config.Stage >= 6 {
+			unitKindPicker.AddOption(dat.Reapers, game.G.Rand.FloatRange(0.6, 1.3))
 		}
 
 	case EnemyMercenaries:
@@ -288,13 +294,13 @@ func Generate(config Config) *dat.Map {
 
 	switch config.EnemyPlacement {
 	case EnemyPlacementCorner:
-		row := 0
+		row := config.Height
 		deployed := 0
 	OuterLoop2:
 		for {
 			for i := 0; i < config.Width; i++ {
 				cell := dat.CellPos{
-					X: i + padOffsetX, Y: row + padOffsetY,
+					X: config.Width - i + padOffsetX - 1, Y: row + padOffsetY - 1,
 				}
 				if occupiedCells[cell] {
 					continue
@@ -305,7 +311,7 @@ func Generate(config Config) *dat.Map {
 					break OuterLoop2
 				}
 			}
-			row++
+			row--
 		}
 
 	case EnemyPlacementCenter:

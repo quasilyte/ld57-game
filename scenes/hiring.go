@@ -79,6 +79,9 @@ func (c *hiringController) Init(ctx gscene.InitContext) {
 		unitPicker.AddOption(dat.SkeletalArchers, 0.4)
 		unitPicker.AddOption(dat.UnholyKnights, 0.5)
 		unitPicker.AddOption(dat.Mummies, 0.35)
+		if game.G.Stage >= 6 {
+			unitPicker.AddOption(dat.Reapers, 0.3)
+		}
 	}
 
 	unitGrid := widget.NewContainer(

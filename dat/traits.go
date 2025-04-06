@@ -13,8 +13,10 @@ const (
 	TraitFlankingImmune
 	TraitUnbreakable
 	TraitCauseFear
+	TraitSoulHarvest
 	TraitStun
 	TraitArrowResist
+	TraitNoRetaliation
 	TraitArrowVulnerability
 	TraitMobile
 	TraitCharge

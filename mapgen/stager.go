@@ -22,7 +22,7 @@ func NextStage() *dat.Map {
 			PlayerPlacement: PlayerPlacementCenter,
 			ForestRatio:     0.1,
 			SwampRatio:      0,
-			Reward:          110,
+			Reward:          135,
 			ItemReward:      true,
 		}
 
@@ -52,7 +52,7 @@ func NextStage() *dat.Map {
 			PlayerPlacement: PlayerPlacementCenter,
 			ForestRatio:     0.2,
 			SwampRatio:      0.1,
-			Reward:          160,
+			Reward:          170,
 		}
 
 	case 2:
@@ -61,12 +61,12 @@ func NextStage() *dat.Map {
 			Height:          12,
 			Mission:         dat.MissionKillAll,
 			Enemy:           EnemyHorde,
-			EnemyBudget:     3 * dat.OrcWarriors.SquadPrice(),
+			EnemyBudget:     (2 * dat.OrcWarriors.SquadPrice()) + dat.GoblinWarriors.SquadPrice(),
 			EnemyPlacement:  EnemyPlacementRandomSpread,
 			PlayerPlacement: PlayerPlacementCorner,
 			ForestRatio:     0.0,
 			SwampRatio:      0.2,
-			Reward:          150,
+			Reward:          190,
 			ItemReward:      true,
 		}
 
@@ -171,18 +171,29 @@ func NextStage() *dat.Map {
 
 	default:
 		cfg.Width = int(gmath.CeilN(float64(game.G.Rand.IntRange(10, 24)), 2))
-		cfg.Height = int(gmath.CeilN(float64(game.G.Rand.IntRange(10, 24)), 2))
+		cfg.Height = int(gmath.CeilN(float64(game.G.Rand.IntRange(10, 18)), 2))
 		cfg.Mission = dat.MissionKillAll
 		cfg.Enemy = gmath.RandElem(&game.G.Rand, []EnemyKind{
 			EnemyHorde, EnemyBrigands, EnemyMercenaries, EnemyUndead,
 		})
 		cfg.EnemyBudget = (6 + (2 * (game.G.Stage - 8))) * dat.MercenarySwords.SquadPrice()
-		cfg.EnemyPlacement = gmath.RandElem(&game.G.Rand, []EnemyPlacementKind{
-			EnemyPlacementCorner, EnemyPlacementCenter, EnemyPlacementEdges, EnemyPlacementRandomSpread,
-		})
-		cfg.PlayerPlacement = gmath.RandElem(&game.G.Rand, []PlayerPlacementKind{
-			PlayerPlacementCenter, PlayerPlacementCorner, PlayerPlacementEdges,
-		})
+		for try := 0; try <= 3; try++ {
+			cfg.EnemyPlacement = gmath.RandElem(&game.G.Rand, []EnemyPlacementKind{
+				EnemyPlacementCorner, EnemyPlacementCenter, EnemyPlacementEdges, EnemyPlacementRandomSpread,
+			})
+			cfg.PlayerPlacement = gmath.RandElem(&game.G.Rand, []PlayerPlacementKind{
+				PlayerPlacementCenter, PlayerPlacementCorner, PlayerPlacementEdges,
+			})
+			isWeird := (cfg.EnemyPlacement == EnemyPlacementEdges && cfg.PlayerPlacement == PlayerPlacementEdges)
+			if isWeird {
+				continue
+			}
+			if cfg.EnemyPlacement == EnemyPlacementCorner && cfg.PlayerPlacement == PlayerPlacementCenter {
+				cfg.Width = gmath.ClampMin(cfg.Width-4, 12)
+				cfg.Height = gmath.ClampMin(cfg.Height-4, 10)
+			}
+			break
+		}
 		cfg.ForestRatio = game.G.Rand.FloatRange(0, 0.3)
 		cfg.SwampRatio = game.G.Rand.FloatRange(0, 0.3)
 		goldRoll := game.G.Rand.FloatRange(0.4, 1.0)

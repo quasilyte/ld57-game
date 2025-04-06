@@ -21,6 +21,7 @@ var AllUnits = []*UnitStats{
 	UnholyKnights,
 	Zombies,
 	Mummies,
+	Reapers,
 
 	Troll,
 }
@@ -179,7 +180,7 @@ var SkeletalWarriors = &UnitStats{
 	Category: FactionUndead,
 
 	Class: ClassInfantry,
-	Cost:  8,
+	Cost:  7,
 
 	MeleeAccuracy: 0.5,
 	Attack:        3,
@@ -309,13 +310,13 @@ var Ogres = &UnitStats{
 	Category: FactionHorde,
 
 	Class: ClassInfantry,
-	Cost:  45,
+	Cost:  42,
 
-	MeleeAccuracy: 0.9,
+	MeleeAccuracy: 0.925,
 	Attack:        5,
-	Defense:       6,
+	Defense:       7,
 	MaxCount:      3,
-	Life:          8,
+	Life:          9,
 	Morale:        7,
 	Speed:         2,
 
@@ -323,6 +324,32 @@ var Ogres = &UnitStats{
 		TraitCauseFear,
 		TraitStun,
 		TraitStunResist,
+	},
+}
+
+var Reapers = &UnitStats{
+	Name:        "Reapers",
+	Banner:      assets.ImageReapersBanner,
+	AttackSound: assets.AudioSwordAttack1,
+
+	Category: FactionUndead,
+
+	Class: ClassInfantry,
+	Cost:  50,
+
+	MeleeAccuracy: 0.8,
+	Attack:        7,
+	Defense:       3,
+	MaxCount:      6,
+	Life:          6,
+	Morale:        9,
+	Speed:         2,
+
+	Traits: []Trait{
+		TraitCauseFear,
+		TraitSoulHarvest,
+		TraitArrowResist,
+		TraitNoRetaliation,
 	},
 }
 
@@ -334,13 +361,13 @@ var Troll = &UnitStats{
 	Category: FactionHorde,
 
 	Class: ClassInfantry,
-	Cost:  300,
+	Cost:  275,
 
 	MeleeAccuracy: 1.0,
 	Attack:        9,
-	Defense:       9,
+	Defense:       11,
 	MaxCount:      1,
-	Life:          14,
+	Life:          17,
 	Morale:        9,
 	Speed:         2,
 
@@ -383,7 +410,7 @@ var OrcWarriors = &UnitStats{
 	Category: FactionHorde,
 
 	Class: ClassInfantry,
-	Cost:  20,
+	Cost:  17,
 
 	MeleeAccuracy: 0.7,
 	Attack:        5,

@@ -449,6 +449,10 @@ func (c *Controller) handleInput(delta float64) {
 		var traitStrings []string
 		for _, t := range hovered.data.Stats.Traits {
 			switch t {
+			case dat.TraitSoulHarvest:
+				traitStrings = append(traitStrings, "Soul Harvest")
+			case dat.TraitNoRetaliation:
+				traitStrings = append(traitStrings, "No Retaliation")
 			case dat.TraitMighty:
 				traitStrings = append(traitStrings, "Mighty")
 			case dat.TraitRegen:
@@ -484,10 +488,6 @@ func (c *Controller) handleInput(delta float64) {
 			}
 		}
 		if len(traitStrings) > 0 {
-			c.unitInfoRows.AddChild(game.G.UI.NewText(eui.TextConfig{
-				Text: "---",
-				Font: assets.FontTiny,
-			}))
 			traitRows := eui.NewPanelRows()
 			for _, s := range traitStrings {
 				traitRows.AddChild(game.G.UI.NewText(eui.TextConfig{

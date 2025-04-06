@@ -135,13 +135,6 @@ func (r *runner) withCasualtiesCheck(melee bool, attacker, defender *unitNode, f
 	deadAttackers := initialAttackers - attacker.data.Count
 	deadDefenders := initialDefenders - defender.data.Count
 	if deadAttackers != 0 {
-		n := NewFloatingTextNode(FloatingTextNodeConfig{
-			Pos:   attacker.spritePos,
-			Text:  "-" + strconv.Itoa(deadAttackers),
-			Layer: 3,
-			Color: pickColor(attacker.team, false),
-		})
-		r.sceneState.scene.AddObject(n)
 		attacker.SubMorale(game.G.Rand.FloatRange(0.05, 0.1) * float64(deadAttackers))
 	}
 	if deadDefenders != 0 {
@@ -219,6 +212,33 @@ func (r *runner) withCasualtiesCheck(melee bool, attacker, defender *unitNode, f
 		if attacker.data.Stats.HasTrait(dat.TraitBloodlust) {
 			attacker.AddMorale(0.035 * float64(deadDefenders))
 		}
+		if attacker.data.Count < attacker.data.InitialCount && attacker.data.Stats.HasTrait(dat.TraitSoulHarvest) {
+			// 3 mercenary swords of level 1 (+1) => 3 * (10+1) => 33 => ~33%
+			totalValue := float64(deadDefenders * (defender.data.Stats.Cost + defender.data.Level))
+			if totalValue > 15 && game.G.Rand.Chance(totalValue/100) {
+				attacker.data.Count++
+				deadAttackers--
+				attacker.updateCountLabel()
+			}
+		}
+	}
+
+	if deadAttackers != 0 {
+		var s string
+		good := false
+		if deadAttackers > 0 {
+			s = "-" + strconv.Itoa(deadAttackers)
+		} else {
+			good = true
+			s = "+" + strconv.Itoa(deadAttackers)
+		}
+		n := NewFloatingTextNode(FloatingTextNodeConfig{
+			Pos:   attacker.spritePos,
+			Text:  s,
+			Layer: 3,
+			Color: pickColor(attacker.team, good),
+		})
+		r.sceneState.scene.AddObject(n)
 	}
 }
 
@@ -248,15 +268,20 @@ func (r *runner) runMeleeRound(attacker, defender *unitNode) {
 			numAttacks *= 2
 		}
 
-		retaliationsLeft := defender.data.Count + 1
-		if defender.guard {
-			retaliationsLeft += (defender.data.Count / 2)
-		}
-		if defender.data.HasItem(dat.ItemVengeanceHelm) {
-			retaliationsLeft += gmath.ClampMin((defender.data.Count / 2), 1)
-		}
-		if defender.data.Stats.HasTrait(dat.TraitMighty) {
-			retaliationsLeft *= 2
+		var retaliationsLeft int
+		if attacker.data.Stats.HasTrait(dat.TraitNoRetaliation) {
+			retaliationsLeft = 0
+		} else {
+			retaliationsLeft = defender.data.Count + 1
+			if defender.guard {
+				retaliationsLeft += (defender.data.Count / 2)
+			}
+			if defender.data.HasItem(dat.ItemVengeanceHelm) {
+				retaliationsLeft += gmath.ClampMin((defender.data.Count / 2), 1)
+			}
+			if defender.data.Stats.HasTrait(dat.TraitMighty) {
+				retaliationsLeft *= 2
+			}
 		}
 
 		for i := 0; i < numAttacks; i++ {
