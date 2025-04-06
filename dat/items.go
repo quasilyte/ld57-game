@@ -31,6 +31,7 @@ var AllItems = []*ItemStats{
 	ItemBannerOfWill,
 	ItemPointblankBow,
 	ItemBracerOfLearning,
+	ItemTerrorMace,
 }
 
 var ItemPointblankBow = &ItemStats{
@@ -79,6 +80,12 @@ var ItemMagicSword = &ItemStats{
 	Name: "Magic sword",
 	Hint: "Ignores half enemy DEF in melee, but not during retaliation",
 	Icon: assets.ImageItemMagicSword,
+}
+
+var ItemTerrorMace = &ItemStats{
+	Name: "Terror Mace",
+	Hint: "Increases morale damage in melee, but not during retaliation",
+	Icon: assets.ImageItemMagicMace,
 }
 
 var ItemBackstabber = &ItemStats{

@@ -173,6 +173,12 @@ func (r *runner) withCasualtiesCheck(melee bool, attacker, defender *unitNode, f
 		}
 	}
 
+	if attacker.data.HasItem(dat.ItemTerrorMace) {
+		if !defender.data.HasItem(dat.ItemRingOfCourage) {
+			fearDmg := (0.02 * float64(deadDefenders)) + 0.05
+			defender.SubMorale(fearDmg)
+		}
+	}
 	if attacker.data.Stats.HasTrait(dat.TraitCauseFear) {
 		if !defender.data.HasItem(dat.ItemRingOfCourage) {
 			// 1% morale damage per unit, maxed at 15.
