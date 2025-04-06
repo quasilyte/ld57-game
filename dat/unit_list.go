@@ -33,7 +33,7 @@ var MercenaryHalberds = &UnitStats{
 	Category: FactionHuman,
 
 	Class: ClassInfantry,
-	Cost:  12,
+	Cost:  10,
 
 	MeleeAccuracy: 0.4,
 	Attack:        5,

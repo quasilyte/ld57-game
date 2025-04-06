@@ -300,8 +300,15 @@ func (c *Controller) handleInput(delta float64) {
 			),
 		)
 
+		unitLabel := "Infantry"
+		switch hovered.data.Stats.Class {
+		case dat.ClassArcher:
+			unitLabel = "Archers"
+		case dat.ClassCavalry:
+			unitLabel = "Cavalry"
+		}
 		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
-			Text:      "Units",
+			Text:      unitLabel,
 			Font:      assets.FontTiny,
 			AlignLeft: true,
 		}))
