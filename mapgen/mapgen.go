@@ -187,8 +187,13 @@ func Generate(config Config) *dat.Map {
 	}
 
 	gmath.Shuffle(&game.G.Rand, tmpCells)
+	cellIndex := 0
 	for i := range game.G.Units {
-		cell := tmpCells[i]
+		if game.G.Units[i].Count == 0 {
+			continue
+		}
+		cell := tmpCells[cellIndex]
+		cellIndex++
 		m.Units = append(m.Units, dat.DeployedUnit{
 			Team: 0,
 			Pos:  cell,
