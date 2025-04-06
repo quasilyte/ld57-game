@@ -454,5 +454,6 @@ var OrcCavalry = &UnitStats{
 
 	Traits: []Trait{
 		TraitBloodlust,
+		TraitCharge,
 	},
 }
