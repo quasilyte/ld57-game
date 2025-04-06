@@ -548,6 +548,22 @@ func (c *Controller) onRangedAttack(event meleeAttackEvent) {
 	c.runner.runRangedRound(event.Attacker, event.Defender)
 
 	game.G.PlaySound(assets.AudioBowShot1)
+
+	numArrows := gmath.ClampMax(event.Attacker.data.Count, 8)
+	for i := 0; i < numArrows; i++ {
+		arrow := newArrowNode(arrowNodeConfig{
+			flightTime: game.G.Rand.FloatRange(0.4, 0.50),
+			arcPower:   game.G.Rand.FloatRange(200, 500),
+			fireFrom:   event.Attacker.spritePos.Add(game.G.Rand.Offset(-8, 8)),
+			fireTo:     event.Defender.spritePos.Add(game.G.Rand.Offset(-18, 18)),
+		})
+		c.scene.AddObject(arrow)
+	}
+
+	// Allow the arrows some time to fly.
+	if c.state.pause == 0 {
+		c.state.pause = 0.5
+	}
 }
 
 func (c *Controller) onPlayerDone(gsignal.Void) {

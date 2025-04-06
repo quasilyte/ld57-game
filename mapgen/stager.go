@@ -68,7 +68,7 @@ func NextStage() *dat.Map {
 			Height:          12,
 			Mission:         dat.MissionKillAll,
 			Enemy:           EnemyBrigands,
-			EnemyBudget:     7 * dat.Brigands.SquadPrice(),
+			EnemyBudget:     6 * dat.Brigands.SquadPrice(),
 			EnemyPlacement:  EnemyPlacementRandomSpread,
 			PlayerPlacement: PlayerPlacementCorner,
 			ForestRatio:     0.6,

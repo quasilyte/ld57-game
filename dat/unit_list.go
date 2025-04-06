@@ -78,7 +78,7 @@ var Assassins = &UnitStats{
 	Category: FactionNeutral,
 
 	Class: ClassArcher,
-	Cost:  22,
+	Cost:  25,
 
 	MaxRange:       2,
 	RangedAccuracy: 0.6,
