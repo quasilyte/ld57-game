@@ -4,6 +4,10 @@ import "github.com/quasilyte/ld57-game/assets"
 
 var AllUnits = []*UnitStats{
 	Brigands,
+	Assassins,
+
+	GoblinWarriors,
+	OrcWarriors,
 
 	MercenaryHalberds,
 	MercenarySwords,
@@ -55,6 +59,30 @@ var Brigands = &UnitStats{
 
 	Traits: []Trait{
 		TraitMobile,
+	},
+}
+
+var Assassins = &UnitStats{
+	Name:   "Assassins",
+	Banner: assets.ImageAssassinsBanner,
+
+	Class: ClassArcher,
+	Cost:  22,
+
+	MaxRange:       2,
+	RangedAccuracy: 0.6,
+
+	MeleeAccuracy: 0.65,
+	RangedAttack:  6,
+	Attack:        5,
+	Defense:       2,
+	MaxCount:      7,
+	Life:          2,
+	Morale:        5,
+	Speed:         2,
+
+	Traits: []Trait{
+		TraitCripplingShot,
 	},
 }
 
@@ -231,5 +259,45 @@ var Mummies = &UnitStats{
 		TraitMobile,
 		TraitUnbreakable,
 		TraitCauseFear,
+	},
+}
+
+var GoblinWarriors = &UnitStats{
+	Name:   "Gob. Warriors",
+	Banner: assets.ImageGoblinWarriorBanner,
+
+	Class: ClassInfantry,
+	Cost:  6,
+
+	MeleeAccuracy: 0.3,
+	Attack:        1,
+	Defense:       1,
+	MaxCount:      30,
+	Life:          1,
+	Morale:        3,
+	Speed:         2,
+
+	Traits: []Trait{
+		TraitPathfinder,
+	},
+}
+
+var OrcWarriors = &UnitStats{
+	Name:   "Orc Warriors",
+	Banner: assets.ImageOrcWarriorBanner,
+
+	Class: ClassInfantry,
+	Cost:  20,
+
+	MeleeAccuracy: 0.7,
+	Attack:        5,
+	Defense:       2,
+	MaxCount:      15,
+	Life:          4,
+	Morale:        6,
+	Speed:         2,
+
+	Traits: []Trait{
+		TraitBloodlust,
 	},
 }

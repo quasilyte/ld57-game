@@ -13,6 +13,7 @@ type EnemyKind int
 const (
 	EnemyBrigands EnemyKind = iota
 	EnemyMercenaries
+	EnemyHorde
 	EnemyUndead
 )
 
@@ -31,7 +32,7 @@ type PlayerPlacementKind int
 
 const (
 	PlayerPlacementCenter PlayerPlacementKind = iota
-	PlayerPlacementOppositeSide
+	PlayerPlacementCorner
 )
 
 type Config struct {
@@ -130,6 +131,23 @@ func Generate(config Config) *dat.Map {
 	tmpCells := make([]dat.CellPos, 0, 128)
 
 	switch config.PlayerPlacement {
+	case PlayerPlacementCorner:
+		row := 0
+		deployed := 0
+	OuterLoop:
+		for {
+			for i := 0; i < config.Width; i++ {
+				tmpCells = append(tmpCells, dat.CellPos{
+					X: i + padOffsetX, Y: row + padOffsetY,
+				})
+				deployed++
+				if deployed >= len(game.G.Units) {
+					break OuterLoop
+				}
+			}
+			row++
+		}
+
 	case PlayerPlacementCenter:
 		numUnits := len(game.G.Units)
 		placementSize := int(math.Sqrt(float64(numUnits))/2) + 1
@@ -145,18 +163,20 @@ func Generate(config Config) *dat.Map {
 				})
 			}
 		}
-		gmath.Shuffle(&game.G.Rand, tmpCells)
-		for i := range game.G.Units {
-			cell := tmpCells[i]
-			m.Units = append(m.Units, dat.DeployedUnit{
-				Team: 0,
-				Pos:  cell,
-				Unit: game.G.Units[i],
-			})
-			occupiedCells[cell] = true
-		}
+
 	default:
 		panic("TODO")
+	}
+
+	gmath.Shuffle(&game.G.Rand, tmpCells)
+	for i := range game.G.Units {
+		cell := tmpCells[i]
+		m.Units = append(m.Units, dat.DeployedUnit{
+			Team: 0,
+			Pos:  cell,
+			Unit: game.G.Units[i],
+		})
+		occupiedCells[cell] = true
 	}
 
 	budget := config.EnemyBudget
@@ -165,6 +185,18 @@ func Generate(config Config) *dat.Map {
 	switch config.Enemy {
 	case EnemyBrigands:
 		unitKindPicker.AddOption(dat.Brigands, 1)
+		if config.Stage >= 2 {
+			unitKindPicker.AddOption(dat.Assassins, 0.6)
+		}
+
+	case EnemyHorde:
+		if game.G.Rand.Bool() {
+			unitKindPicker.AddOption(dat.OrcWarriors, 1)
+			unitKindPicker.AddOption(dat.GoblinWarriors, 0.25)
+		} else {
+			unitKindPicker.AddOption(dat.OrcWarriors, 0.75)
+			unitKindPicker.AddOption(dat.GoblinWarriors, 1.0)
+		}
 
 	case EnemyUndead:
 		unitKindPicker.AddOption(dat.Zombies, game.G.Rand.FloatRange(0.5, 2.5))
@@ -185,8 +217,8 @@ func Generate(config Config) *dat.Map {
 		if config.Stage >= 2 {
 			unitKindPicker.AddOption(dat.MercenaryArchers, game.G.Rand.FloatRange(0.5, 2.0))
 		}
-		if config.Stage >= 3 {
-			unitKindPicker.AddOption(dat.MercenaryCavalry, game.G.Rand.FloatRange(0.75, 1.75))
+		if config.Stage >= 4 {
+			unitKindPicker.AddOption(dat.MercenaryCavalry, game.G.Rand.FloatRange(0.75, 2.0))
 		}
 
 	default:
@@ -220,6 +252,24 @@ func Generate(config Config) *dat.Map {
 	tmpCells = tmpCells[:0] // Re-use them
 
 	switch config.EnemyPlacement {
+	case EnemyPlacementRandomSpread:
+		deployed := 0
+		for {
+			probe := dat.CellPos{
+				X: game.G.Rand.IntRange(padOffsetX, m.Width-padOffsetX-1),
+				Y: game.G.Rand.IntRange(padOffsetY, m.Width-padOffsetY-1),
+			}
+			if occupiedCells[probe] {
+				continue
+			}
+			deployed++
+			occupiedCells[probe] = true
+			tmpCells = append(tmpCells, probe)
+			if deployed >= len(enemyUnits) {
+				break
+			}
+		}
+
 	case EnemyPlacementEdges:
 		for row := padOffsetY; row < m.Height-padOffsetY; row++ {
 			for col := padOffsetX; col < m.Width-padOffsetX; col++ {

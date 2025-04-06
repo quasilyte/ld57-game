@@ -15,4 +15,7 @@ const (
 	TraitArrowVulnerability
 	TraitMobile
 	TraitCharge
+	TraitBloodlust
+	TraitPathfinder
+	TraitCripplingShot
 )

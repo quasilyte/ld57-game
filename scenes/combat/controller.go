@@ -422,6 +422,12 @@ func (c *Controller) handleInput(delta float64) {
 				traitStrings = append(traitStrings, "Diag. Moves")
 			case dat.TraitFlankingImmune:
 				traitStrings = append(traitStrings, "Flanking Resist")
+			case dat.TraitBloodlust:
+				traitStrings = append(traitStrings, "Bloodlust")
+			case dat.TraitPathfinder:
+				traitStrings = append(traitStrings, "Pathfinder")
+			case dat.TraitCripplingShot:
+				traitStrings = append(traitStrings, "Crippling Shot")
 			}
 		}
 		if len(traitStrings) > 0 {
@@ -525,7 +531,10 @@ func (c *Controller) onMeleeAttack(event meleeAttackEvent) {
 
 func (c *Controller) onRangedAttack(event meleeAttackEvent) {
 	event.Attacker.movesLeft = 0
-	event.Defender.movesLeft = 0
+	if event.Attacker.data.Stats.HasTrait(dat.TraitCripplingShot) {
+		event.Defender.movesLeft = gmath.ClampMin(event.Defender.movesLeft-1, 0)
+		event.Defender.afterTurn()
+	}
 	event.Attacker.lookTowards(event.Defender.pos)
 	c.runner.runRangedRound(event.Attacker, event.Defender)
 }

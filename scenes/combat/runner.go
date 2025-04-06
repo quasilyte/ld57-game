@@ -40,6 +40,10 @@ func (r *runner) NextTurn() {
 	r.sceneState.units = gslices.FilterInplace(r.sceneState.units, func(u *unitNode) bool {
 		if u.data.Count > 0 {
 			u.movesLeft = u.data.Stats.Speed
+			if u.data.Experience > 1 {
+				u.data.Experience = 0
+				u.data.Level++
+			}
 			if u.broken && game.G.Rand.Chance(0.5) {
 				u.movesLeft = gmath.ClampMin(u.movesLeft-1, 1)
 			}
@@ -164,15 +168,31 @@ func (r *runner) withCasualtiesCheck(melee bool, attacker, defender *unitNode, f
 		defender.SubMorale(gmath.ClampMax(0.01*float64(initialAttackers), 0.15))
 	}
 
+	const expScaler = 0.85
+	if deadDefenders > 0 {
+		m := float64(defender.data.Level+1) / float64(attacker.data.Level+1)
+		attacker.data.Experience += m * float64(deadDefenders) * (0.01 * (float64(defender.data.Stats.Cost) * expScaler))
+	}
+	if deadAttackers > 0 {
+		m := float64(attacker.data.Level+1) / float64(defender.data.Level+1)
+		defender.data.Experience += m * float64(deadAttackers) * (0.01 * (float64(attacker.data.Stats.Cost) * (expScaler / 2)))
+	}
+
 	if deadAttackers > 0 && attacker.morale < 0.5 && game.G.Rand.Chance(1.0-attacker.morale) {
 		attacker.broken = true
 		attacker.SubMorale(0.1)
 		attacker.updateCountLabel()
 	}
-	if !attacker.broken && deadDefenders > 0 && defender.morale < 0.5 && game.G.Rand.Chance(1.0-attacker.morale) {
+	if !attacker.broken && deadDefenders > 0 && defender.morale < 0.5 && game.G.Rand.Chance(1.0-defender.morale) {
 		defender.broken = true
 		defender.SubMorale(0.1)
 		defender.updateCountLabel()
+	}
+
+	if melee && deadDefenders > 0 && !attacker.broken {
+		if attacker.data.Stats.HasTrait(dat.TraitBloodlust) {
+			attacker.AddMorale(0.035 * float64(deadDefenders))
+		}
 	}
 }
 
@@ -183,6 +203,9 @@ func (r *runner) runRangedRound(attacker, defender *unitNode) {
 			if r.damageUnit(defender, attackerDmg) {
 				break
 			}
+		}
+		if defender.favTarget == nil || game.G.Rand.Chance(0.6) {
+			defender.favTarget = attacker
 		}
 	})
 }
@@ -233,7 +256,15 @@ func (r *runner) runRangedAttack(attacker, defender *unitNode) int {
 	if r.sceneState.m.Tiles[defender.pos.Y][defender.pos.X] == dat.TileForest {
 		toHit *= 0.55
 	}
+	// +3% accuracy per level.
+	toHit *= 1.0 + (0.03 * float64(attacker.data.Level))
 	if !game.G.Rand.Chance(toHit) {
+		return 0
+	}
+
+	// +3% damage block chance per level.
+	dodgeChance := 0.03 * float64(defender.data.Level)
+	if dodgeChance > 0 && game.G.Rand.Chance(dodgeChance) {
 		return 0
 	}
 
@@ -272,7 +303,18 @@ func (r *runner) runMeleeAttack(isRetaliation bool, attacker, defender *unitNode
 	case meleeAttackBack:
 		toHit *= 1.2
 	}
+	// +5% accuracy per level.
+	toHit *= 1.0 + (0.05 * float64(attacker.data.Level))
 	if !game.G.Rand.Chance(toHit) {
+		return 0
+	}
+	if !game.G.Rand.Chance(toHit) {
+		return 0
+	}
+
+	// +4% damage block chance per level.
+	dodgeChance := 0.04 * float64(defender.data.Level)
+	if dodgeChance > 0 && game.G.Rand.Chance(dodgeChance) {
 		return 0
 	}
 

@@ -21,7 +21,7 @@ func NextStage() *dat.Map {
 			PlayerPlacement: PlayerPlacementCenter,
 			ForestRatio:     0.1,
 			SwampRatio:      0,
-			Reward:          50,
+			Reward:          110,
 		}
 
 	case 1:
@@ -44,7 +44,35 @@ func NextStage() *dat.Map {
 			PlayerPlacement: PlayerPlacementCenter,
 			ForestRatio:     0.2,
 			SwampRatio:      0.1,
-			Reward:          100,
+			Reward:          160,
+		}
+
+	case 2:
+		cfg = Config{
+			Width:           4,
+			Height:          12,
+			Mission:         dat.MissionKillAll,
+			Enemy:           EnemyHorde,
+			EnemyBudget:     3 * dat.OrcWarriors.SquadPrice(),
+			EnemyPlacement:  EnemyPlacementRandomSpread,
+			PlayerPlacement: PlayerPlacementCorner,
+			ForestRatio:     0.0,
+			SwampRatio:      0.2,
+			Reward:          140,
+		}
+
+	case 3:
+		cfg = Config{
+			Width:           12,
+			Height:          12,
+			Mission:         dat.MissionKillAll,
+			Enemy:           EnemyBrigands,
+			EnemyBudget:     7 * dat.Brigands.SquadPrice(),
+			EnemyPlacement:  EnemyPlacementRandomSpread,
+			PlayerPlacement: PlayerPlacementCorner,
+			ForestRatio:     0.6,
+			SwampRatio:      0.05,
+			Reward:          190,
 		}
 
 	default:

@@ -19,7 +19,8 @@ type Unit struct {
 
 	InitialCount int
 
-	Level int
+	Experience float64
+	Level      int
 
 	Stats *UnitStats
 }
@@ -32,6 +33,19 @@ const (
 	ClassArcher
 	ClassCaster
 )
+
+func (class UnitClass) String() string {
+	switch class {
+	case ClassInfantry:
+		return "infantry"
+	case ClassCavalry:
+		return "cavalry"
+	case ClassArcher:
+		return "archer"
+	default:
+		return "hero"
+	}
+}
 
 type UnitStats struct {
 	Name        string
@@ -64,7 +78,7 @@ func (stats *UnitStats) CreateUnit() *Unit {
 	return &Unit{
 		Count:        stats.MaxCount,
 		InitialCount: stats.MaxCount,
-		Level:        1,
+		Level:        0, // Displayed as level 1
 		Stats:        stats,
 	}
 }

@@ -20,9 +20,10 @@ import (
 type Widget = widget.PreferredSizeLocateableWidget
 
 type Builder struct {
-	button  *buttonDefaults
-	panel   *panelDefaults
-	tooltip *panelDefaults
+	button      *buttonDefaults
+	smallButton *buttonDefaults
+	panel       *panelDefaults
+	tooltip     *panelDefaults
 
 	currentObject *SceneObject
 
@@ -86,6 +87,32 @@ func (b *Builder) Init() {
 	}
 
 	{
+		disabled := loadNineSliced(l, assets.ImageUISmallButtonDisabled, 7, 4)
+		idle := loadNineSliced(l, assets.ImageUISmallButtonIdle, 7, 4)
+		hover := loadNineSliced(l, assets.ImageUISmallButtonHover, 7, 4)
+		pressed := loadNineSliced(l, assets.ImageUISmallButtonPressed, 7, 4)
+		buttonPadding := widget.Insets{
+			Left:   4,
+			Right:  4,
+			Top:    4,
+			Bottom: 4,
+		}
+		b.smallButton = &buttonDefaults{
+			image: &widget.ButtonImage{
+				Idle:     idle,
+				Hover:    hover,
+				Pressed:  pressed,
+				Disabled: disabled,
+			},
+			padding: buttonPadding,
+			textColors: &widget.ButtonTextColor{
+				Idle:     styles.NormalTextColor.Color(),
+				Disabled: styles.NormalTextColor.Color(),
+			},
+		}
+	}
+
+	{
 		normal := loadNineSliced(l, assets.ImageUIPanel, 14, 14)
 		b.panel = &panelDefaults{
 			image: normal,
@@ -110,6 +137,18 @@ func (b *Builder) Init() {
 			},
 		}
 	}
+}
+
+func (b *Builder) NewTooltipEx(w Widget) *widget.Container {
+	tt := widget.NewContainer(
+		widget.ContainerOpts.BackgroundImage(b.tooltip.image),
+		widget.ContainerOpts.Layout(widget.NewRowLayout(
+			widget.RowLayoutOpts.Direction(widget.DirectionVertical),
+			widget.RowLayoutOpts.Padding(b.tooltip.padding),
+			widget.RowLayoutOpts.Spacing(2),
+		)))
+	tt.AddChild(w)
+	return tt
 }
 
 func (b *Builder) NewTooltip(label *widget.Text) *widget.Container {
@@ -175,6 +214,7 @@ type ButtonConfig struct {
 	MinHeight    int
 	Font         font.Face
 	LayoutData   any
+	Small        bool
 	Tooltip      string
 }
 
@@ -185,6 +225,9 @@ func (b *Builder) NewButton(config ButtonConfig) *widget.Button {
 	}
 
 	defaults := b.button
+	if config.Small {
+		defaults = b.smallButton
+	}
 
 	colors := b.button.textColors
 	padding := defaults.padding

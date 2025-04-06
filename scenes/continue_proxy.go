@@ -10,8 +10,6 @@ import (
 	"github.com/quasilyte/ld57-game/dat"
 	"github.com/quasilyte/ld57-game/eui"
 	"github.com/quasilyte/ld57-game/game"
-	"github.com/quasilyte/ld57-game/mapgen"
-	"github.com/quasilyte/ld57-game/scenes/combat"
 	"github.com/quasilyte/ld57-game/scenes/sceneutil"
 )
 
@@ -124,14 +122,10 @@ func (c *continueProxyController) Init(ctx gscene.InitContext) {
 		Font: assets.FontTiny,
 		OnClick: func() {
 			if game.G.Victory {
-				m := mapgen.NextStage()
-				game.G.CurrentMap = m
-				game.G.SceneManager.ChangeScene(combat.NewController(combat.Config{
-					Map: m,
-				}))
+				game.ChangeScene(NewRosterController())
 				return
 			}
-			game.G.Gold = 0
+			game.G.Gold = 100
 			game.G.Units = game.G.Units[:0]
 			game.G.GoldTotal = 0
 			game.G.Stage = 0

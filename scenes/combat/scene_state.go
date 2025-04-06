@@ -37,13 +37,13 @@ func newSceneState() *sceneState {
 	}
 
 	r := 18.0
-	numDashes := 3.0
-	dashLen := 8.0
+	numDashes := 4.0
+	dashLen := 14.0
 	state.currentUnitSelector = graphics.NewCircle(r)
 	state.currentUnitSelector.SetOutlineColorScale(styles.ColorOrange)
 	state.currentUnitSelector.SetVisibility(false)
 	state.currentUnitSelector.Rotation = &state.selectorRotation
-	state.currentUnitSelector.SetOutlineWidth(1)
+	state.currentUnitSelector.SetOutlineWidth(2)
 	state.currentUnitSelector.SetOutlineDash(dashLen, (r/numDashes*math.Pi)+(r/numDashes*math.Pi-dashLen))
 
 	return state

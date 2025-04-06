@@ -11,8 +11,14 @@ func registerImageResources(loader *resource.Loader) {
 		ImageUIButtonIdle:    {Path: "image/ui/button_idle.png"},
 		ImageUIButtonHover:   {Path: "image/ui/button_hover.png"},
 		ImageUIButtonPressed: {Path: "image/ui/button_pressed.png"},
-		ImageUIPanel:         {Path: "image/ui/panel.png"},
-		ImageUITooltip:       {Path: "image/ui/tooltip.png"},
+
+		ImageUISmallButtonDisabled: {Path: "image/ui/smallbutton_disabled.png"},
+		ImageUISmallButtonIdle:     {Path: "image/ui/smallbutton_idle.png"},
+		ImageUISmallButtonHover:    {Path: "image/ui/smallbutton_hover.png"},
+		ImageUISmallButtonPressed:  {Path: "image/ui/smallbutton_pressed.png"},
+
+		ImageUIPanel:   {Path: "image/ui/panel.png"},
+		ImageUITooltip: {Path: "image/ui/tooltip.png"},
 
 		ImageTileGrass:  {Path: "image/tiles/grass.png"},
 		ImageTileForest: {Path: "image/tiles/forest.png"},
@@ -30,6 +36,7 @@ func registerImageResources(loader *resource.Loader) {
 		ImageFacingUp:    {Path: "image/ui/facing_up.png"},
 
 		ImageBrigandsBanner:         {Path: "image/banner/brigands.png"},
+		ImageAssassinsBanner:        {Path: "image/banner/assassins.png"},
 		ImageHumanHalberdsBanner:    {Path: "image/banner/human_halberds.png"},
 		ImageHumanWarriorsBanner:    {Path: "image/banner/human_warriors.png"},
 		ImageHumanArchersBanner:     {Path: "image/banner/human_archers.png"},
@@ -39,6 +46,8 @@ func registerImageResources(loader *resource.Loader) {
 		ImageSkeletalArchersBanner:  {Path: "image/banner/undead_skeletal_archers.png"},
 		ImageUnholyKnights:          {Path: "image/banner/undead_knights.png"},
 		ImageHumanMummiesBanner:     {Path: "image/banner/undead_mummy.png"},
+		ImageGoblinWarriorBanner:    {Path: "image/banner/goblin_warriors.png"},
+		ImageOrcWarriorBanner:       {Path: "image/banner/orc_warriors.png"},
 	}
 
 	for id, info := range resources {
@@ -53,6 +62,11 @@ const (
 	ImageUIButtonIdle
 	ImageUIButtonHover
 	ImageUIButtonPressed
+
+	ImageUISmallButtonDisabled
+	ImageUISmallButtonIdle
+	ImageUISmallButtonHover
+	ImageUISmallButtonPressed
 
 	ImageUIPanel
 	ImageUITooltip
@@ -73,6 +87,7 @@ const (
 	ImageTileVoid
 
 	ImageBrigandsBanner
+	ImageAssassinsBanner
 	ImageHumanHalberdsBanner
 	ImageHumanWarriorsBanner
 	ImageHumanArchersBanner
@@ -82,4 +97,6 @@ const (
 	ImageSkeletalArchersBanner
 	ImageUnholyKnights
 	ImageHumanMummiesBanner
+	ImageOrcWarriorBanner
+	ImageGoblinWarriorBanner
 )

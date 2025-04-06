@@ -46,8 +46,16 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 		Text:     "PLAY",
 		MinWidth: 200,
 		OnClick: func() {
+			game.G.Gold = 100
+			game.G.Stage = 0
 			game.G.SelectedArmy = dat.FactionHuman
 			game.G.Units = []*dat.Unit{
+				// dat.OrcWarriors.CreateUnit(),
+				// dat.GoblinWarriors.CreateUnit(),
+
+				// dat.MercenaryArchers.CreateUnit(),
+				// dat.MercenaryArchers.CreateUnit(),
+
 				dat.MercenarySwords.CreateUnit(),
 				dat.MercenaryCavalry.CreateUnit(),
 			}
