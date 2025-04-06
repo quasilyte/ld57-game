@@ -316,6 +316,10 @@ func (r *runner) runMeleeAttack(isRetaliation bool, attacker, defender *unitNode
 	if attacker.morale < 0.5 {
 		toHit *= 0.75
 	}
+	if defender.broken {
+		toHit += 0.01
+		toHit *= 1.15
+	}
 	if defender.data.Stats.Class == dat.ClassCavalry && attacker.data.Stats.HasTrait(dat.TraitAntiCavalry) {
 		toHit *= 1.1
 	}

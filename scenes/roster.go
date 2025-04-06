@@ -48,7 +48,7 @@ func (c *rosterController) Init(ctx gscene.InitContext) {
 	unitGrid := widget.NewContainer(
 		widget.ContainerOpts.Layout(
 			widget.NewGridLayout(
-				widget.GridLayoutOpts.Columns(5),
+				widget.GridLayoutOpts.Columns(4),
 				widget.GridLayoutOpts.Spacing(8, 4),
 			),
 		),
@@ -124,11 +124,11 @@ func (c *rosterController) Init(ctx gscene.InitContext) {
 
 		unitGrid.AddChild(countLabel)
 
-		unitGrid.AddChild(game.G.UI.NewText(eui.TextConfig{
-			AlignLeft: true,
-			Text:      fmt.Sprintf("Level %d (%d%%)", u.Level+1, int(100*u.Experience)),
-			Font:      assets.FontTiny,
-		}))
+		// unitGrid.AddChild(game.G.UI.NewText(eui.TextConfig{
+		// 	AlignLeft: true,
+		// 	Text:      fmt.Sprintf("Level %d (%d%%)", u.Level+1, int(100*u.Experience)),
+		// 	Font:      assets.FontTiny,
+		// }))
 	}
 
 	root.AddChild(unitGrid)
