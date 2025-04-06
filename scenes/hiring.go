@@ -10,8 +10,6 @@ import (
 	"github.com/quasilyte/ld57-game/dat"
 	"github.com/quasilyte/ld57-game/eui"
 	"github.com/quasilyte/ld57-game/game"
-	"github.com/quasilyte/ld57-game/mapgen"
-	"github.com/quasilyte/ld57-game/scenes/combat"
 	"github.com/quasilyte/ld57-game/scenes/sceneutil"
 )
 
@@ -96,7 +94,7 @@ func (c *hiringController) Init(ctx gscene.InitContext) {
 	for i := 0; i < 2; i++ {
 		u := unitPicker.Pick()
 		roll := game.G.Rand.FloatRange(0.6, 1.3)
-		price := gmath.Scale(u.SquadPrice(), roll)
+		price := gmath.Scale(u.SquadPrice()+u.ExtraBuyCost, roll)
 
 		level := 0
 		if game.G.Rand.Chance(0.4) {
@@ -143,11 +141,7 @@ func (c *hiringController) Init(ctx gscene.InitContext) {
 		Text: "CONTINUE",
 		Font: assets.FontTiny,
 		OnClick: func() {
-			m := mapgen.NextStage()
-			game.G.CurrentMap = m
-			game.G.SceneManager.ChangeScene(combat.NewController(combat.Config{
-				Map: m,
-			}))
+			game.ChangeScene(NewRosterController())
 		},
 	}))
 

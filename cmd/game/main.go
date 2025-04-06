@@ -76,7 +76,7 @@ func main() {
 			spr.SetCentered(false)
 			spr.Shader = game.G.NewShader(assets.ShaderHueRotate)
 			if u.Category == dat.FactionHorde {
-				spr.Shader.SetFloatValue("Angle", 0.8)
+				spr.Shader.SetFloatValue("Angle", 4.5)
 			} else {
 				spr.Shader.SetFloatValue("Angle", -1.5)
 			}

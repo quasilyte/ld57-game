@@ -151,6 +151,10 @@ func (c *continueProxyController) Init(ctx gscene.InitContext) {
 			Text: "CONTINUE",
 			Font: assets.FontTiny,
 			OnClick: func() {
+				if len(game.G.Units) < 13 {
+					game.ChangeScene(NewHiringController())
+					return
+				}
 				game.ChangeScene(NewRosterController())
 			},
 		}))

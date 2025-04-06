@@ -76,7 +76,8 @@ type UnitStats struct {
 
 	Class UnitClass
 
-	Cost int
+	Cost         int
+	ExtraBuyCost int
 
 	MaxRange       int
 	RangedAccuracy float64

@@ -94,10 +94,6 @@ func (c *rosterController) Init(ctx gscene.InitContext) {
 			for _, u := range game.G.Units {
 				u.InitialCount = u.Count
 			}
-			if len(game.G.Units) < 13 {
-				game.ChangeScene(NewHiringController())
-				return
-			}
 			m := mapgen.NextStage()
 			game.G.CurrentMap = m
 			game.G.SceneManager.ChangeScene(combat.NewController(combat.Config{
@@ -179,7 +175,9 @@ func (c *rosterController) fillSlots() {
 				}
 				game.G.Gold -= cost
 				u.Count++
-				c.boughtCounters[i]++
+				if c.boughtCounters[i] < 15 {
+					c.boughtCounters[i]++
+				}
 				c.updateGoldLabel()
 				updateCountLabel()
 				updateHireTooltip()

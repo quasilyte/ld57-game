@@ -66,7 +66,7 @@ func NextStage() *dat.Map {
 			PlayerPlacement: PlayerPlacementCorner,
 			ForestRatio:     0.0,
 			SwampRatio:      0.2,
-			Reward:          190,
+			Reward:          200,
 			ItemReward:      true,
 		}
 

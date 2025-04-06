@@ -33,8 +33,9 @@ var MercenaryHalberds = &UnitStats{
 
 	Category: FactionHuman,
 
-	Class: ClassInfantry,
-	Cost:  10,
+	Class:        ClassInfantry,
+	Cost:         10,
+	ExtraBuyCost: -5,
 
 	MeleeAccuracy: 0.4,
 	Attack:        5,
@@ -80,8 +81,9 @@ var Assassins = &UnitStats{
 
 	Category: FactionNeutral,
 
-	Class: ClassArcher,
-	Cost:  25,
+	Class:        ClassArcher,
+	Cost:         25,
+	ExtraBuyCost: 5,
 
 	MaxRange:       2,
 	RangedAccuracy: 0.6,
@@ -130,8 +132,9 @@ var MercenaryArchers = &UnitStats{
 
 	Category: FactionHuman,
 
-	Class: ClassArcher,
-	Cost:  17,
+	Class:        ClassArcher,
+	Cost:         17,
+	ExtraBuyCost: 10,
 
 	MaxRange:       3,
 	RangedAccuracy: 0.45,
@@ -205,8 +208,9 @@ var SkeletalArchers = &UnitStats{
 
 	Category: FactionUndead,
 
-	Class: ClassArcher,
-	Cost:  12,
+	Class:        ClassArcher,
+	Cost:         12,
+	ExtraBuyCost: 10,
 
 	MaxRange:       3,
 	RangedAccuracy: 0.4,
@@ -284,8 +288,9 @@ var Mummies = &UnitStats{
 
 	Category: FactionUndead,
 
-	Class: ClassInfantry,
-	Cost:  30,
+	Class:        ClassInfantry,
+	Cost:         30,
+	ExtraBuyCost: 5,
 
 	MeleeAccuracy: 0.85,
 	Attack:        4,
@@ -309,8 +314,9 @@ var Ogres = &UnitStats{
 
 	Category: FactionHorde,
 
-	Class: ClassInfantry,
-	Cost:  42,
+	Class:        ClassInfantry,
+	Cost:         42,
+	ExtraBuyCost: 40,
 
 	MeleeAccuracy: 0.925,
 	Attack:        5,
@@ -433,7 +439,7 @@ var OrcCavalry = &UnitStats{
 	Category: FactionHorde,
 
 	Class: ClassCavalry,
-	Cost:  35,
+	Cost:  30,
 
 	RangedAccuracy: 0.3,
 	MeleeAccuracy:  0.75,
