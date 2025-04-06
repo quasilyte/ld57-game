@@ -9,6 +9,7 @@ var AllUnits = []*UnitStats{
 	GoblinWarriors,
 	OrcWarriors,
 	OrcCavalry,
+	Ogres,
 
 	MercenaryHalberds,
 	MercenarySwords,
@@ -26,6 +27,8 @@ var MercenaryHalberds = &UnitStats{
 	Name:        "Merc. Halberds",
 	Banner:      assets.ImageHumanHalberdsBanner,
 	AttackSound: assets.AudioSwordAttack1,
+
+	Category: FactionHuman,
 
 	Class: ClassInfantry,
 	Cost:  12,
@@ -49,6 +52,8 @@ var Brigands = &UnitStats{
 	Banner:      assets.ImageBrigandsBanner,
 	AttackSound: assets.AudioSwordAttack1,
 
+	Category: FactionNeutral,
+
 	Class: ClassInfantry,
 	Cost:  5,
 
@@ -69,6 +74,8 @@ var Assassins = &UnitStats{
 	Name:        "Assassins",
 	Banner:      assets.ImageAssassinsBanner,
 	AttackSound: assets.AudioSwordAttack1,
+
+	Category: FactionNeutral,
 
 	Class: ClassArcher,
 	Cost:  22,
@@ -95,6 +102,8 @@ var MercenarySwords = &UnitStats{
 	Banner:      assets.ImageHumanWarriorsBanner,
 	AttackSound: assets.AudioSwordAttack1,
 
+	Category: FactionHuman,
+
 	Class: ClassInfantry,
 	Cost:  10,
 
@@ -115,6 +124,8 @@ var MercenaryArchers = &UnitStats{
 	Name:        "Merc. Archers",
 	Banner:      assets.ImageHumanArchersBanner,
 	AttackSound: assets.AudioBluntAttack1,
+
+	Category: FactionHuman,
 
 	Class: ClassArcher,
 	Cost:  17,
@@ -139,6 +150,8 @@ var MercenaryCavalry = &UnitStats{
 	Banner:      assets.ImageHumanKnights,
 	AttackSound: assets.AudioSwordAttack1,
 
+	Category: FactionHuman,
+
 	Class: ClassCavalry,
 	Cost:  19,
 
@@ -160,6 +173,8 @@ var SkeletalWarriors = &UnitStats{
 	Name:        "Skel. Warriors",
 	Banner:      assets.ImageSkeletalWarriorsBanner,
 	AttackSound: assets.AudioSwordAttack1,
+
+	Category: FactionUndead,
 
 	Class: ClassInfantry,
 	Cost:  8,
@@ -183,6 +198,8 @@ var SkeletalArchers = &UnitStats{
 	Name:        "Skel. Archers",
 	Banner:      assets.ImageSkeletalArchersBanner,
 	AttackSound: assets.AudioBluntAttack1,
+
+	Category: FactionUndead,
 
 	Class: ClassArcher,
 	Cost:  12,
@@ -210,6 +227,8 @@ var UnholyKnights = &UnitStats{
 	Banner:      assets.ImageUnholyKnights,
 	AttackSound: assets.AudioBluntAttack1,
 
+	Category: FactionUndead,
+
 	Class: ClassCavalry,
 	Cost:  16,
 
@@ -231,6 +250,8 @@ var Zombies = &UnitStats{
 	Name:        "Zombies",
 	Banner:      assets.ImageZombiesBanner,
 	AttackSound: assets.AudioSwordAttack1,
+
+	Category: FactionUndead,
 
 	Class: ClassInfantry,
 	Cost:  9,
@@ -256,6 +277,8 @@ var Mummies = &UnitStats{
 	Banner:      assets.ImageHumanMummiesBanner,
 	AttackSound: assets.AudioBluntAttack1,
 
+	Category: FactionUndead,
+
 	Class: ClassInfantry,
 	Cost:  30,
 
@@ -274,10 +297,36 @@ var Mummies = &UnitStats{
 	},
 }
 
+var Ogres = &UnitStats{
+	Name:        "Ogres",
+	Banner:      assets.ImageOgresBanner,
+	AttackSound: assets.AudioBluntAttack1,
+
+	Category: FactionHorde,
+
+	Class: ClassInfantry,
+	Cost:  45,
+
+	MeleeAccuracy: 0.9,
+	Attack:        5,
+	Defense:       6,
+	MaxCount:      3,
+	Life:          8,
+	Morale:        7,
+	Speed:         2,
+
+	Traits: []Trait{
+		TraitCauseFear,
+		TraitStun,
+	},
+}
+
 var GoblinWarriors = &UnitStats{
 	Name:        "Gob. Warriors",
 	Banner:      assets.ImageGoblinWarriorBanner,
 	AttackSound: assets.AudioBluntAttack1,
+
+	Category: FactionHorde,
 
 	Class: ClassInfantry,
 	Cost:  6,
@@ -300,6 +349,8 @@ var OrcWarriors = &UnitStats{
 	Banner:      assets.ImageOrcWarriorBanner,
 	AttackSound: assets.AudioSwordAttack1,
 
+	Category: FactionHorde,
+
 	Class: ClassInfantry,
 	Cost:  20,
 
@@ -320,6 +371,8 @@ var OrcCavalry = &UnitStats{
 	Name:        "Orc Boar Elite",
 	Banner:      assets.ImageOrcBoarEliteBanner,
 	AttackSound: assets.AudioBluntAttack1,
+
+	Category: FactionHorde,
 
 	Class: ClassCavalry,
 	Cost:  35,

@@ -76,6 +76,10 @@ func ChangeScene(c gscene.Controller) {
 	G.SceneManager.ChangeScene(c)
 }
 
+func (ctx *GlobalContext) NewShader(id resource.ShaderID) *graphics.Shader {
+	return graphics.NewShader(ctx.Loader.LoadShader(id).Data)
+}
+
 func (ctx *GlobalContext) NewSprite(id resource.ImageID) *graphics.Sprite {
 	s := graphics.NewSprite()
 	img := ctx.Loader.LoadImage(id)

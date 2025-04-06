@@ -27,6 +27,7 @@ const (
 	EnemyPlacementNearPlayer
 	EnemyPlacementEdges
 	EnemyPlacementCenter
+	EnemyPlacementCorner
 )
 
 type PlayerPlacementKind int
@@ -51,6 +52,8 @@ type Config struct {
 	EnemyBudget     int
 	EnemyPlacement  EnemyPlacementKind
 	PlayerPlacement PlayerPlacementKind
+
+	MandatoryEnemies []*dat.Unit
 
 	ForestRatio float64
 	SwampRatio  float64
@@ -270,10 +273,32 @@ func Generate(config Config) *dat.Map {
 			break
 		}
 	}
+	enemyUnits = append(enemyUnits, config.MandatoryEnemies...)
 
 	tmpCells = tmpCells[:0] // Re-use them
 
 	switch config.EnemyPlacement {
+	case EnemyPlacementCorner:
+		row := 0
+		deployed := 0
+	OuterLoop2:
+		for {
+			for i := 0; i < config.Width; i++ {
+				cell := dat.CellPos{
+					X: i + padOffsetX, Y: row + padOffsetY,
+				}
+				if occupiedCells[cell] {
+					continue
+				}
+				tmpCells = append(tmpCells, cell)
+				deployed++
+				if deployed >= len(enemyUnits) {
+					break OuterLoop2
+				}
+			}
+			row++
+		}
+
 	case EnemyPlacementCenter:
 		numUnits := len(enemyUnits)
 		placementSize := int(math.Sqrt(float64(numUnits))/2) + 1

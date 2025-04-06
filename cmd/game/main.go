@@ -54,12 +54,27 @@ func main() {
 	ebiten.SetFullscreen(true)
 	ebiten.SetWindowTitle("ld57game")
 
-	for _, u := range dat.AllUnits {
-		img := ebiten.NewImage(44, 44)
-		var opts ebiten.DrawImageOptions
-		opts.GeoM.Scale(2, 2)
-		img.DrawImage(game.G.Loader.LoadImage(u.Banner).Data, &opts)
-		u.ScaledImage = img
+	{
+		spr := graphics.NewSprite()
+		for _, u := range dat.AllUnits {
+			img := ebiten.NewImage(44, 44)
+			var opts ebiten.DrawImageOptions
+			opts.GeoM.Scale(2, 2)
+			img.DrawImage(game.G.Loader.LoadImage(u.Banner).Data, &opts)
+			u.ScaledImage = img
+
+			spr.SetImage(game.G.Loader.LoadImage(u.Banner).Data)
+			spr.SetCentered(false)
+			spr.Shader = game.G.NewShader(assets.ShaderHueRotate)
+			if u.Category == dat.FactionHorde {
+				spr.Shader.SetFloatValue("Angle", 0.8)
+			} else {
+				spr.Shader.SetFloatValue("Angle", -1.5)
+			}
+			img2 := ebiten.NewImage(22, 22)
+			spr.Draw(img2)
+			u.AltBanner = img2
+		}
 	}
 
 	game.G.NewContinueProxy = func() gscene.Controller {

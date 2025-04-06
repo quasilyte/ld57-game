@@ -17,7 +17,7 @@ type computerPlayer struct {
 
 func (p *computerPlayer) SetUnit(u *unitNode) {
 	p.unit = u
-	p.delay = 0.3
+	p.delay = 0.1
 }
 
 func (p *computerPlayer) Update(delta float64) {

@@ -7,7 +7,10 @@ import (
 )
 
 func registerShaderResources(loader *resource.Loader) {
-	resources := map[resource.ShaderID]resource.ShaderInfo{}
+	resources := map[resource.ShaderID]resource.ShaderInfo{
+		ShaderMelt:      {Path: "shader/melt.go"},
+		ShaderHueRotate: {Path: "shader/huerotate.go"},
+	}
 
 	for id, info := range resources {
 		loader.ShaderRegistry.Set(id, info)
@@ -17,4 +20,7 @@ func registerShaderResources(loader *resource.Loader) {
 
 const (
 	ShaderNone resource.ShaderID = iota
+
+	ShaderMelt
+	ShaderHueRotate
 )

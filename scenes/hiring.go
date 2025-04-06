@@ -53,8 +53,9 @@ func (c *hiringController) Init(ctx gscene.InitContext) {
 	unitPicker.AddOption(dat.Brigands, 0.1)
 	if game.G.Rand.Chance(0.6) {
 		unitPicker.AddOption(dat.OrcWarriors, 0.1)
-		unitPicker.AddOption(dat.OrcCavalry, 0.1)
+		unitPicker.AddOption(dat.OrcCavalry, 0.085)
 		unitPicker.AddOption(dat.GoblinWarriors, 0.1)
+		unitPicker.AddOption(dat.Ogres, 0.1)
 	}
 	unitPicker.AddOption(dat.Assassins, 0.1)
 	switch game.G.SelectedArmy {

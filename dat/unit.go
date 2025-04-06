@@ -12,6 +12,7 @@ const (
 	FactionNeutral UnitFaction = iota
 	FactionHuman
 	FactionUndead
+	FactionHorde
 )
 
 type Unit struct {
@@ -50,7 +51,10 @@ func (class UnitClass) String() string {
 type UnitStats struct {
 	Name        string
 	Banner      resource.ImageID
+	AltBanner   *ebiten.Image
 	ScaledImage *ebiten.Image
+
+	Category UnitFaction
 
 	AttackSound resource.AudioID
 

@@ -77,6 +77,24 @@ func NextStage() *dat.Map {
 		}
 
 	case 4:
+		ogre := dat.Ogres.CreateUnit()
+		ogre.Level = 1
+		cfg = Config{
+			Width:           8,
+			Height:          10,
+			Mission:         dat.MissionKillAll,
+			Enemy:           EnemyHorde,
+			EnemyBudget:     3 * dat.GoblinWarriors.SquadPrice(),
+			EnemyPlacement:  EnemyPlacementCorner,
+			PlayerPlacement: PlayerPlacementCenter,
+			ForestRatio:     0.1,
+			Reward:          110,
+			MandatoryEnemies: []*dat.Unit{
+				ogre,
+			},
+		}
+
+	case 5:
 		var enemy EnemyKind
 		switch game.G.SelectedArmy {
 		case dat.FactionUndead:
@@ -99,7 +117,7 @@ func NextStage() *dat.Map {
 			Reward:          210,
 		}
 
-	case 5:
+	case 6:
 		cfg = Config{
 			Width:           20,
 			Height:          20,
@@ -122,7 +140,7 @@ func NextStage() *dat.Map {
 		})
 		cfg.EnemyBudget = (7 + (2 * (game.G.Stage - 5))) * dat.MercenarySwords.SquadPrice()
 		cfg.EnemyPlacement = gmath.RandElem(&game.G.Rand, []EnemyPlacementKind{
-			EnemyPlacementCenter, EnemyPlacementEdges, EnemyPlacementRandomSpread,
+			EnemyPlacementCorner, EnemyPlacementCenter, EnemyPlacementEdges, EnemyPlacementRandomSpread,
 		})
 		cfg.PlayerPlacement = gmath.RandElem(&game.G.Rand, []PlayerPlacementKind{
 			PlayerPlacementCenter, PlayerPlacementCorner, PlayerPlacementEdges,

@@ -44,7 +44,6 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 		MinWidth: 200,
 		OnClick: func() {
 			game.G.Reset()
-			// game.G.Stage = 7
 			game.G.SceneManager.ChangeScene(NewNewGameController())
 		},
 	}))

@@ -43,6 +43,17 @@ type unitNodeConfig struct {
 
 func newUnitNode(config unitNodeConfig) *unitNode {
 	spr := game.G.NewSprite(config.Data.Stats.Banner)
+
+	if config.Team == 0 {
+		if config.Data.Stats.Category == dat.FactionHorde {
+			spr.SetImage(config.Data.Stats.AltBanner)
+		}
+	} else {
+		if config.Data.Stats.Category != dat.FactionHorde {
+			spr.SetImage(config.Data.Stats.AltBanner)
+		}
+	}
+
 	n := &unitNode{
 		sceneState: config.State,
 		sprite:     spr,
@@ -52,9 +63,6 @@ func newUnitNode(config unitNodeConfig) *unitNode {
 		leftoverHP: config.Data.Stats.Life,
 		morale:     1.0,
 		facing:     game.G.Rand.IntRange(0, 3),
-	}
-	if config.Team != 0 {
-		spr.SetColorScale(graphics.ColorScale{R: 1.2, G: 1.2, B: 0.6, A: 1})
 	}
 
 	n.facingIndicator = graphics.NewSprite()
@@ -173,6 +181,13 @@ func (u *unitNode) onDamage(dmg int) bool {
 	if u.data.Count == 0 {
 		u.Dispose()
 		game.G.PlaySound(assets.AudioDeath1)
+		deathAnim := newShaderNode(shaderNodeConfig{
+			Time:   1.0,
+			Image:  u.sprite.GetImage(),
+			Shader: assets.ShaderMelt,
+			Pos:    u.spritePos,
+		})
+		u.sceneState.scene.AddObject(deathAnim)
 	}
 	u.updateCountLabel()
 	return u.data.Count == 0
