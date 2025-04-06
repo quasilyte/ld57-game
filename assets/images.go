@@ -50,8 +50,10 @@ func registerImageResources(loader *resource.Loader) {
 		ImageOrcWarriorBanner:       {Path: "image/banner/orc_warriors.png"},
 		ImageOrcBoarEliteBanner:     {Path: "image/banner/orc_archer_cavalry.png"},
 		ImageOgresBanner:            {Path: "image/banner/ogres.png"},
+		ImageTrollBanner:            {Path: "image/banner/troll.png"},
 
 		ImageArrow: {Path: "image/arrow.png"},
+		ImageSlash: {Path: "image/slash.png"},
 
 		ImageShaderMask: {Path: "image/noise.png"},
 	}
@@ -107,8 +109,10 @@ const (
 	ImageOrcBoarEliteBanner
 	ImageGoblinWarriorBanner
 	ImageOgresBanner
+	ImageTrollBanner
 
 	ImageArrow
+	ImageSlash
 
 	ImageShaderMask
 )

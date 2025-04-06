@@ -59,7 +59,7 @@ func NextStage() *dat.Map {
 			PlayerPlacement: PlayerPlacementCorner,
 			ForestRatio:     0.0,
 			SwampRatio:      0.2,
-			Reward:          140,
+			Reward:          150,
 		}
 
 	case 3:
@@ -73,7 +73,7 @@ func NextStage() *dat.Map {
 			PlayerPlacement: PlayerPlacementCorner,
 			ForestRatio:     0.6,
 			SwampRatio:      0.05,
-			Reward:          190,
+			Reward:          200,
 		}
 
 	case 4:
@@ -88,7 +88,7 @@ func NextStage() *dat.Map {
 			EnemyPlacement:  EnemyPlacementCorner,
 			PlayerPlacement: PlayerPlacementCenter,
 			ForestRatio:     0.1,
-			Reward:          110,
+			Reward:          280,
 			MandatoryEnemies: []*dat.Unit{
 				ogre,
 			},
@@ -109,15 +109,36 @@ func NextStage() *dat.Map {
 			Height:          20,
 			Mission:         dat.MissionKillAll,
 			Enemy:           enemy,
-			EnemyBudget:     7 * dat.MercenarySwords.SquadPrice(),
+			EnemyBudget:     6 * dat.MercenarySwords.SquadPrice(),
 			EnemyPlacement:  EnemyPlacementCenter,
 			PlayerPlacement: PlayerPlacementEdges,
 			ForestRatio:     0.1,
 			SwampRatio:      0.05,
-			Reward:          210,
+			Reward:          350,
 		}
 
 	case 6:
+		var trolls []*dat.Unit
+		for i := 0; i < 3; i++ {
+			troll := dat.Troll.CreateUnit()
+			troll.Level = game.G.Rand.IntRange(0, 2)
+			trolls = append(trolls, troll)
+		}
+		cfg = Config{
+			Width:            14,
+			Height:           16,
+			Mission:          dat.MissionKillAll,
+			Enemy:            EnemyBrigands,
+			EnemyBudget:      0,
+			EnemyPlacement:   EnemyPlacementRandomSpread,
+			PlayerPlacement:  PlayerPlacementCorner,
+			ForestRatio:      0.05,
+			SwampRatio:       0.6,
+			Reward:           220,
+			MandatoryEnemies: trolls,
+		}
+
+	case 7:
 		cfg = Config{
 			Width:           20,
 			Height:          20,
@@ -128,7 +149,7 @@ func NextStage() *dat.Map {
 			PlayerPlacement: PlayerPlacementCenter,
 			ForestRatio:     0.1,
 			SwampRatio:      0.05,
-			Reward:          150,
+			Reward:          350,
 		}
 
 	default:
@@ -138,7 +159,7 @@ func NextStage() *dat.Map {
 		cfg.Enemy = gmath.RandElem(&game.G.Rand, []EnemyKind{
 			EnemyHorde, EnemyBrigands, EnemyMercenaries, EnemyUndead,
 		})
-		cfg.EnemyBudget = (7 + (2 * (game.G.Stage - 5))) * dat.MercenarySwords.SquadPrice()
+		cfg.EnemyBudget = (7 + (2 * (game.G.Stage - 6))) * dat.MercenarySwords.SquadPrice()
 		cfg.EnemyPlacement = gmath.RandElem(&game.G.Rand, []EnemyPlacementKind{
 			EnemyPlacementCorner, EnemyPlacementCenter, EnemyPlacementEdges, EnemyPlacementRandomSpread,
 		})
@@ -147,7 +168,7 @@ func NextStage() *dat.Map {
 		})
 		cfg.ForestRatio = game.G.Rand.FloatRange(0, 0.3)
 		cfg.SwampRatio = game.G.Rand.FloatRange(0, 0.3)
-		cfg.Reward = 50 + game.G.Rand.IntRange(0, 250)
+		cfg.Reward = 50 + game.G.Rand.IntRange(150, 400)
 	}
 
 	cfg.Stage = game.G.Stage

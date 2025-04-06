@@ -21,6 +21,8 @@ var AllUnits = []*UnitStats{
 	UnholyKnights,
 	Zombies,
 	Mummies,
+
+	Troll,
 }
 
 var MercenaryHalberds = &UnitStats{
@@ -191,6 +193,7 @@ var SkeletalWarriors = &UnitStats{
 		TraitUnbreakable,
 		TraitCauseFear,
 		TraitArrowResist,
+		TraitStunResist,
 	},
 }
 
@@ -243,6 +246,7 @@ var UnholyKnights = &UnitStats{
 	Traits: []Trait{
 		TraitCauseFear,
 		TraitMobile,
+		TraitStunResist,
 	},
 }
 
@@ -318,6 +322,33 @@ var Ogres = &UnitStats{
 	Traits: []Trait{
 		TraitCauseFear,
 		TraitStun,
+		TraitStunResist,
+	},
+}
+
+var Troll = &UnitStats{
+	Name:        "Troll",
+	Banner:      assets.ImageTrollBanner,
+	AttackSound: assets.AudioBluntAttack1,
+
+	Category: FactionHorde,
+
+	Class: ClassInfantry,
+	Cost:  320,
+
+	MeleeAccuracy: 1.0,
+	Attack:        9,
+	Defense:       9,
+	MaxCount:      1,
+	Life:          14,
+	Morale:        9,
+	Speed:         2,
+
+	Traits: []Trait{
+		TraitStunResist,
+		TraitRegen,
+		TraitMighty,
+		TraitPathfinder,
 	},
 }
 

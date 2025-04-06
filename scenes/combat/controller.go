@@ -411,6 +411,10 @@ func (c *Controller) handleInput(delta float64) {
 		var traitStrings []string
 		for _, t := range hovered.data.Stats.Traits {
 			switch t {
+			case dat.TraitMighty:
+				traitStrings = append(traitStrings, "Mighty")
+			case dat.TraitRegen:
+				traitStrings = append(traitStrings, "Regeneration")
 			case dat.TraitStun:
 				traitStrings = append(traitStrings, "Stun Attack")
 			case dat.TraitChargeResist:
@@ -435,6 +439,8 @@ func (c *Controller) handleInput(delta float64) {
 				traitStrings = append(traitStrings, "Pathfinder")
 			case dat.TraitCripplingShot:
 				traitStrings = append(traitStrings, "Crippling Shot")
+			case dat.TraitStunResist:
+				traitStrings = append(traitStrings, "Stun Resist")
 			}
 		}
 		if len(traitStrings) > 0 {
@@ -527,13 +533,28 @@ func (c *Controller) checkVictory() bool {
 func (c *Controller) onMeleeAttack(event meleeAttackEvent) {
 	event.Attacker.movesLeft = 0
 	if event.Attacker.data.Stats.HasTrait(dat.TraitStun) {
-		event.Defender.movesLeft = 0
+		stunned := !(event.Defender.data.Stats.HasTrait(dat.TraitStunResist) && game.G.Rand.Bool())
+		if stunned {
+			event.Defender.movesLeft = 0
+		}
 	} else {
-		event.Defender.movesLeft = gmath.ClampMin(event.Defender.movesLeft-1, 0)
+		slightlyStunned := !(event.Defender.data.Stats.HasTrait(dat.TraitStunResist) && game.G.Rand.Bool())
+		if slightlyStunned {
+			event.Defender.movesLeft = gmath.ClampMin(event.Defender.movesLeft-1, 0)
+		}
 	}
 	event.Attacker.lookTowards(event.Defender.pos)
 	event.Defender.afterTurn()
 	c.runner.runMeleeRound(event.Attacker, event.Defender)
+
+	numSlashes := gmath.ClampMax(event.Attacker.data.Count, 5)
+	for i := 0; i < numSlashes; i++ {
+		slash := newSlashNode(slashNodeConfig{
+			fireFrom: event.Attacker.spritePos.Add(game.G.Rand.Offset(-12, 12)),
+			fireTo:   event.Defender.spritePos.Add(game.G.Rand.Offset(-12, 12)),
+		})
+		c.scene.AddObject(slash)
+	}
 
 	game.G.PlaySound(event.Attacker.data.Stats.AttackSound)
 }

@@ -40,6 +40,9 @@ func (r *runner) NextTurn() {
 	r.sceneState.units = gslices.FilterInplace(r.sceneState.units, func(u *unitNode) bool {
 		if u.data.Count > 0 {
 			u.movesLeft = u.data.Stats.Speed
+			if u.data.Stats.HasTrait(dat.TraitRegen) {
+				u.leftoverHP = u.data.Stats.Life
+			}
 			if u.data.Experience > 1 {
 				u.data.Experience = 0
 				u.data.Level++
@@ -162,9 +165,9 @@ func (r *runner) withCasualtiesCheck(melee bool, attacker, defender *unitNode, f
 	if deadAttackers+deadDefenders > 0 {
 		// TODO: it doesn't work.
 		if attacker.data.Count == 0 || defender.data.Count == 0 {
-			r.sceneState.pause = 0.95
+			r.sceneState.pause = 1.0
 		} else {
-			r.sceneState.pause = 0.55
+			r.sceneState.pause = 0.65
 		}
 	}
 
@@ -222,10 +225,24 @@ func (r *runner) runMeleeRound(attacker, defender *unitNode) {
 		totalAttackerDmg := 0
 		totalDefenderDmg := 0
 
-		for i := 0; i < attacker.data.Count; i++ {
+		numAttacks := attacker.data.Count
+		if attacker.data.Stats.HasTrait(dat.TraitMighty) {
+			numAttacks *= 2
+		}
+
+		retaliationsLeft := defender.data.Count * 2
+		if defender.guard {
+			retaliationsLeft += (defender.data.Count / 2) + 1
+		}
+		if defender.data.Stats.HasTrait(dat.TraitMighty) {
+			retaliationsLeft *= 2
+		}
+
+		for i := 0; i < numAttacks; i++ {
 			attackerDmg := r.runMeleeAttack(false, attacker, defender, facing)
 			defenderDmg := 0
-			if !defender.broken {
+			if !defender.broken && retaliationsLeft > 0 {
+				retaliationsLeft--
 				defenderDmg = r.runMeleeAttack(true, defender, attacker, meleeAttackFront)
 			}
 

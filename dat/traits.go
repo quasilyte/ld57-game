@@ -7,6 +7,9 @@ const (
 
 	TraitChargeResist
 	TraitAntiCavalry
+	TraitStunResist
+	TraitRegen
+	TraitMighty
 	TraitFlankingImmune
 	TraitUnbreakable
 	TraitCauseFear
