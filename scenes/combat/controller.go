@@ -462,6 +462,8 @@ func (c *Controller) handleInput(delta float64) {
 				traitStrings = append(traitStrings, "Arrow Weakness")
 			case dat.TraitMobile:
 				traitStrings = append(traitStrings, "Diag. Moves")
+			case dat.TraitCharge:
+				traitStrings = append(traitStrings, "Charge Attack")
 			case dat.TraitFlankingImmune:
 				traitStrings = append(traitStrings, "Flanking Resist")
 			case dat.TraitBloodlust:
