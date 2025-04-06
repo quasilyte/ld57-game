@@ -49,6 +49,23 @@ func (c *NewGameController) Init(ctx gscene.InitContext) {
 	}))
 
 	panelRows.AddChild(game.G.UI.NewButton(eui.ButtonConfig{
+		Text:     "HORDE",
+		MinWidth: 200,
+		OnClick: func() {
+			game.G.SelectedArmy = dat.FactionHuman
+			game.G.Units = []*dat.Unit{
+				dat.GoblinWarriors.CreateUnit(),
+				dat.OrcWarriors.CreateUnit(),
+			}
+			m := mapgen.NextStage()
+			game.G.CurrentMap = m
+			game.G.SceneManager.ChangeScene(combat.NewController(combat.Config{
+				Map: m,
+			}))
+		},
+	}))
+
+	panelRows.AddChild(game.G.UI.NewButton(eui.ButtonConfig{
 		Text: "UNDEAD",
 		OnClick: func() {
 			game.G.SelectedArmy = dat.FactionUndead

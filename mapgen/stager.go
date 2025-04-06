@@ -32,6 +32,12 @@ func NextStage() *dat.Map {
 			enemy = EnemyMercenaries
 		case dat.FactionHuman:
 			enemy = EnemyUndead
+		case dat.FactionHorde:
+			if game.G.Rand.Chance(0.6) {
+				enemy = EnemyMercenaries
+			} else {
+				enemy = EnemyUndead
+			}
 		default:
 			panic("TODO")
 		}
@@ -101,6 +107,8 @@ func NextStage() *dat.Map {
 			enemy = EnemyUndead
 		case dat.FactionHuman:
 			enemy = EnemyMercenaries
+		case dat.FactionHorde:
+			enemy = EnemyHorde
 		default:
 			panic("TODO")
 		}

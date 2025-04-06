@@ -79,6 +79,8 @@ func (c *continueProxyController) Init(ctx gscene.InitContext) {
 		switch game.G.SelectedArmy {
 		case dat.FactionUndead:
 			army = "Undead"
+		case dat.FactionHorde:
+			army = "Horde"
 		}
 		pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
 			Text:      "Army",

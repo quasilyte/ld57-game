@@ -51,14 +51,22 @@ func (c *hiringController) Init(ctx gscene.InitContext) {
 
 	unitPicker := gmath.NewRandPicker[*dat.UnitStats](&game.G.Rand)
 	unitPicker.AddOption(dat.Brigands, 0.1)
-	if game.G.Rand.Chance(0.6) {
-		unitPicker.AddOption(dat.OrcWarriors, 0.1)
-		unitPicker.AddOption(dat.OrcCavalry, 0.085)
-		unitPicker.AddOption(dat.GoblinWarriors, 0.1)
-		unitPicker.AddOption(dat.Ogres, 0.1)
-	}
 	unitPicker.AddOption(dat.Assassins, 0.1)
+
 	switch game.G.SelectedArmy {
+	case dat.FactionHorde:
+		if game.G.Stage >= 6 {
+			unitPicker.AddOption(dat.OrcWarriors, 0.55)
+			unitPicker.AddOption(dat.OrcCavalry, 0.3)
+			unitPicker.AddOption(dat.GoblinWarriors, 0.3)
+			unitPicker.AddOption(dat.Ogres, 0.3)
+		} else {
+			unitPicker.AddOption(dat.OrcWarriors, 0.45)
+			unitPicker.AddOption(dat.OrcCavalry, 0.15)
+			unitPicker.AddOption(dat.GoblinWarriors, 0.6)
+			unitPicker.AddOption(dat.Ogres, 0.2)
+		}
+
 	case dat.FactionHuman:
 		unitPicker.AddOption(dat.MercenarySwords, 0.6)
 		unitPicker.AddOption(dat.MercenaryHalberds, 0.45)
