@@ -22,7 +22,7 @@ func NextStage() *dat.Map {
 			PlayerPlacement: PlayerPlacementCenter,
 			ForestRatio:     0.1,
 			SwampRatio:      0,
-			Reward:          135,
+			Reward:          140,
 			ItemReward:      true,
 		}
 
@@ -52,7 +52,7 @@ func NextStage() *dat.Map {
 			PlayerPlacement: PlayerPlacementCenter,
 			ForestRatio:     0.2,
 			SwampRatio:      0.1,
-			Reward:          170,
+			Reward:          150,
 		}
 
 	case 2:
@@ -66,8 +66,11 @@ func NextStage() *dat.Map {
 			PlayerPlacement: PlayerPlacementCorner,
 			ForestRatio:     0.0,
 			SwampRatio:      0.2,
-			Reward:          200,
+			Reward:          170,
 			ItemReward:      true,
+			MandatoryEnemies: []*dat.Unit{
+				dat.GoblinWarriors.CreateUnit(),
+			},
 		}
 
 	case 3:

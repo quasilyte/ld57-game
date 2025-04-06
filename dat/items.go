@@ -67,7 +67,7 @@ var ItemRingOfFortitude = &ItemStats{
 var ItemRingOfCourage = &ItemStats{
 	Name: "Ring of Courage",
 	Hint: "Grants complete resist against Cause Fear effect",
-	Icon: assets.ImageItemMagicHelmet,
+	Icon: assets.ImageItemMagicRing,
 }
 
 var ItemVengeanceHelm = &ItemStats{

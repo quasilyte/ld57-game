@@ -49,13 +49,13 @@ func (c *NewGameController) Init(ctx gscene.InitContext) {
 	}))
 
 	panelRows.AddChild(game.G.UI.NewButton(eui.ButtonConfig{
-		Text:     "HORDE",
-		MinWidth: 200,
+		Text: "UNDEAD",
 		OnClick: func() {
-			game.G.SelectedArmy = dat.FactionHorde
+			game.G.SelectedArmy = dat.FactionUndead
 			game.G.Units = []*dat.Unit{
-				dat.GoblinWarriors.CreateUnit(),
-				dat.OrcWarriors.CreateUnit(),
+				// dat.Reapers.CreateUnit(),
+				dat.Zombies.CreateUnit(),
+				dat.SkeletalArchers.CreateUnit(),
 			}
 			m := mapgen.NextStage()
 			game.G.CurrentMap = m
@@ -66,13 +66,13 @@ func (c *NewGameController) Init(ctx gscene.InitContext) {
 	}))
 
 	panelRows.AddChild(game.G.UI.NewButton(eui.ButtonConfig{
-		Text: "UNDEAD",
+		Text:     "HORDE",
+		MinWidth: 200,
 		OnClick: func() {
-			game.G.SelectedArmy = dat.FactionUndead
+			game.G.SelectedArmy = dat.FactionHorde
 			game.G.Units = []*dat.Unit{
-				// dat.Reapers.CreateUnit(),
-				dat.Zombies.CreateUnit(),
-				dat.SkeletalArchers.CreateUnit(),
+				dat.GoblinWarriors.CreateUnit(),
+				dat.OrcWarriors.CreateUnit(),
 			}
 			m := mapgen.NextStage()
 			game.G.CurrentMap = m

@@ -2,7 +2,9 @@ package combat
 
 import (
 	"fmt"
+	"runtime"
 	"strconv"
+	"unsafe"
 
 	"github.com/ebitenui/ebitenui/widget"
 	graphics "github.com/quasilyte/ebitengine-graphics"
@@ -63,6 +65,24 @@ func NewController(config Config) *Controller {
 	}
 }
 
+func fixViewport(vp *graphics.SceneDrawer) {
+	if runtime.GOARCH != "wasm" {
+		return
+	}
+
+	type sceneDrawer struct {
+		cameras []int
+
+		// This camera is used only when len(cameras) is 0.
+		// Stored as a slice for convenience.
+		defaultCamera []int
+
+		viewportRect gmath.Rect
+	}
+	vp2 := (*sceneDrawer)(unsafe.Pointer(vp))
+	vp2.viewportRect = gmath.Rect{Max: game.G.WindowSize}
+}
+
 func (c *Controller) Init(ctx gscene.InitContext) {
 	c.scene = ctx.Scene
 
@@ -118,7 +138,9 @@ func (c *Controller) Init(ctx gscene.InitContext) {
 		},
 		NumLayers: len(layers),
 	})
-	ctx.SetDrawer(viewport.NewDrawerWithLayers(game.G.Camera, layers))
+	vp := viewport.NewDrawerWithLayers(game.G.Camera, layers)
+	fixViewport(vp)
+	ctx.SetDrawer(vp)
 
 	ctx.Scene.AddGraphics(sceneutil.NewBackgroundImage(), 0)
 
