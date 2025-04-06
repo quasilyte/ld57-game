@@ -70,6 +70,7 @@ func (c *NewGameController) Init(ctx gscene.InitContext) {
 		OnClick: func() {
 			game.G.SelectedArmy = dat.FactionUndead
 			game.G.Units = []*dat.Unit{
+				// dat.Reapers.CreateUnit(),
 				dat.Zombies.CreateUnit(),
 				dat.SkeletalArchers.CreateUnit(),
 			}

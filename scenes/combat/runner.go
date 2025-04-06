@@ -1,6 +1,7 @@
 package combat
 
 import (
+	"fmt"
 	"strconv"
 
 	graphics "github.com/quasilyte/ebitengine-graphics"
@@ -197,7 +198,7 @@ func (r *runner) withCasualtiesCheck(melee bool, attacker, defender *unitNode, f
 		}
 	}
 
-	const expScaler = 0.85
+	const expScaler = 0.8
 	if deadDefenders > 0 {
 		m := float64(defender.data.Level+1) / float64(attacker.data.Level+1)
 		attacker.AddExperience(m * float64(deadDefenders) * (0.01 * (float64(defender.data.Stats.Cost) * expScaler)))
@@ -225,7 +226,8 @@ func (r *runner) withCasualtiesCheck(melee bool, attacker, defender *unitNode, f
 		if attacker.data.Count < attacker.data.InitialCount && attacker.data.Stats.HasTrait(dat.TraitSoulHarvest) {
 			// 3 mercenary swords of level 1 (+1) => 3 * (10+1) => 33 => ~33%
 			totalValue := float64(deadDefenders * (defender.data.Stats.Cost + defender.data.Level))
-			if totalValue > 15 && game.G.Rand.Chance(totalValue/100) {
+			fmt.Println("value=", totalValue)
+			if totalValue > 10 && game.G.Rand.Chance(totalValue/100) {
 				attacker.data.Count++
 				deadAttackers--
 				attacker.updateCountLabel()
@@ -240,7 +242,7 @@ func (r *runner) withCasualtiesCheck(melee bool, attacker, defender *unitNode, f
 			s = "-" + strconv.Itoa(deadAttackers)
 		} else {
 			good = true
-			s = "+" + strconv.Itoa(deadAttackers)
+			s = "+" + strconv.Itoa(-deadAttackers)
 		}
 		n := NewFloatingTextNode(FloatingTextNodeConfig{
 			Pos:   attacker.spritePos,
