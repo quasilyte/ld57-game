@@ -73,7 +73,7 @@ func NextStage() *dat.Map {
 			PlayerPlacement: PlayerPlacementCorner,
 			ForestRatio:     0.6,
 			SwampRatio:      0.05,
-			Reward:          200,
+			Reward:          235,
 		}
 
 	case 4:
@@ -158,7 +158,7 @@ func NextStage() *dat.Map {
 		cfg.Enemy = gmath.RandElem(&game.G.Rand, []EnemyKind{
 			EnemyHorde, EnemyBrigands, EnemyMercenaries, EnemyUndead,
 		})
-		cfg.EnemyBudget = (7 + (2 * (game.G.Stage - 6))) * dat.MercenarySwords.SquadPrice()
+		cfg.EnemyBudget = (6 + (2 * (game.G.Stage - 8))) * dat.MercenarySwords.SquadPrice()
 		cfg.EnemyPlacement = gmath.RandElem(&game.G.Rand, []EnemyPlacementKind{
 			EnemyPlacementCorner, EnemyPlacementCenter, EnemyPlacementEdges, EnemyPlacementRandomSpread,
 		})

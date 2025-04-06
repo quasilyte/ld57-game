@@ -64,11 +64,6 @@ func NewController(config Config) *Controller {
 }
 
 func (c *Controller) Init(ctx gscene.InitContext) {
-	game.G.SavedUnits = game.G.SavedUnits[:0]
-	for _, u := range game.G.Units {
-		game.G.SavedUnits = append(game.G.SavedUnits, u.Clone())
-	}
-
 	c.scene = ctx.Scene
 
 	c.state = newSceneState()
@@ -76,6 +71,11 @@ func (c *Controller) Init(ctx gscene.InitContext) {
 	c.state.m = c.m
 	c.runner = &runner{
 		sceneState: c.state,
+	}
+
+	game.G.SavedUnits = game.G.SavedUnits[:0]
+	for _, u := range c.state.m.Units {
+		game.G.SavedUnits = append(game.G.SavedUnits, u.Unit.Clone())
 	}
 
 	c.players = []*player{

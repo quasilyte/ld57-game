@@ -67,7 +67,7 @@ func (r *runner) NextTurn() {
 						Pos:   u.spritePos,
 						Text:  "Regroup!",
 						Layer: 3,
-						Color: r.pickColor(u.team, true),
+						Color: pickColor(u.team, true),
 					})
 					r.sceneState.scene.AddObject(n)
 				}
@@ -111,7 +111,7 @@ func (r *runner) NextUnit() *unitNode {
 	return unit
 }
 
-func (r *runner) pickColor(team int, good bool) graphics.ColorScale {
+func pickColor(team int, good bool) graphics.ColorScale {
 	targetTeam := 0
 	if good {
 		targetTeam = 1
@@ -137,7 +137,7 @@ func (r *runner) withCasualtiesCheck(melee bool, attacker, defender *unitNode, f
 			Pos:   attacker.spritePos,
 			Text:  "-" + strconv.Itoa(deadAttackers),
 			Layer: 3,
-			Color: r.pickColor(attacker.team, false),
+			Color: pickColor(attacker.team, false),
 		})
 		r.sceneState.scene.AddObject(n)
 		attacker.SubMorale(game.G.Rand.FloatRange(0.05, 0.1) * float64(deadAttackers))
@@ -157,7 +157,7 @@ func (r *runner) withCasualtiesCheck(melee bool, attacker, defender *unitNode, f
 			Pos:   defender.spritePos,
 			Text:  s,
 			Layer: 3,
-			Color: r.pickColor(defender.team, false),
+			Color: pickColor(defender.team, false),
 		})
 		r.sceneState.scene.AddObject(n)
 		defender.SubMorale(game.G.Rand.FloatRange(0.05, 0.1) * float64(deadDefenders))

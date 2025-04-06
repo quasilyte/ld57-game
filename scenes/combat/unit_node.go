@@ -132,6 +132,14 @@ func (u *unitNode) lookTowards(pos dat.CellPos) {
 func (u *unitNode) Guard() {
 	u.movesLeft = 0
 	u.guard = true
+
+	n := NewFloatingTextNode(FloatingTextNodeConfig{
+		Pos:   u.spritePos,
+		Text:  "Guard",
+		Layer: 3,
+		Color: pickColor(u.team, true),
+	})
+	u.sceneState.scene.AddObject(n)
 }
 
 func (u *unitNode) MoveTo(pos dat.CellPos) {

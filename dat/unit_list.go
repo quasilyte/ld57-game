@@ -157,7 +157,7 @@ var MercenaryCavalry = &UnitStats{
 	Class: ClassCavalry,
 	Cost:  19,
 
-	MeleeAccuracy: 0.6,
+	MeleeAccuracy: 0.7,
 	Attack:        5,
 	Defense:       6,
 	MaxCount:      10,
@@ -235,7 +235,7 @@ var UnholyKnights = &UnitStats{
 	Class: ClassCavalry,
 	Cost:  16,
 
-	MeleeAccuracy: 0.65,
+	MeleeAccuracy: 0.75,
 	Attack:        5,
 	Defense:       4,
 	MaxCount:      10,

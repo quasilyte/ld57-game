@@ -84,7 +84,7 @@ func (c *hiringController) Init(ctx gscene.InitContext) {
 
 	for i := 0; i < 2; i++ {
 		u := unitPicker.Pick()
-		roll := game.G.Rand.FloatRange(0.65, 1.3)
+		roll := game.G.Rand.FloatRange(0.6, 1.3)
 		price := gmath.Scale(u.SquadPrice(), roll)
 
 		level := 0

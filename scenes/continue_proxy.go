@@ -132,17 +132,15 @@ func (c *continueProxyController) Init(ctx gscene.InitContext) {
 			Font: assets.FontTiny,
 			OnClick: func() {
 				m := map[*dat.Unit]*dat.Unit{}
-				for i, u := range game.G.Units {
-					m[u] = game.G.SavedUnits[i]
-				}
 				for i, u := range game.G.CurrentMap.Units {
-					replacement, ok := m[u.Unit]
-					if !ok {
-						continue
+					if u.Team == 0 {
+						m[u.Unit] = game.G.SavedUnits[i]
 					}
-					game.G.CurrentMap.Units[i].Unit = replacement
+					game.G.CurrentMap.Units[i].Unit = game.G.SavedUnits[i]
 				}
-				game.G.Units = game.G.SavedUnits
+				for i, u := range game.G.Units {
+					game.G.Units[i] = m[u]
+				}
 				game.G.SceneManager.ChangeScene(combat.NewController(combat.Config{
 					Map: game.G.CurrentMap,
 				}))
