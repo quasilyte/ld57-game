@@ -24,18 +24,19 @@ func NewContinueProxyController() *continueProxyController {
 }
 
 func (c *continueProxyController) Init(ctx gscene.InitContext) {
+	var itemFound *dat.ItemStats
+
 	if game.G.Victory {
 		game.G.Gold += game.G.CurrentMap.Reward
 		game.G.GoldTotal += game.G.CurrentMap.Reward
-	}
 
-	var itemFound *dat.ItemStats
-	if game.G.CurrentMap.ItemReward {
-		if len(game.G.ItemLootList) > 0 {
-			i := gmath.RandIndex(&game.G.Rand, game.G.ItemLootList)
-			itemFound = game.G.ItemLootList[i]
-			game.G.ItemLootList = gslices.DeleteAt(game.G.ItemLootList, i)
-			game.G.Items = append(game.G.Items, itemFound)
+		if game.G.CurrentMap.ItemReward {
+			if len(game.G.ItemLootList) > 0 {
+				i := gmath.RandIndex(&game.G.Rand, game.G.ItemLootList)
+				itemFound = game.G.ItemLootList[i]
+				game.G.ItemLootList = gslices.DeleteAt(game.G.ItemLootList, i)
+				game.G.Items = append(game.G.Items, itemFound)
+			}
 		}
 	}
 
