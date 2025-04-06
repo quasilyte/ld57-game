@@ -334,7 +334,7 @@ var Troll = &UnitStats{
 	Category: FactionHorde,
 
 	Class: ClassInfantry,
-	Cost:  320,
+	Cost:  300,
 
 	MeleeAccuracy: 1.0,
 	Attack:        9,

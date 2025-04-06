@@ -217,6 +217,9 @@ func Generate(config Config) *dat.Map {
 		if config.Stage >= 4 {
 			unitKindPicker.AddOption(dat.OrcCavalry, 0.75)
 		}
+		if config.Stage >= 8 {
+			unitKindPicker.AddOption(dat.Troll, 0.5)
+		}
 
 	case EnemyUndead:
 		unitKindPicker.AddOption(dat.Zombies, game.G.Rand.FloatRange(0.5, 2.5))
