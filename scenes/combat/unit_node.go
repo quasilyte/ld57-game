@@ -172,6 +172,7 @@ func (u *unitNode) onDamage(dmg int) bool {
 	}
 	if u.data.Count == 0 {
 		u.Dispose()
+		game.G.PlaySound(assets.AudioDeath1)
 	}
 	u.updateCountLabel()
 	return u.data.Count == 0

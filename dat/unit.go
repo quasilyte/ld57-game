@@ -52,6 +52,8 @@ type UnitStats struct {
 	Banner      resource.ImageID
 	ScaledImage *ebiten.Image
 
+	AttackSound resource.AudioID
+
 	Class UnitClass
 
 	Cost int

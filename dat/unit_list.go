@@ -23,8 +23,9 @@ var AllUnits = []*UnitStats{
 }
 
 var MercenaryHalberds = &UnitStats{
-	Name:   "Merc. Halberds",
-	Banner: assets.ImageHumanHalberdsBanner,
+	Name:        "Merc. Halberds",
+	Banner:      assets.ImageHumanHalberdsBanner,
+	AttackSound: assets.AudioSwordAttack1,
 
 	Class: ClassInfantry,
 	Cost:  12,
@@ -44,8 +45,9 @@ var MercenaryHalberds = &UnitStats{
 }
 
 var Brigands = &UnitStats{
-	Name:   "Brigands",
-	Banner: assets.ImageBrigandsBanner,
+	Name:        "Brigands",
+	Banner:      assets.ImageBrigandsBanner,
+	AttackSound: assets.AudioSwordAttack1,
 
 	Class: ClassInfantry,
 	Cost:  5,
@@ -64,8 +66,9 @@ var Brigands = &UnitStats{
 }
 
 var Assassins = &UnitStats{
-	Name:   "Assassins",
-	Banner: assets.ImageAssassinsBanner,
+	Name:        "Assassins",
+	Banner:      assets.ImageAssassinsBanner,
+	AttackSound: assets.AudioSwordAttack1,
 
 	Class: ClassArcher,
 	Cost:  22,
@@ -88,8 +91,9 @@ var Assassins = &UnitStats{
 }
 
 var MercenarySwords = &UnitStats{
-	Name:   "Merc. Swords",
-	Banner: assets.ImageHumanWarriorsBanner,
+	Name:        "Merc. Swords",
+	Banner:      assets.ImageHumanWarriorsBanner,
+	AttackSound: assets.AudioSwordAttack1,
 
 	Class: ClassInfantry,
 	Cost:  10,
@@ -108,8 +112,9 @@ var MercenarySwords = &UnitStats{
 }
 
 var MercenaryArchers = &UnitStats{
-	Name:   "Merc. Archers",
-	Banner: assets.ImageHumanArchersBanner,
+	Name:        "Merc. Archers",
+	Banner:      assets.ImageHumanArchersBanner,
+	AttackSound: assets.AudioBluntAttack1,
 
 	Class: ClassArcher,
 	Cost:  17,
@@ -130,8 +135,9 @@ var MercenaryArchers = &UnitStats{
 }
 
 var MercenaryCavalry = &UnitStats{
-	Name:   "Merc. Cavalry",
-	Banner: assets.ImageHumanKnights,
+	Name:        "Merc. Cavalry",
+	Banner:      assets.ImageHumanKnights,
+	AttackSound: assets.AudioSwordAttack1,
 
 	Class: ClassCavalry,
 	Cost:  19,
@@ -151,8 +157,9 @@ var MercenaryCavalry = &UnitStats{
 }
 
 var SkeletalWarriors = &UnitStats{
-	Name:   "Skel. Warriors",
-	Banner: assets.ImageSkeletalWarriorsBanner,
+	Name:        "Skel. Warriors",
+	Banner:      assets.ImageSkeletalWarriorsBanner,
+	AttackSound: assets.AudioSwordAttack1,
 
 	Class: ClassInfantry,
 	Cost:  8,
@@ -173,8 +180,9 @@ var SkeletalWarriors = &UnitStats{
 }
 
 var SkeletalArchers = &UnitStats{
-	Name:   "Skel. Archers",
-	Banner: assets.ImageSkeletalArchersBanner,
+	Name:        "Skel. Archers",
+	Banner:      assets.ImageSkeletalArchersBanner,
+	AttackSound: assets.AudioBluntAttack1,
 
 	Class: ClassArcher,
 	Cost:  12,
@@ -198,8 +206,9 @@ var SkeletalArchers = &UnitStats{
 }
 
 var UnholyKnights = &UnitStats{
-	Name:   "Shadow Knights",
-	Banner: assets.ImageUnholyKnights,
+	Name:        "Shadow Knights",
+	Banner:      assets.ImageUnholyKnights,
+	AttackSound: assets.AudioBluntAttack1,
 
 	Class: ClassCavalry,
 	Cost:  16,
@@ -219,8 +228,9 @@ var UnholyKnights = &UnitStats{
 }
 
 var Zombies = &UnitStats{
-	Name:   "Zombies",
-	Banner: assets.ImageZombiesBanner,
+	Name:        "Zombies",
+	Banner:      assets.ImageZombiesBanner,
+	AttackSound: assets.AudioSwordAttack1,
 
 	Class: ClassInfantry,
 	Cost:  9,
@@ -242,8 +252,9 @@ var Zombies = &UnitStats{
 }
 
 var Mummies = &UnitStats{
-	Name:   "Mummies",
-	Banner: assets.ImageHumanMummiesBanner,
+	Name:        "Mummies",
+	Banner:      assets.ImageHumanMummiesBanner,
+	AttackSound: assets.AudioBluntAttack1,
 
 	Class: ClassInfantry,
 	Cost:  30,
@@ -264,8 +275,9 @@ var Mummies = &UnitStats{
 }
 
 var GoblinWarriors = &UnitStats{
-	Name:   "Gob. Warriors",
-	Banner: assets.ImageGoblinWarriorBanner,
+	Name:        "Gob. Warriors",
+	Banner:      assets.ImageGoblinWarriorBanner,
+	AttackSound: assets.AudioBluntAttack1,
 
 	Class: ClassInfantry,
 	Cost:  6,
@@ -284,8 +296,9 @@ var GoblinWarriors = &UnitStats{
 }
 
 var OrcWarriors = &UnitStats{
-	Name:   "Orc Warriors",
-	Banner: assets.ImageOrcWarriorBanner,
+	Name:        "Orc Warriors",
+	Banner:      assets.ImageOrcWarriorBanner,
+	AttackSound: assets.AudioSwordAttack1,
 
 	Class: ClassInfantry,
 	Cost:  20,
@@ -304,8 +317,9 @@ var OrcWarriors = &UnitStats{
 }
 
 var OrcCavalry = &UnitStats{
-	Name:   "Orc Boar Elite",
-	Banner: assets.ImageOrcBoarEliteBanner,
+	Name:        "Orc Boar Elite",
+	Banner:      assets.ImageOrcBoarEliteBanner,
+	AttackSound: assets.AudioBluntAttack1,
 
 	Class: ClassCavalry,
 	Cost:  35,

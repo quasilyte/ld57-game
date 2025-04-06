@@ -160,7 +160,12 @@ func (r *runner) withCasualtiesCheck(melee bool, attacker, defender *unitNode, f
 		defender.SubMorale(game.G.Rand.FloatRange(0.05, 0.1) * float64(deadDefenders))
 	}
 	if deadAttackers+deadDefenders > 0 {
-		r.sceneState.pause = 0.5
+		// TODO: it doesn't work.
+		if attacker.data.Count == 0 || defender.data.Count == 0 {
+			r.sceneState.pause = 1.0
+		} else {
+			r.sceneState.pause = 0.5
+		}
 	}
 
 	if attacker.data.Stats.HasTrait(dat.TraitCauseFear) {

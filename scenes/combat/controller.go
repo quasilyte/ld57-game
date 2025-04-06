@@ -534,6 +534,8 @@ func (c *Controller) onMeleeAttack(event meleeAttackEvent) {
 	event.Attacker.lookTowards(event.Defender.pos)
 	event.Defender.afterTurn()
 	c.runner.runMeleeRound(event.Attacker, event.Defender)
+
+	game.G.PlaySound(event.Attacker.data.Stats.AttackSound)
 }
 
 func (c *Controller) onRangedAttack(event meleeAttackEvent) {
@@ -544,6 +546,8 @@ func (c *Controller) onRangedAttack(event meleeAttackEvent) {
 	}
 	event.Attacker.lookTowards(event.Defender.pos)
 	c.runner.runRangedRound(event.Attacker, event.Defender)
+
+	game.G.PlaySound(assets.AudioBowShot1)
 }
 
 func (c *Controller) onPlayerDone(gsignal.Void) {
@@ -569,7 +573,10 @@ func (c *Controller) onPlayerDone(gsignal.Void) {
 	c.activeUnit = nextUnit
 
 	if nextUnit.team == 0 {
-		game.G.Camera.ToggleTo(c.activeUnit.spritePos, 0.4)
+		dist := game.G.Camera.Center().DistanceTo(c.activeUnit.spritePos)
+		if dist > 200 {
+			game.G.Camera.ToggleTo(c.activeUnit.spritePos, 0.4)
+		}
 	}
 
 	c.state.currentUnitSelector.SetVisibility(true)
