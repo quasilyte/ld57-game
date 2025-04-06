@@ -46,6 +46,14 @@ func (r *runner) NextTurn() {
 			if u.data.Experience > 1 {
 				u.data.Experience = 0
 				u.data.Level++
+				n := NewFloatingTextNode(FloatingTextNodeConfig{
+					Pos:       u.spritePos,
+					Text:      "Level up!",
+					ExtraTime: 0.4,
+					Layer:     3,
+					Color:     pickColor(u.team, true),
+				})
+				r.sceneState.scene.AddObject(n)
 			}
 			if u.broken && game.G.Rand.Chance(0.5) {
 				u.movesLeft = gmath.ClampMin(u.movesLeft-1, 1)
@@ -66,10 +74,11 @@ func (r *runner) NextTurn() {
 					u.AddMorale(0.05)
 					u.updateCountLabel()
 					n := NewFloatingTextNode(FloatingTextNodeConfig{
-						Pos:   u.spritePos,
-						Text:  "Regroup!",
-						Layer: 3,
-						Color: pickColor(u.team, true),
+						Pos:       u.spritePos,
+						Text:      "Regroup!",
+						ExtraTime: 0.4,
+						Layer:     3,
+						Color:     pickColor(u.team, true),
 					})
 					r.sceneState.scene.AddObject(n)
 				}
@@ -149,10 +158,11 @@ func (r *runner) withCasualtiesCheck(melee bool, attacker, defender *unitNode, f
 			}
 		}
 		n := NewFloatingTextNode(FloatingTextNodeConfig{
-			Pos:   defender.spritePos,
-			Text:  s,
-			Layer: 3,
-			Color: pickColor(defender.team, false),
+			Pos:       defender.spritePos,
+			ExtraTime: 0.2,
+			Text:      s,
+			Layer:     3,
+			Color:     pickColor(defender.team, false),
 		})
 		r.sceneState.scene.AddObject(n)
 		defender.SubMorale(game.G.Rand.FloatRange(0.05, 0.1) * float64(deadDefenders))

@@ -18,10 +18,11 @@ type FloatingTextNode struct {
 }
 
 type FloatingTextNodeConfig struct {
-	Pos   gmath.Vec
-	Text  string
-	Layer int
-	Color graphics.ColorScale
+	Pos       gmath.Vec
+	Text      string
+	Layer     int
+	ExtraTime float64
+	Color     graphics.ColorScale
 }
 
 var floatingTextBoxSize = gmath.Vec{X: 32, Y: 16}
@@ -37,7 +38,7 @@ func NewFloatingTextNode(config FloatingTextNodeConfig) *FloatingTextNode {
 	}
 
 	n := &FloatingTextNode{
-		fadeDelay:  0.6,
+		fadeDelay:  0.6 + config.ExtraTime,
 		label:      l,
 		layer:      config.Layer,
 		pos:        config.Pos.Sub(floatingTextBoxSize.Mulf(0.5)),
