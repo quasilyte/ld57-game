@@ -40,10 +40,28 @@ type actionKind int
 
 const (
 	actionMove actionKind = iota
+	actionRotate
 	actionAttack
 	actionGuard
 	actionShoot
 )
+
+func (k actionKind) Icon() resource.ImageID {
+	var imgID resource.ImageID
+	switch k {
+	case actionMove:
+		imgID = assets.ImageActionMove
+	case actionAttack:
+		imgID = assets.ImageActionAttack
+	case actionGuard:
+		imgID = assets.ImageActionGuard
+	case actionShoot:
+		imgID = assets.ImageActionShoot
+	case actionRotate:
+		imgID = assets.ImageActionRotate
+	}
+	return imgID
+}
 
 func (p *humanPlayer) SetUnit(u *unitNode) {
 	p.unit = u
@@ -110,19 +128,8 @@ func (p *humanPlayer) SetUnit(u *unitNode) {
 
 	for i := range p.options {
 		o := &p.options[i]
-		var imgID resource.ImageID
-		switch o.kind {
-		case actionMove:
-			imgID = assets.ImageActionMove
-		case actionAttack:
-			imgID = assets.ImageActionAttack
-		case actionGuard:
-			imgID = assets.ImageActionGuard
-		case actionShoot:
-			imgID = assets.ImageActionShoot
-		}
-		if imgID != assets.ImageNone {
-			spr := game.G.NewSprite(imgID)
+		if o.kind.Icon() != assets.ImageNone {
+			spr := game.G.NewSprite(o.kind.Icon())
 			spr.Pos.Base = &o.pos
 			o.sprite = spr
 			o.sprite.SetAlpha(0.5)
@@ -149,6 +156,20 @@ func (p *humanPlayer) Update(delta float64) {
 		p.unit.Guard()
 		p.finishTurn()
 		return
+	}
+
+	if game.G.Input.ActionIsJustReleased(controls.ActionCtrl) {
+		for i := range p.options {
+			o := &p.options[i]
+			switch o.kind {
+			case actionMove:
+				o.kind = actionRotate
+				o.sprite.SetImage(game.G.Loader.LoadImage(o.kind.Icon()).Data)
+			case actionRotate:
+				o.kind = actionMove
+				o.sprite.SetImage(game.G.Loader.LoadImage(o.kind.Icon()).Data)
+			}
+		}
 	}
 
 	cursorPos := game.G.Camera.ToWorldPos(game.G.Input.CursorPos())
@@ -198,6 +219,13 @@ func (p *humanPlayer) Update(delta float64) {
 		p.actionTooltipText.Label = "LMB: Guard"
 		if clicked {
 			p.unit.Guard()
+			p.finishTurn()
+		}
+	case actionRotate:
+		p.actionTooltipText.Label = "LMB: Rotate"
+		if clicked {
+			p.unit.lookTowards(p.focusedOption.cell)
+			p.unit.movesLeft--
 			p.finishTurn()
 		}
 	case actionShoot:

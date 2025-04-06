@@ -29,6 +29,7 @@ func registerImageResources(loader *resource.Loader) {
 		ImageActionGuard:  {Path: "image/ui/action_guard.png"},
 		ImageActionAttack: {Path: "image/ui/action_attack.png"},
 		ImageActionShoot:  {Path: "image/ui/action_shoot.png"},
+		ImageActionRotate: {Path: "image/ui/action_rotate.png"},
 
 		ImageFacingRight: {Path: "image/ui/facing_right.png"},
 		ImageFacingDown:  {Path: "image/ui/facing_down.png"},
@@ -94,6 +95,7 @@ const (
 	ImageActionAttack
 	ImageActionGuard
 	ImageActionShoot
+	ImageActionRotate
 
 	ImageFacingRight
 	ImageFacingDown
