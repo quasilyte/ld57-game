@@ -145,6 +145,12 @@ func (p *humanPlayer) finishTurn() {
 }
 
 func (p *humanPlayer) Update(delta float64) {
+	if game.G.Input.ActionIsJustPressed(controls.ActionGuard) {
+		p.unit.Guard()
+		p.finishTurn()
+		return
+	}
+
 	cursorPos := game.G.Camera.ToWorldPos(game.G.Input.CursorPos())
 	cellPos := dat.CellPos{
 		X: int(cursorPos.X) / 32,

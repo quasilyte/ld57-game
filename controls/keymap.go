@@ -13,6 +13,8 @@ const (
 	ActionPanRight
 	ActionPanWheel
 
+	ActionGuard
+
 	ActionClick
 )
 
@@ -24,5 +26,6 @@ func DefaultKeymap() input.Keymap {
 		ActionPanRight: {input.KeyRight},
 		ActionPanWheel: {input.KeyMouseMiddle},
 		ActionClick:    {input.KeyMouseLeft},
+		ActionGuard:    {input.KeyTab},
 	}
 }
