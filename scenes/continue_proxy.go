@@ -125,10 +125,7 @@ func (c *continueProxyController) Init(ctx gscene.InitContext) {
 				game.ChangeScene(NewRosterController())
 				return
 			}
-			game.G.Gold = 100
-			game.G.Units = game.G.Units[:0]
-			game.G.GoldTotal = 0
-			game.G.Stage = 0
+			game.G.Reset()
 			game.ChangeScene(NewMainMenuController())
 		},
 	}))

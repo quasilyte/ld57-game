@@ -10,7 +10,7 @@ require (
 	github.com/quasilyte/bitsweetfont v0.0.0-20240801221705-5e1264e4303a
 	github.com/quasilyte/ebitengine-graphics v0.0.0-20240929192656-1fe6bf0c3cb6
 	github.com/quasilyte/ebitengine-resource v0.5.0
-	github.com/quasilyte/gmath v0.0.0-20240920163431-a42365a2073c
+	github.com/quasilyte/gmath v0.0.0-20250404132005-3ce5ca476755
 	github.com/quasilyte/gscene v0.0.0-20240611100302-1351fbba9610
 	golang.org/x/image v0.20.0
 )

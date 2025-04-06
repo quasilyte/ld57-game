@@ -6,11 +6,8 @@ import (
 
 	"github.com/quasilyte/gscene"
 	"github.com/quasilyte/ld57-game/assets"
-	"github.com/quasilyte/ld57-game/dat"
 	"github.com/quasilyte/ld57-game/eui"
 	"github.com/quasilyte/ld57-game/game"
-	"github.com/quasilyte/ld57-game/mapgen"
-	"github.com/quasilyte/ld57-game/scenes/combat"
 	"github.com/quasilyte/ld57-game/scenes/sceneutil"
 	"github.com/quasilyte/ld57-game/styles"
 )
@@ -31,9 +28,9 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 	ctx.Scene.AddGraphics(sceneutil.NewBackgroundImage(), 0)
 
 	topRows.AddChild(game.G.UI.NewText(eui.TextConfig{
-		Text:  "Super Game",
+		Text:  "Fantastic General",
 		Color: styles.ColorOrange.Color(),
-		Font:  assets.Font2,
+		Font:  assets.Font1,
 	}))
 
 	p := game.G.UI.NewPanel(eui.PanelConfig{})
@@ -46,25 +43,9 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 		Text:     "PLAY",
 		MinWidth: 200,
 		OnClick: func() {
-			game.G.Gold = 100
-			game.G.Stage = 0
-			game.G.SelectedArmy = dat.FactionHuman
-			game.G.Units = []*dat.Unit{
-				// dat.OrcWarriors.CreateUnit(),
-				// dat.GoblinWarriors.CreateUnit(),
-
-				// dat.MercenaryArchers.CreateUnit(),
-				// dat.MercenaryArchers.CreateUnit(),
-
-				dat.MercenarySwords.CreateUnit(),
-				dat.MercenaryCavalry.CreateUnit(),
-			}
-			m := mapgen.NextStage()
-			game.G.CurrentMap = m
-			game.G.SceneManager.ChangeScene(combat.NewController(combat.Config{
-				Map: m,
-			}))
-			// game.G.SceneManager.ChangeScene(NewNewGameController())
+			game.G.Reset()
+			// game.G.Stage = 7
+			game.G.SceneManager.ChangeScene(NewNewGameController())
 		},
 	}))
 

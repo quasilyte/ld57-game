@@ -46,6 +46,30 @@ type GlobalContext struct {
 	SoundVolume int
 }
 
+func (ctx *GlobalContext) Reset() {
+	ctx.Gold = 100
+	ctx.GoldTotal = 0
+	ctx.Stage = 0
+	ctx.Units = ctx.Units[:0]
+
+	// game.G.Units = []*dat.Unit{
+	// 	// dat.OrcWarriors.CreateUnit(),
+	// 	// dat.GoblinWarriors.CreateUnit(),
+
+	// 	// dat.MercenaryArchers.CreateUnit(),
+	// 	// dat.MercenaryArchers.CreateUnit(),
+
+	// 	dat.OrcCavalry.CreateUnit(),
+	// 	// dat.MercenarySwords.CreateUnit(),
+	// 	// dat.MercenaryCavalry.CreateUnit(),
+	// }
+	// m := mapgen.NextStage()
+	// game.G.CurrentMap = m
+	// game.G.SceneManager.ChangeScene(combat.NewController(combat.Config{
+	// 	Map: m,
+	// }))
+}
+
 func ChangeScene(c gscene.Controller) {
 	G.Camera = nil
 

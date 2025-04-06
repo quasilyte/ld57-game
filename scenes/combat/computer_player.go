@@ -32,6 +32,10 @@ func (p *computerPlayer) act() {
 	case dat.ClassInfantry:
 		p.actInfantry()
 	case dat.ClassCavalry:
+		if p.unit.data.Stats == dat.OrcCavalry {
+			p.actArcher()
+			return
+		}
 		// TODO
 		p.actInfantry()
 	case dat.ClassArcher:

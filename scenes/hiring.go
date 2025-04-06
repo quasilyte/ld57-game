@@ -51,8 +51,11 @@ func (c *hiringController) Init(ctx gscene.InitContext) {
 
 	unitPicker := gmath.NewRandPicker[*dat.UnitStats](&game.G.Rand)
 	unitPicker.AddOption(dat.Brigands, 0.1)
-	unitPicker.AddOption(dat.OrcWarriors, 0.1)
-	unitPicker.AddOption(dat.GoblinWarriors, 0.1)
+	if game.G.Rand.Chance(0.6) {
+		unitPicker.AddOption(dat.OrcWarriors, 0.1)
+		unitPicker.AddOption(dat.OrcCavalry, 0.1)
+		unitPicker.AddOption(dat.GoblinWarriors, 0.1)
+	}
 	unitPicker.AddOption(dat.Assassins, 0.1)
 	switch game.G.SelectedArmy {
 	case dat.FactionHuman:

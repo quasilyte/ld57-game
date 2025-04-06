@@ -165,6 +165,13 @@ func (c *Controller) Init(ctx gscene.InitContext) {
 		Input:  game.G.Input,
 	})
 
+	for _, u := range c.state.units {
+		if u.team == 0 {
+			game.G.Camera.CenterOn(u.spritePos)
+			break
+		}
+	}
+
 	c.initUI()
 
 	c.nextTurn()
@@ -560,6 +567,10 @@ func (c *Controller) onPlayerDone(gsignal.Void) {
 	c.activePlayer = c.players[nextUnit.team]
 	c.activePlayer.impl.SetUnit(nextUnit)
 	c.activeUnit = nextUnit
+
+	if nextUnit.team == 0 {
+		game.G.Camera.ToggleTo(c.activeUnit.spritePos, 0.4)
+	}
 
 	c.state.currentUnitSelector.SetVisibility(true)
 	c.state.currentUnitSelector.Pos.Base = &nextUnit.spritePos

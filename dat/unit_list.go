@@ -8,6 +8,7 @@ var AllUnits = []*UnitStats{
 
 	GoblinWarriors,
 	OrcWarriors,
+	OrcCavalry,
 
 	MercenaryHalberds,
 	MercenarySwords,
@@ -245,7 +246,7 @@ var Mummies = &UnitStats{
 	Banner: assets.ImageHumanMummiesBanner,
 
 	Class: ClassInfantry,
-	Cost:  28,
+	Cost:  30,
 
 	MeleeAccuracy: 0.85,
 	Attack:        4,
@@ -296,6 +297,29 @@ var OrcWarriors = &UnitStats{
 	Life:          4,
 	Morale:        6,
 	Speed:         2,
+
+	Traits: []Trait{
+		TraitBloodlust,
+	},
+}
+
+var OrcCavalry = &UnitStats{
+	Name:   "Orc Boar Elite",
+	Banner: assets.ImageOrcBoarEliteBanner,
+
+	Class: ClassCavalry,
+	Cost:  35,
+
+	RangedAccuracy: 0.3,
+	MeleeAccuracy:  0.75,
+	Attack:         6,
+	RangedAttack:   4,
+	Defense:        3,
+	MaxCount:       10,
+	MaxRange:       2,
+	Life:           4,
+	Morale:         7,
+	Speed:          3,
 
 	Traits: []Trait{
 		TraitBloodlust,

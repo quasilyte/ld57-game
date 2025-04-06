@@ -26,6 +26,7 @@ const (
 	EnemyPlacementAroundPlayer
 	EnemyPlacementNearPlayer
 	EnemyPlacementEdges
+	EnemyPlacementCenter
 )
 
 type PlayerPlacementKind int
@@ -33,6 +34,7 @@ type PlayerPlacementKind int
 const (
 	PlayerPlacementCenter PlayerPlacementKind = iota
 	PlayerPlacementCorner
+	PlayerPlacementEdges
 )
 
 type Config struct {
@@ -131,6 +133,18 @@ func Generate(config Config) *dat.Map {
 	tmpCells := make([]dat.CellPos, 0, 128)
 
 	switch config.PlayerPlacement {
+	case PlayerPlacementEdges:
+		for row := padOffsetY; row < m.Height-padOffsetY; row++ {
+			for col := padOffsetX; col < m.Width-padOffsetX; col++ {
+				cell := dat.CellPos{X: col, Y: row}
+				ok := (row == padOffsetY || row == m.Height-padOffsetY-1) ||
+					(col == padOffsetX || col == m.Width-padOffsetX-1)
+				if ok {
+					tmpCells = append(tmpCells, cell)
+				}
+			}
+		}
+
 	case PlayerPlacementCorner:
 		row := 0
 		deployed := 0
@@ -197,6 +211,9 @@ func Generate(config Config) *dat.Map {
 			unitKindPicker.AddOption(dat.OrcWarriors, 0.75)
 			unitKindPicker.AddOption(dat.GoblinWarriors, 1.0)
 		}
+		if config.Stage >= 4 {
+			unitKindPicker.AddOption(dat.OrcCavalry, 0.75)
+		}
 
 	case EnemyUndead:
 		unitKindPicker.AddOption(dat.Zombies, game.G.Rand.FloatRange(0.5, 2.5))
@@ -239,6 +256,11 @@ func Generate(config Config) *dat.Map {
 			if game.G.Rand.Chance(0.6) {
 				u.InitialCount = gmath.Scale(u.InitialCount, game.G.Rand.FloatRange(0.8, 1.2))
 			}
+			if game.G.Stage >= 4 {
+				if game.G.Rand.Chance(0.1 * float64(game.G.Stage)) {
+					u.Level = game.G.Rand.IntRange(1, game.G.Stage-2)
+				}
+			}
 			u.Count = u.InitialCount
 			enemyUnits = append(enemyUnits, u)
 			ok = true
@@ -252,18 +274,46 @@ func Generate(config Config) *dat.Map {
 	tmpCells = tmpCells[:0] // Re-use them
 
 	switch config.EnemyPlacement {
+	case EnemyPlacementCenter:
+		numUnits := len(enemyUnits)
+		placementSize := int(math.Sqrt(float64(numUnits))/2) + 1
+		colFrom := ((m.Width / 2) - 1) - placementSize
+		colTo := ((m.Width / 2) - 1) + placementSize
+		rowFrom := ((m.Height / 2) - 1) - placementSize
+		rowTo := ((m.Height / 2) - 1) + placementSize
+		for row := rowFrom; row <= rowTo; row++ {
+			for col := colFrom; col <= colTo; col++ {
+				cell := dat.CellPos{
+					X: col,
+					Y: row,
+				}
+				if occupiedCells[cell] {
+					continue
+				}
+				tmpCells = append(tmpCells, cell)
+			}
+		}
+
 	case EnemyPlacementRandomSpread:
+		extendedOccupied := map[dat.CellPos]bool{}
+		for cell := range occupiedCells {
+			for dy := -1; dy <= 1; dy++ {
+				for dx := -1; dx <= 1; dx++ {
+					extendedOccupied[dat.CellPos{X: cell.X + dx, Y: cell.Y + dy}] = true
+				}
+			}
+		}
 		deployed := 0
 		for {
 			probe := dat.CellPos{
 				X: game.G.Rand.IntRange(padOffsetX, m.Width-padOffsetX-1),
 				Y: game.G.Rand.IntRange(padOffsetY, m.Width-padOffsetY-1),
 			}
-			if occupiedCells[probe] {
+			if extendedOccupied[probe] {
 				continue
 			}
 			deployed++
-			occupiedCells[probe] = true
+			extendedOccupied[probe] = true
 			tmpCells = append(tmpCells, probe)
 			if deployed >= len(enemyUnits) {
 				break

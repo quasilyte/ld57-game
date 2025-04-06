@@ -48,6 +48,7 @@ func registerImageResources(loader *resource.Loader) {
 		ImageHumanMummiesBanner:     {Path: "image/banner/undead_mummy.png"},
 		ImageGoblinWarriorBanner:    {Path: "image/banner/goblin_warriors.png"},
 		ImageOrcWarriorBanner:       {Path: "image/banner/orc_warriors.png"},
+		ImageOrcBoarEliteBanner:     {Path: "image/banner/orc_archer_cavalry.png"},
 	}
 
 	for id, info := range resources {
@@ -98,5 +99,6 @@ const (
 	ImageUnholyKnights
 	ImageHumanMummiesBanner
 	ImageOrcWarriorBanner
+	ImageOrcBoarEliteBanner
 	ImageGoblinWarriorBanner
 )

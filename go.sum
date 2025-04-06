@@ -44,6 +44,8 @@ github.com/quasilyte/ebitengine-sound v0.0.0-20240710170318-c51faafaa539 h1:jno4
 github.com/quasilyte/ebitengine-sound v0.0.0-20240710170318-c51faafaa539/go.mod h1:oRXIW+oqKvloMdqLCDs2zuwOaeZgqvT1G8GPIOohYNE=
 github.com/quasilyte/gmath v0.0.0-20240920163431-a42365a2073c h1:pOCmiE1lP24KHakAYnCw5iQ8W/FOcEMwWPW9R7EMNDk=
 github.com/quasilyte/gmath v0.0.0-20240920163431-a42365a2073c/go.mod h1:EbI+KMbALSVE2s0YFOQpR4uj66zBh9ter5P4CBMSuvA=
+github.com/quasilyte/gmath v0.0.0-20250404132005-3ce5ca476755 h1:EStm6RvlzE7LB2IB4WC+7LNbdCJFr5EyBXJO3HnIVIs=
+github.com/quasilyte/gmath v0.0.0-20250404132005-3ce5ca476755/go.mod h1:EbI+KMbALSVE2s0YFOQpR4uj66zBh9ter5P4CBMSuvA=
 github.com/quasilyte/gscene v0.0.0-20240611100302-1351fbba9610 h1:+IjgBa7jf17Spi74iwBcyXcGO6U7eOHR57eYvzbw9z8=
 github.com/quasilyte/gscene v0.0.0-20240611100302-1351fbba9610/go.mod h1:0GWl/j4N+4rfBx2pb+TFn4pnPvGz5rkWY89KrBGt2Go=
 github.com/quasilyte/gsignal v0.0.0-20240802120557-5896b3add8c1 h1:jGd8JVbr84sPP+LGFr5Iw2w1j4MowR2RQbbxwwkDccY=
