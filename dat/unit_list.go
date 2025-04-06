@@ -360,7 +360,7 @@ var GoblinWarriors = &UnitStats{
 	Category: FactionHorde,
 
 	Class: ClassInfantry,
-	Cost:  5,
+	Cost:  4,
 
 	MeleeAccuracy: 0.3,
 	Attack:        1,

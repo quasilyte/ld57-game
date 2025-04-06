@@ -31,6 +31,7 @@ func newSlashNode(config slashNodeConfig) *slashNode {
 
 	n := &slashNode{
 		spr:      spr,
+		pos:      config.fireFrom,
 		to:       config.fireTo.Add(dir),
 		from:     config.fireFrom,
 		rotation: config.fireFrom.AngleToPoint(config.fireTo),

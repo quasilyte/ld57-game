@@ -650,7 +650,7 @@ func (c *Controller) onPlayerDone(gsignal.Void) {
 
 	if nextUnit.team == 0 {
 		dist := game.G.Camera.Center().DistanceTo(c.activeUnit.spritePos)
-		if dist > 200 {
+		if dist > 150 {
 			game.G.Camera.ToggleTo(c.activeUnit.spritePos, 0.4)
 		}
 	}
