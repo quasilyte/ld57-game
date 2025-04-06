@@ -45,16 +45,45 @@ func (c *rosterController) Init(ctx gscene.InitContext) {
 
 	boughtCounters := make([]int, len(game.G.Units))
 
-	unitGrid := widget.NewContainer(
-		widget.ContainerOpts.Layout(
-			widget.NewGridLayout(
-				widget.GridLayoutOpts.Columns(4),
-				widget.GridLayoutOpts.Spacing(8, 4),
+	var unitsGrids [2]*widget.Container
+	var gridRoot *widget.Container
+
+	numGrids := 1
+	if len(game.G.Units) > 7 {
+		numGrids++
+	}
+	for i := 0; i < numGrids; i++ {
+		unitsGrids[i] = widget.NewContainer(
+			widget.ContainerOpts.Layout(
+				widget.NewGridLayout(
+					widget.GridLayoutOpts.Columns(4),
+					widget.GridLayoutOpts.Spacing(8, 4),
+				),
 			),
-		),
-	)
+		)
+	}
+	if numGrids == 1 {
+		gridRoot = unitsGrids[0]
+	} else {
+		gridRoot = widget.NewContainer(
+			widget.ContainerOpts.Layout(
+				widget.NewGridLayout(
+					widget.GridLayoutOpts.Columns(2),
+					widget.GridLayoutOpts.Spacing(16, 4),
+				),
+			),
+		)
+		gridRoot.AddChild(unitsGrids[0])
+		gridRoot.AddChild(unitsGrids[1])
+	}
+	root.AddChild(gridRoot)
 
 	for i, u := range game.G.Units {
+		unitGrid := unitsGrids[0]
+		if i >= 7 {
+			unitGrid = unitsGrids[1]
+		}
+
 		unitGrid.AddChild(game.G.UI.NewText(eui.TextConfig{
 			Text: strconv.Itoa(i + 1),
 			Font: assets.FontTiny,
@@ -131,8 +160,6 @@ func (c *rosterController) Init(ctx gscene.InitContext) {
 		// }))
 	}
 
-	root.AddChild(unitGrid)
-
 	root.AddChild(game.G.UI.NewText(eui.TextConfig{Text: ""}))
 
 	root.AddChild(game.G.UI.NewButton(eui.ButtonConfig{
@@ -142,7 +169,7 @@ func (c *rosterController) Init(ctx gscene.InitContext) {
 			for _, u := range game.G.Units {
 				u.InitialCount = u.Count
 			}
-			if len(game.G.Units) < 8 {
+			if len(game.G.Units) < 13 {
 				game.ChangeScene(NewHiringController())
 				return
 			}
