@@ -53,6 +53,7 @@ func (c *hiringController) Init(ctx gscene.InitContext) {
 	unitPicker.AddOption(dat.Brigands, 0.1)
 	unitPicker.AddOption(dat.OrcWarriors, 0.1)
 	unitPicker.AddOption(dat.GoblinWarriors, 0.1)
+	unitPicker.AddOption(dat.Assassins, 0.1)
 	switch game.G.SelectedArmy {
 	case dat.FactionHuman:
 		unitPicker.AddOption(dat.MercenarySwords, 0.6)
