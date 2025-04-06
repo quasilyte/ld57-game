@@ -29,7 +29,7 @@ type Controller struct {
 
 	winner int
 
-	turnPending bool
+	playerDonePending bool
 
 	state  *sceneState
 	runner *runner
@@ -212,18 +212,18 @@ func (c *Controller) initUI() {
 }
 
 func (c *Controller) Update(delta float64) {
-	if c.turnPending {
+	if c.playerDonePending {
 		c.state.pause = gmath.ClampMin(c.state.pause-delta, 0)
 		if c.state.pause == 0 {
-			c.nextTurn()
-			c.turnPending = false
+			c.onPlayerDone(gsignal.Void{})
+			c.playerDonePending = false
 		}
 	}
 
 	c.handleInput(delta)
 	c.state.Update(delta)
 
-	if c.activePlayer != nil {
+	if c.activePlayer != nil && !c.playerDonePending {
 		c.activePlayer.impl.Update(delta)
 	}
 }
@@ -551,14 +551,20 @@ func (c *Controller) onRangedAttack(event meleeAttackEvent) {
 }
 
 func (c *Controller) onPlayerDone(gsignal.Void) {
+	if c.state.pause > 0 {
+		// Call it later.
+		c.playerDonePending = true
+		return
+	}
+
 	if c.activeUnit != nil {
 		c.activeUnit.afterTurn()
 	}
 
 	nextUnit := c.runner.NextUnit()
 	if nextUnit == nil {
-		c.turnPending = true
 		c.activePlayer = nil
+		c.nextTurn()
 		return
 	}
 

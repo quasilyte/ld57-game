@@ -17,8 +17,8 @@ func registerAudioResources(loader *resource.Loader) {
 		AudioBowShot2: {Path: "audio/bow_shot2.wav"},
 		AudioBowShot3: {Path: "audio/bow_shot3.wav", Volume: -0.6},
 
-		AudioBluntAttack1: {Path: "audio/blunt_attack1.wav"},
-		AudioBluntAttack2: {Path: "audio/blunt_attack2.wav"},
+		AudioBluntAttack1: {Path: "audio/blunt_attack1.wav", Volume: -0.25},
+		AudioBluntAttack2: {Path: "audio/blunt_attack2.wav", Volume: -0.25},
 
 		AudioSwordAttack1: {Path: "audio/sword_attack1.wav"},
 		AudioSwordAttack2: {Path: "audio/sword_attack2.wav"},
