@@ -277,7 +277,7 @@ func (r *runner) runMeleeRound(attacker, defender *unitNode) {
 
 		numAttacks := attacker.data.Count
 		if attacker.data.Stats.HasTrait(dat.TraitMighty) {
-			numAttacks *= 2
+			numAttacks *= 3
 		}
 
 		var retaliationsLeft int
@@ -292,7 +292,7 @@ func (r *runner) runMeleeRound(attacker, defender *unitNode) {
 				retaliationsLeft += gmath.ClampMin((defender.data.Count / 2), 1)
 			}
 			if defender.data.Stats.HasTrait(dat.TraitMighty) {
-				retaliationsLeft *= 2
+				retaliationsLeft *= 3
 			}
 		}
 
@@ -377,7 +377,11 @@ func (r *runner) runRangedAttack(attacker, defender *unitNode) int {
 }
 
 func (r *runner) runMeleeAttack(isRetaliation bool, attacker, defender *unitNode, facing meleeAttackFacing) int {
-	toHit := attacker.data.Stats.MeleeAccuracy
+	meleeAccuracy := attacker.data.Stats.MeleeAccuracy
+	if attacker.data.HasItem(dat.ItemDaggerOfPrecision) {
+		meleeAccuracy += 0.1
+	}
+	toHit := meleeAccuracy
 	if attacker.morale < 0.5 {
 		toHit *= 0.75
 	}

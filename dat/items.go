@@ -32,6 +32,7 @@ var AllItems = []*ItemStats{
 	ItemPointblankBow,
 	ItemBracerOfLearning,
 	ItemTerrorMace,
+	ItemDaggerOfPrecision,
 }
 
 var ItemPointblankBow = &ItemStats{
@@ -68,6 +69,12 @@ var ItemRingOfCourage = &ItemStats{
 	Name: "Ring of Courage",
 	Hint: "Grants complete resist against Cause Fear effect",
 	Icon: assets.ImageItemMagicRing,
+}
+
+var ItemDaggerOfPrecision = &ItemStats{
+	Name: "Dagger of Precision",
+	Hint: "Adds 10% melee chance to hit (+1 ACC)",
+	Icon: assets.ImageItemMagicDagger,
 }
 
 var ItemVengeanceHelm = &ItemStats{

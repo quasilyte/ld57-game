@@ -46,6 +46,7 @@ func registerImageResources(loader *resource.Loader) {
 		ImageItemMagicBow:    {Path: "image/item/bow.png"},
 		ImageItemMagicBracer: {Path: "image/item/bracer.png"},
 		ImageItemMagicMace:   {Path: "image/item/mace.png"},
+		ImageItemMagicDagger: {Path: "image/item/dagger.png"},
 
 		ImageBrigandsBanner:         {Path: "image/banner/brigands.png"},
 		ImageAssassinsBanner:        {Path: "image/banner/assassins.png"},
@@ -118,6 +119,7 @@ const (
 	ImageItemMagicBow
 	ImageItemMagicBracer
 	ImageItemMagicMace
+	ImageItemMagicDagger
 
 	ImageBrigandsBanner
 	ImageAssassinsBanner

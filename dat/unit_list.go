@@ -318,7 +318,7 @@ var Ogres = &UnitStats{
 	Cost:         42,
 	ExtraBuyCost: 40,
 
-	MeleeAccuracy: 0.925,
+	MeleeAccuracy: 0.9,
 	Attack:        5,
 	Defense:       7,
 	MaxCount:      3,
@@ -369,7 +369,7 @@ var Troll = &UnitStats{
 	Class: ClassInfantry,
 	Cost:  275,
 
-	MeleeAccuracy: 1.0,
+	MeleeAccuracy: 0.9,
 	Attack:        9,
 	Defense:       11,
 	MaxCount:      1,
