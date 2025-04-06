@@ -37,6 +37,8 @@ type GlobalContext struct {
 
 	Victory      bool
 	CurrentMap   *dat.Map
+	Items        []*dat.ItemStats
+	ItemLootList []*dat.ItemStats
 	Units        []*dat.Unit
 	SavedUnits   []*dat.Unit
 	Gold         int
@@ -51,6 +53,8 @@ func (ctx *GlobalContext) Reset() {
 	ctx.Gold = 100
 	ctx.GoldTotal = 0
 	ctx.Stage = 0
+	ctx.ItemLootList = dat.AllItems
+	ctx.Items = ctx.Items[:0]
 	ctx.Units = ctx.Units[:0]
 
 	// game.G.Units = []*dat.Unit{

@@ -23,12 +23,23 @@ type Unit struct {
 	Experience float64
 	Level      int
 
+	Items [2]*ItemStats
+
 	Stats *UnitStats
 }
 
 func (u *Unit) Clone() *Unit {
 	cp := *u
 	return &cp
+}
+
+func (u *Unit) HasItem(item *ItemStats) bool {
+	for i := range u.Items {
+		if u.Items[i] == item {
+			return true
+		}
+	}
+	return false
 }
 
 type UnitClass int

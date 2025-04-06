@@ -159,7 +159,7 @@ func (b *Builder) NewTooltip(label *widget.Text) *widget.Container {
 			widget.RowLayoutOpts.Padding(b.tooltip.padding),
 			widget.RowLayoutOpts.Spacing(2),
 		)))
-	label.MaxWidth = 800
+	label.MaxWidth = 220
 	tt.AddChild(label)
 	return tt
 }

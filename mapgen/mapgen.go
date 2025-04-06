@@ -42,7 +42,8 @@ type Config struct {
 	Width  int
 	Height int
 
-	Reward int
+	Reward     int
+	ItemReward bool
 
 	Mission dat.MissionKind
 
@@ -380,6 +381,8 @@ func Generate(config Config) *dat.Map {
 	} else {
 		panic("TODO")
 	}
+
+	m.ItemReward = config.ItemReward
 
 	return m
 }

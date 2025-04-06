@@ -5,7 +5,9 @@ import (
 	"strconv"
 
 	"github.com/ebitenui/ebitenui/widget"
+	"github.com/quasilyte/gmath"
 	"github.com/quasilyte/gscene"
+	"github.com/quasilyte/gslices"
 	"github.com/quasilyte/ld57-game/assets"
 	"github.com/quasilyte/ld57-game/dat"
 	"github.com/quasilyte/ld57-game/eui"
@@ -25,6 +27,16 @@ func (c *continueProxyController) Init(ctx gscene.InitContext) {
 	if game.G.Victory {
 		game.G.Gold += game.G.CurrentMap.Reward
 		game.G.GoldTotal += game.G.CurrentMap.Reward
+	}
+
+	var itemFound *dat.ItemStats
+	if game.G.CurrentMap.ItemReward {
+		if len(game.G.ItemLootList) > 0 {
+			i := gmath.RandIndex(&game.G.Rand, game.G.ItemLootList)
+			itemFound = game.G.ItemLootList[i]
+			game.G.ItemLootList = gslices.DeleteAt(game.G.ItemLootList, i)
+			game.G.Items = append(game.G.Items, itemFound)
+		}
 	}
 
 	topRows := eui.NewTopLevelRows()
@@ -70,6 +82,19 @@ func (c *continueProxyController) Init(ctx gscene.InitContext) {
 			Font:       assets.FontTiny,
 			AlignRight: true,
 		}))
+
+		if itemFound != nil {
+			pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
+				Text:      "Item found",
+				Font:      assets.FontTiny,
+				AlignLeft: true,
+			}))
+			pairs.AddChild(game.G.UI.NewText(eui.TextConfig{
+				Text:       itemFound.Name,
+				Font:       assets.FontTiny,
+				AlignRight: true,
+			}))
+		}
 	} else {
 		root.AddChild(game.G.UI.NewText(eui.TextConfig{
 			Text: "Game Over",

@@ -55,6 +55,15 @@ func main() {
 	ebiten.SetWindowTitle("ld57game")
 
 	{
+		for _, item := range dat.AllItems {
+			img := ebiten.NewImage(20, 40)
+			var opts ebiten.DrawImageOptions
+			opts.GeoM.Scale(2, 2)
+			img.DrawImage(game.G.Loader.LoadImage(item.Icon).Data, &opts)
+			item.ScaledIcon = img
+		}
+	}
+	{
 		spr := graphics.NewSprite()
 		for _, u := range dat.AllUnits {
 			img := ebiten.NewImage(44, 44)

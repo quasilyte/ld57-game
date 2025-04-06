@@ -23,6 +23,7 @@ func NextStage() *dat.Map {
 			ForestRatio:     0.1,
 			SwampRatio:      0,
 			Reward:          110,
+			ItemReward:      true,
 		}
 
 	case 1:
@@ -66,6 +67,7 @@ func NextStage() *dat.Map {
 			ForestRatio:     0.0,
 			SwampRatio:      0.2,
 			Reward:          150,
+			ItemReward:      true,
 		}
 
 	case 3:
@@ -143,6 +145,7 @@ func NextStage() *dat.Map {
 			SwampRatio:       0.6,
 			Reward:           220,
 			MandatoryEnemies: units,
+			ItemReward:       true,
 		}
 
 	case 7:

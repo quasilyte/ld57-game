@@ -35,6 +35,12 @@ func registerImageResources(loader *resource.Loader) {
 		ImageFacingLeft:  {Path: "image/ui/facing_left.png"},
 		ImageFacingUp:    {Path: "image/ui/facing_up.png"},
 
+		ImageItemMagicSword:  {Path: "image/item/magic_sword.png"},
+		ImageItemBackstabber: {Path: "image/item/backstabber.png"},
+		ImageItemMagicHelmet: {Path: "image/item/magic_helmet.png"},
+		ImageItemMagicRing:   {Path: "image/item/ring.png"},
+		ImageItemMagicAxe:    {Path: "image/item/trollbane.png"},
+
 		ImageBrigandsBanner:         {Path: "image/banner/brigands.png"},
 		ImageAssassinsBanner:        {Path: "image/banner/assassins.png"},
 		ImageHumanHalberdsBanner:    {Path: "image/banner/human_halberds.png"},
@@ -93,6 +99,12 @@ const (
 	ImageTileForest
 	ImageTileSwamp
 	ImageTileVoid
+
+	ImageItemMagicSword
+	ImageItemBackstabber
+	ImageItemMagicHelmet
+	ImageItemMagicRing
+	ImageItemMagicAxe
 
 	ImageBrigandsBanner
 	ImageAssassinsBanner

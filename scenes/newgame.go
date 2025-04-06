@@ -81,9 +81,9 @@ func (c *NewGameController) Init(ctx gscene.InitContext) {
 		},
 	}))
 
-	root.AddChild(game.G.UI.NewText(eui.TextConfig{Text: ""}))
+	panelRows.AddChild(game.G.UI.NewText(eui.TextConfig{Text: ""}))
 
-	root.AddChild(game.G.UI.NewButton(eui.ButtonConfig{
+	panelRows.AddChild(game.G.UI.NewButton(eui.ButtonConfig{
 		Text: "BACK",
 		OnClick: func() {
 			game.G.SceneManager.ChangeScene(NewMainMenuController())

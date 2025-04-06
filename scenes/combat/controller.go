@@ -259,9 +259,35 @@ func (c *Controller) handleInput(delta float64) {
 		MinWidth: sidePanelWidth - 32,
 	}))
 
-	c.unitInfoRows.AddChild(widget.NewGraphic(
-		widget.GraphicOpts.Image(hovered.data.Stats.ScaledImage),
-	))
+	{
+		cols := widget.NewContainer(
+			widget.ContainerOpts.Layout(
+				widget.NewGridLayout(
+					widget.GridLayoutOpts.Columns(3),
+					widget.GridLayoutOpts.Spacing(4, 2),
+					// widget.GridLayoutOpts.Stretch([]bool{true, false, false}, nil),
+				),
+			),
+		)
+
+		cols.AddChild(widget.NewGraphic(
+			widget.GraphicOpts.Image(hovered.data.Stats.ScaledImage),
+		))
+		for _, item := range hovered.data.Items {
+			icon := dat.EmptyIcon
+			if item != nil {
+				icon = item.ScaledIcon
+			}
+			itemWidget := widget.NewGraphic(
+				widget.GraphicOpts.Image(icon),
+				widget.GraphicOpts.WidgetOpts(
+					widget.WidgetOpts.MinSize(20, 40),
+				),
+			)
+			cols.AddChild(itemWidget)
+		}
+		c.unitInfoRows.AddChild(cols)
+	}
 
 	{
 		pairs := widget.NewContainer(

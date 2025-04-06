@@ -172,8 +172,18 @@ func (r *runner) withCasualtiesCheck(melee bool, attacker, defender *unitNode, f
 	}
 
 	if attacker.data.Stats.HasTrait(dat.TraitCauseFear) {
-		// 1% morale damage per unit, maxed at 15.
-		defender.SubMorale(gmath.ClampMax(0.01*float64(initialAttackers), 0.15))
+		if !defender.data.HasItem(dat.ItemRingOfCourage) {
+			// 1% morale damage per unit, maxed at 15.
+			// At level 8+, it's 1.5% damage per unit (so ~22% against 15%)
+			fearDmg := 0.01
+			switch {
+			case attacker.data.Level >= 4:
+				fearDmg = 0.0125
+			case attacker.data.Level >= 8:
+				fearDmg = 0.015
+			}
+			defender.SubMorale(gmath.ClampMax(fearDmg*float64(initialAttackers), 0.15))
+		}
 	}
 
 	const expScaler = 0.85
@@ -233,6 +243,9 @@ func (r *runner) runMeleeRound(attacker, defender *unitNode) {
 		retaliationsLeft := defender.data.Count + 1
 		if defender.guard {
 			retaliationsLeft += (defender.data.Count / 2)
+		}
+		if defender.data.HasItem(dat.ItemVengeanceHelm) {
+			retaliationsLeft += gmath.ClampMin((defender.data.Count / 2), 1)
 		}
 		if defender.data.Stats.HasTrait(dat.TraitMighty) {
 			retaliationsLeft *= 2
@@ -326,6 +339,9 @@ func (r *runner) runMeleeAttack(isRetaliation bool, attacker, defender *unitNode
 	switch facing {
 	case meleeAttackFlank:
 		toHit *= 1.1
+		if !isRetaliation && attacker.data.HasItem(dat.ItemBackstabber) {
+			toHit *= 1.4
+		}
 	case meleeAttackBack:
 		toHit *= 1.2
 	}
@@ -365,11 +381,19 @@ func (r *runner) runMeleeAttack(isRetaliation bool, attacker, defender *unitNode
 	if attacker.data.Stats.Class == dat.ClassCavalry && defender.data.Stats.HasTrait(dat.TraitAntiCavalry) {
 		def *= 1.5
 	}
+	if !isRetaliation && attacker.data.HasItem(dat.ItemMagicSword) {
+		def *= 0.5
+	}
 	critChance := atk - def
 	isCrit := critChance > 0 && game.G.Rand.Chance(critChance)
 	dmg := 1
+	if defender.data.Stats == dat.Ogres || defender.data.Stats == dat.Troll {
+		if !isRetaliation && attacker.data.HasItem(dat.ItemTrollbane) {
+			dmg++
+		}
+	}
 	if defender.data.Stats.Class == dat.ClassCavalry && attacker.data.Stats.HasTrait(dat.TraitAntiCavalry) {
-		dmg = 2
+		dmg++
 	}
 	if isCrit {
 		dmg *= 2

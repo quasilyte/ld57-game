@@ -49,7 +49,8 @@ type Map struct {
 	Units  []DeployedUnit
 	Tiles  [][]Tile
 
-	Reward int
+	Reward     int
+	ItemReward bool
 }
 
 type DeployedUnit struct {
