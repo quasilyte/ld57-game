@@ -6,12 +6,12 @@ package main
 
 var Angle float
 
-func Fragment(_ vec4, pos vec2, _ vec4) vec4 {
+func Fragment(_ vec4, pos vec2, clr2 vec4) vec4 {
 	clr := imageSrc0UnsafeAt(pos)
 
 	// -1.5
 	rotated := hueRotate(clr.rgb, Angle) * 1.05
-	return vec4(rotated, clr.a)
+	return vec4(rotated, clr.a) * clr2
 }
 
 func hueRotate(color vec3, angle float) vec3 {

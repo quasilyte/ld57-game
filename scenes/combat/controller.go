@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/ebitenui/ebitenui/widget"
+	"github.com/hajimehoshi/ebiten/v2"
 	graphics "github.com/quasilyte/ebitengine-graphics"
 	"github.com/quasilyte/gmath"
 	"github.com/quasilyte/gscene"
@@ -147,6 +148,7 @@ func (c *Controller) Init(ctx gscene.InitContext) {
 	game.G.Camera.AddGraphics(c.state.currentUnitSelector, 2)
 
 	i := 1
+	mapTexture := ebiten.NewImage(c.m.Width*32, c.m.Height*32)
 	for y := 0; y < c.m.Height; y++ {
 		for x := 0; x < c.m.Width; x++ {
 			t := c.state.m.Tiles[y][x]
@@ -171,10 +173,23 @@ func (c *Controller) Init(ctx gscene.InitContext) {
 				spr.SetColorScale(graphics.ColorScale{R: colorM, G: colorM, B: colorM, A: 1})
 			}
 			i++
-			game.G.Camera.AddGraphics(spr, 1)
+			spr.Draw(mapTexture)
 		}
 		i++
 	}
+
+	bg := graphics.NewSprite()
+	bg.SetImage(mapTexture)
+	bg.SetCentered(false)
+	if game.G.Stage > 0 {
+		bg.Shader = game.G.NewShader(assets.ShaderHueRotate)
+		angle := gmath.ClampMax(float64(game.G.Stage)*0.125, 1.4)
+		bg.Shader.SetFloatValue("Angle", float32(angle))
+	}
+	if game.G.Stage%2 != 0 {
+		bg.SetColorScale(graphics.ColorScale{R: 0.4, G: 0.6, B: 0.8, A: 1.0})
+	}
+	game.G.Camera.AddGraphics(bg, 1)
 
 	for _, u := range c.m.Units {
 		n := newUnitNode(unitNodeConfig{

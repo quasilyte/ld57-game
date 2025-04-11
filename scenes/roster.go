@@ -35,6 +35,29 @@ func (c *rosterController) updateGoldLabel() {
 }
 
 func (c *rosterController) Init(ctx gscene.InitContext) {
+	// Try to auto-allocate items.
+	itemsToAllocate := game.G.NewItems
+ItemLoop:
+	for len(itemsToAllocate) != 0 {
+		for _, u := range game.G.Units {
+			maxNumArtifacts := 1
+			if u.Level >= 5 {
+				maxNumArtifacts = 2
+			}
+			for j, item := range u.Items[:maxNumArtifacts] {
+				if item != nil {
+					continue
+				}
+				u.Items[j] = itemsToAllocate[0]
+				itemsToAllocate = itemsToAllocate[1:]
+				continue ItemLoop
+			}
+		}
+		game.G.Items = append(game.G.Items, itemsToAllocate...)
+		break ItemLoop
+	}
+	game.G.NewItems = game.G.NewItems[:0]
+
 	topRows := eui.NewTopLevelRows()
 
 	root := eui.NewTopLevelRows()
@@ -217,7 +240,7 @@ func (c *rosterController) fillSlots() {
 
 			updateTooltip := func() {
 				if j >= maxNumArtifacts {
-					tt.Label = "Need unit level 5"
+					tt.Label = "Need unit level 6"
 					return
 				}
 				if u.Items[j] == nil {

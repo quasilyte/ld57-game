@@ -28,7 +28,7 @@ func (c *mainMenuController) Init(ctx gscene.InitContext) {
 	ctx.Scene.AddGraphics(sceneutil.NewBackgroundImage(), 0)
 
 	topRows.AddChild(game.G.UI.NewText(eui.TextConfig{
-		Text:  "Fantastic General",
+		Text:  "Hireblades",
 		Color: styles.ColorOrange.Color(),
 		Font:  assets.Font1,
 	}))

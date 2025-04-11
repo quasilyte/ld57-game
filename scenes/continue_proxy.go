@@ -35,7 +35,7 @@ func (c *continueProxyController) Init(ctx gscene.InitContext) {
 				i := gmath.RandIndex(&game.G.Rand, game.G.ItemLootList)
 				itemFound = game.G.ItemLootList[i]
 				game.G.ItemLootList = gslices.DeleteAt(game.G.ItemLootList, i)
-				game.G.Items = append(game.G.Items, itemFound)
+				game.G.NewItems = append(game.G.NewItems, itemFound)
 			}
 		}
 	}

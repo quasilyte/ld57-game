@@ -38,6 +38,7 @@ type GlobalContext struct {
 	Victory      bool
 	CurrentMap   *dat.Map
 	Items        []*dat.ItemStats
+	NewItems     []*dat.ItemStats
 	ItemLootList []*dat.ItemStats
 	Units        []*dat.Unit
 	SavedUnits   []*dat.Unit

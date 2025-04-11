@@ -56,7 +56,7 @@ var ItemBannerOfWill = &ItemStats{
 var ItemBracerOfLearning = &ItemStats{
 	Name: "Bracer of Learning",
 	Hint: "Wearing this makes you earn experience much faster, just don't ask how",
-	Icon: assets.ImageItemMagicRing2,
+	Icon: assets.ImageItemMagicBracer,
 }
 
 var ItemRingOfFortitude = &ItemStats{
